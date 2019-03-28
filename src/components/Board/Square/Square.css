@@ -1,0 +1,9 @@
+.Square {
+  background-color: #aaa;
+  box-sizing: border-box;
+  width: 25px;
+  height: 25px;
+  padding: 2px;
+  font-size: 12px;
+  text-align: center;
+}

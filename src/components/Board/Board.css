@@ -1,0 +1,7 @@
+.Board {
+  display: grid;
+  grid-template-columns: repeat(15, auto);
+  justify-content: center;
+  background-color: white;
+  grid-gap: 1px;
+}
