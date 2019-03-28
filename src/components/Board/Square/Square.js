@@ -3,7 +3,7 @@ import styles from './Square.css';
 
 const square = (props) => {
   return (
-    <div className={styles.Square}>
+    <div onClick={props.click} className={styles.Square}>
       {props.children}
     </div>
   );

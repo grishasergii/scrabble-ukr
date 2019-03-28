@@ -22,6 +22,7 @@ class Game extends Component {
       {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
       {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     ],
+    selectedLetter: null,
     playerRack: [
       { letter: 'A', value: '1' },
       { letter: 'E', value: '1' },
@@ -32,13 +33,33 @@ class Game extends Component {
       { letter: 'B', value: '4' },
     ]
   }
+
+  selectLetterHandler = (letter) => {
+    this.setState({
+      selectedLetter: letter
+    });
+  }
+
+  placeLetterOnBoardHandler = (squareIndex) => {
+    this.setState((prevState) => {
+      if (prevState.selectedLetter === null) {
+        return;
+      }
+      const updatedSquares = [...prevState.squares];
+      updatedSquares[squareIndex].letter = prevState.selectedLetter;
+      return {
+        squares: updatedSquares,
+        selectedLetter: null
+      };
+    });
+  }
   
   render() {
     return(
       <div>
-        <Rack letters={this.state.playerRack} />
-        <Board squares={this.state.squares}/>
-        <Rack letters={this.state.playerRack} />
+        <Rack letterClick={this.selectLetterHandler} letters={this.state.playerRack} />
+        <Board squareClick={this.placeLetterOnBoardHandler} squares={this.state.squares}/>
+        <Rack letterClick={this.selectLetterHandler} letters={this.state.playerRack} />
       </div>
     );
   }

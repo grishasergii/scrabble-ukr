@@ -2,5 +2,8 @@
   color: black;
   background-color: white;
   text-align: center;
-  padding: 3px;
+  padding: 2px;
+  border: 2px solid #008000;
+  border-radius: 5px;
+  cursor: pointer;
 }
