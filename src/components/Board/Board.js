@@ -7,12 +7,26 @@ import Letter from './Letter/Letter';
 const board = (props) => {
   const squares = props.squares.map((sq, sqIndex) => {
     let letter = null;
-    if (sq.letter !== undefined) {
-      letter = <Letter letter={sq.letter.letter} value={sq.letter.value} />
+    let squareClick = ()  => props.squareClick(sqIndex);
+
+    if (sq !== null && sq.letter !== null && sq.letter !== undefined) {
+      letter = (
+        <Letter 
+          letter={sq.letter.letter} 
+          value={sq.letter.value}
+          clicked={() => props.letterClick(sq.letter, sqIndex, 'board')}
+          selectable={true} />
+      );
+
+      squareClick = null;
+    }
+    let bonus = null;
+    if (sq !== null) {
+      bonus = <Bonus type={sq.bonus}/>;
     }
     return(
-      <Square key={sqIndex} click={() => props.squareClick(sqIndex)}>
-        <Bonus type={sq.bonus}/>
+      <Square key={sqIndex} click={squareClick}>
+        {bonus}
         {letter}
       </Square>
     );

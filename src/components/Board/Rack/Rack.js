@@ -6,12 +6,17 @@ import Letter from '../Letter/Letter';
 
 const rack = (props) => {
   const squares = props.letters.map((l, index) => {
-    return (<Square key={index}>
-      <Letter 
-        letter={l.letter} 
-        value={l.value}
-        clicked={() => props.letterClick(l)} />
-    </Square>);
+    let letter = null;
+    if (l !== null) {
+      letter = (
+        <Letter 
+          selectable={props.rackSelectable}
+          letter={l.letter} 
+          value={l.value}
+          clicked={() => props.letterClick(l, index, props.selectedFrom)} />
+      );
+    }
+    return (<Square key={index}> {letter} </Square>);
   })
   for (let i = 0; i < props.size; i++) {
     squares.push(<Square />);

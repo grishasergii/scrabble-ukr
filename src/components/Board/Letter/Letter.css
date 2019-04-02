@@ -5,5 +5,8 @@
   padding: 2px;
   border: 2px solid #008000;
   border-radius: 5px;
+}
+
+.Selectable {
   cursor: pointer;
 }
