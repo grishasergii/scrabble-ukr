@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Board from '../../components/Board/Board';
 import Rack from '../../components/Board/Rack/Rack';
+import GameControls from '../../components/GameControls/GameControls';
 
 class Game extends Component {
   
@@ -23,15 +24,15 @@ class Game extends Component {
       {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
     ],
     selectedLetter: null,
-    selectedLetterIndex: null,
+    squaresWithPlacedLettersIndices: new Set([]),
     playerRack: [
       { letter: 'A', value: '1' },
+      { letter: 'B', value: '1' },
+      { letter: 'C', value: '4' },
+      { letter: 'D', value: '1' },
       { letter: 'E', value: '1' },
-      { letter: 'V', value: '4' },
-      { letter: 'A', value: '1' },
-      { letter: 'A', value: '1' },
-      { letter: 'A', value: '1' },
-      { letter: 'B', value: '4' },
+      { letter: 'F', value: '1' },
+      { letter: 'G', value: '4' },
     ],
     computerRack: [
       { letter: 'C', value: '1' },
@@ -66,12 +67,16 @@ class Game extends Component {
 
       const updatedPlayerRack = [...prevState.playerRack];
 
+      const updatedSquaresWithPlacedLettersIndices = new Set(prevState.squaresWithPlacedLettersIndices);
+      updatedSquaresWithPlacedLettersIndices.add(squareIndex);
+
       switch (prevState.selectedLetter.selectedFrom) {
         case 'playerRack':
           updatedPlayerRack[prevState.selectedLetter.index] = null;
           break;
         case 'board':
           updatedSquares[prevState.selectedLetter.index].letter = null;
+          updatedSquaresWithPlacedLettersIndices.delete(prevState.selectedLetter.index);
           break;
         default:
           break;
@@ -81,7 +86,32 @@ class Game extends Component {
         squares: updatedSquares,
         selectedLetter: null,
         playerRack: updatedPlayerRack,
+        squaresWithPlacedLettersIndices: updatedSquaresWithPlacedLettersIndices
       };
+    });
+  }
+
+  returnPlacedLettersToRackHandler = () => {
+    this.setState((prevState) => {
+      const updatedSquares = [...prevState.squares];
+      const updatedPlayerRack = [...prevState.playerRack];
+
+      let playerRackLetterIndex = 0;
+      const playerRackLength = updatedPlayerRack.length;
+
+      for (let index of prevState.squaresWithPlacedLettersIndices) {
+        while (updatedPlayerRack[playerRackLetterIndex] !== null && playerRackLetterIndex < playerRackLength) {
+          playerRackLetterIndex = playerRackLetterIndex + 1;
+        }
+        updatedPlayerRack[playerRackLetterIndex] = updatedSquares[index].letter;
+        updatedSquares[index].letter = null;
+      }
+
+      return {
+        squares: updatedSquares,
+        playerRack: updatedPlayerRack,
+        squaresWithPlacedLettersIndices: new Set([])
+      }
     });
   }
   
@@ -96,12 +126,15 @@ class Game extends Component {
           squareClick={this.placeLetterOnBoardHandler} 
           letterClick={this.selectLetterHandler} 
           squares={this.state.squares} />
-          
+
         <Rack 
           letterClick={this.selectLetterHandler} 
           selectedFrom='playerRack' 
           letters={this.state.playerRack}
           rackSelectable={true} />
+        
+        <GameControls
+          clear={this.returnPlacedLettersToRackHandler} />
       </div>
     );
   }
