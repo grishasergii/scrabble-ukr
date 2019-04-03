@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import Board from '../../components/Board/Board';
 import Rack from '../../components/Board/Rack/Rack';
 import GameControls from '../../components/GameControls/GameControls';
+import SwapLetters from '../SwapLetters/SwapLetters';
+import Modal from '../../components/UI/Modal/Modal';
 
 class Game extends Component {
   
@@ -159,10 +161,53 @@ class Game extends Component {
       }
     });
   }
+
+  swapLettersHandler = (indices) => {
+    this.setState((prevState) => {
+
+      const updatedPlayerRack = [...prevState.playerRack];
+
+      const numNewLetters = Math.min(indices.size, prevState.bagOfLetters.length);
+      const shuffledBagOfLetters = prevState.bagOfLetters.sort(() => 0.5 - Math.random());
+      const selectedLetters = shuffledBagOfLetters.slice(0, numNewLetters);
+      const updatedBagOfLetters = shuffledBagOfLetters.slice(numNewLetters, shuffledBagOfLetters.length);
+
+      for (let i of Array.from(indices).slice(0, numNewLetters)) {
+        updatedBagOfLetters.push(updatedPlayerRack[i]);
+        updatedPlayerRack[i] = selectedLetters.pop();
+      }
+
+      return {
+        showSwapLetters: false,
+        playerRack: updatedPlayerRack,
+        bagOfLetters: updatedBagOfLetters
+      }
+    });
+  }
   
+  startSwapLettersHandler = () => {
+    this.setState({
+      showSwapLetters: true
+    });
+  }
+
   render() {
+    let swapLetters = null;
+    if (this.state.showSwapLetters === true) {
+      swapLetters = (
+        <Modal>
+          <SwapLetters 
+            playerRack={this.state.playerRack}
+            swapLettersHandler={this.swapLettersHandler}
+          />
+        </Modal>
+      );
+    }
+
     return(
       <div>
+        {swapLetters}
+
         <Rack 
           letters={this.state.computerRack} 
           rackSelectable={false} />
@@ -179,7 +224,8 @@ class Game extends Component {
           rackSelectable={true} />
         
         <GameControls
-          clear={this.returnPlacedLettersToRackHandler} />
+          clear={this.returnPlacedLettersToRackHandler}
+          swap={this.startSwapLettersHandler} />
       </div>
     );
   }

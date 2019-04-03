@@ -6,7 +6,7 @@ const gameControls = (props) => {
       <button>Play</button>
       <button>Pass</button>
       <button onClick={props.clear}>Clear</button>
-      <button>Swap</button>
+      <button onClick={props.swap}>Swap</button>
     </div>
   );
 }
