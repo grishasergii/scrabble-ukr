@@ -150,7 +150,10 @@ class Game extends Component {
         while (updatedPlayerRack[playerRackLetterIndex] !== null && playerRackLetterIndex < playerRackLength) {
           playerRackLetterIndex = playerRackLetterIndex + 1;
         }
-        updatedPlayerRack[playerRackLetterIndex] = updatedSquares[index].letter;
+        updatedPlayerRack[playerRackLetterIndex] = {
+          ...updatedSquares[index].letter, 
+          selected: false
+        };
         updatedSquares[index].letter = null;
       }
 
