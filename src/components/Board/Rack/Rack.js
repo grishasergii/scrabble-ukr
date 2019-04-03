@@ -13,6 +13,7 @@ const rack = (props) => {
           selectable={props.rackSelectable}
           letter={l.letter} 
           value={l.value}
+          selected={l.selected}
           clicked={() => props.letterClick(l, index, props.selectedFrom)} />
       );
     }

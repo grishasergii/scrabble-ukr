@@ -6,6 +6,11 @@ import GameControls from '../../components/GameControls/GameControls';
 class Game extends Component {
   
   state = {
+    bagOfLetters: [
+      ...Array(5).fill({letter: 'A', value: 1}),
+      ...Array(2).fill({letter: 'B', value: 1}),
+      ...Array(2).fill({letter: 'C', value: 1}),
+    ],
     squares: [
       {bonus: '3xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
       {}, {bonus: '2xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -47,12 +52,52 @@ class Game extends Component {
   }
 
   selectLetterHandler = (letter, index, selectedFrom) => {
-    this.setState({
+    // TODO this is too complicated, should be refactored
+    this.setState((prevState) => {
+      const updatedPlayerRack = prevState.playerRack.map(
+        l => {
+          if (l === null || l===undefined) {
+            return null;
+          }
+          return {
+            ...l,
+            selected: false
+          };
+        }
+      );
+      const updatedSquares = prevState.squares.map(sq => {
+        if (sq.letter === null || sq.letter === undefined) {
+          return sq;
+        }
+        return {
+          ...sq,
+          letter: {
+            ...sq.letter,
+            selected: false
+          }
+        };
+      });
+
+      switch (selectedFrom) {
+        case 'playerRack':
+          updatedPlayerRack[index].selected = true;
+          break;
+        case 'board':
+          updatedSquares[index].letter = {
+            ...updatedSquares[index].letter,
+            selected: true
+          };
+          break;
+      }
+
+      return {
+      playerRack: updatedPlayerRack,
+      squares: updatedSquares,
       selectedLetter: {
         letter: letter,
         index: index,
         selectedFrom: selectedFrom
-      }
+      }};
     });
   }
 

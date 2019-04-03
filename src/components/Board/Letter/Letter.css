@@ -10,3 +10,7 @@
 .Selectable {
   cursor: pointer;
 }
+
+.Selected {
+  border-style: dotted;
+}

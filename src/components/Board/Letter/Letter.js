@@ -10,6 +10,10 @@ const letter = (props) => {
     classes.push(styles.Selectable);
   }
 
+  if (props.selected === true) {
+    classes.push(styles.Selected);
+  }
+
   return (
     <span onClick={onClick} className={classes.join(' ')}>
       {props.letter}<sup>{props.value}</sup>
