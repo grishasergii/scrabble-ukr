@@ -197,7 +197,7 @@ class Game extends Component {
 
   playTurnHandler = () => {
     this.setState((prevState) => {
-      const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort();
+      const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort((a, b) => a - b);
       const boardSize = prevState.boardSize;
 
       if (placedIndices.length === 0) {
@@ -252,7 +252,7 @@ class Game extends Component {
         
       }
 
-      alert('It\'s OK');
+      alert(placedIndices);
 
     });
   }
