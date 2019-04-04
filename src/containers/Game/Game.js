@@ -8,6 +8,7 @@ import Modal from '../../components/UI/Modal/Modal';
 class Game extends Component {
   
   state = {
+    boardSize: 15,
     bagOfLetters: [
       ...Array(5).fill({letter: 'A', value: 1}),
       ...Array(2).fill({letter: 'B', value: 1}),
@@ -194,6 +195,68 @@ class Game extends Component {
     });
   }
 
+  playTurnHandler = () => {
+    this.setState((prevState) => {
+      const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort();
+      const boardSize = prevState.boardSize;
+
+      if (placedIndices.length === 0) {
+        alert('Place some letters!');
+        return;
+      }
+
+      // are all letters in the same row or column?
+      const rows = new Set([]);
+      const cols = new Set([]);
+      placedIndices.map(i => {
+        const col = i % boardSize;
+        const row = Math.floor(i / boardSize);
+        rows.add(row);
+        cols.add(col);
+      });
+
+      if (rows.size > 1 && cols.size > 1) {
+        alert('Not ok: All letters must be placed in the same row or column');
+        return;
+      }
+
+      // do all placed letters form a continious sequence?
+      let step = 0;
+      let stepAllWords = 0;
+      if (rows.size === 1) {
+        step = 1;
+        stepAllWords = boardSize;
+      }
+      if (cols.size === 1) {
+        step = boardSize;
+        stepAllWords = 1;
+      }
+
+      let index = placedIndices[0];
+      let wordLength = 0;
+      while (true) {
+        if (prevState.squares[index].letter === null || prevState.squares[index].letter === undefined) {
+          break;
+        }
+        wordLength = wordLength + 1;
+        index = index + step;
+      }
+
+      if (wordLength < placedIndices.length) {
+        alert('Not ok: there are gaps in the letter sequence!');
+        return;
+      }
+
+      // get all formed words
+      for (let i in placedIndices) {
+        
+      }
+
+      alert('It\'s OK');
+
+    });
+  }
+
   render() {
     let swapLetters = null;
     if (this.state.showSwapLetters === true) {
@@ -228,7 +291,8 @@ class Game extends Component {
         
         <GameControls
           clear={this.returnPlacedLettersToRackHandler}
-          swap={this.startSwapLettersHandler} />
+          swap={this.startSwapLettersHandler}
+          play={this.playTurnHandler} />
       </div>
     );
   }
