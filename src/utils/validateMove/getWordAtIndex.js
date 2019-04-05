@@ -2,26 +2,31 @@ const getWordAtIndex = (index, step, squares) => {
   const wordIndices = [];
 
   // go up
-  let i = index - 1;
+  let i = index - step;
   while (true) {
     if (i < 0 || squares[i].letter === null || squares[i].letter === undefined) {
       break;
     }
     wordIndices.push(i);
+    i = i + step
   }
 
   // go down
-  let i = index + 1;
+  i = index + step;
   const numSquares = squares.length;
   while (true) {
     if (i >= numSquares || squares[i].letter === null || squares[i].letter === undefined) {
       break;
     }
     wordIndices.push(i);
+    i = i + step;
   }
 
-  wordIndices.push(index);
-  return wordIndices.sort();
+  if (wordIndices.length > 0) {
+    wordIndices.push(index);
+  }
+
+    return wordIndices.sort((a, b) => a - b);
 }
 
 export default getWordAtIndex;

@@ -4,6 +4,9 @@ import Rack from '../../components/Board/Rack/Rack';
 import GameControls from '../../components/GameControls/GameControls';
 import SwapLetters from '../SwapLetters/SwapLetters';
 import Modal from '../../components/UI/Modal/Modal';
+import getWordAtIndex from '../../utils/validateMove/getWordAtIndex';
+import isWordValid from '../../utils/validateMove/isWordValid';
+import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 
 class Game extends Component {
   
@@ -52,6 +55,8 @@ class Game extends Component {
       { letter: 'E', value: '4' },
       { letter: 'R', value: '4' },
     ],
+    moveIsInvalidMessage: null,
+    invalidWords: null
   }
 
   selectLetterHandler = (letter, index, selectedFrom) => {
@@ -201,8 +206,9 @@ class Game extends Component {
       const boardSize = prevState.boardSize;
 
       if (placedIndices.length === 0) {
-        alert('Place some letters!');
-        return;
+        return {
+          moveIsInvalidMessage: 'Place some letters!'
+        };
       }
 
       // are all letters in the same row or column?
@@ -216,8 +222,9 @@ class Game extends Component {
       });
 
       if (rows.size > 1 && cols.size > 1) {
-        alert('Not ok: All letters must be placed in the same row or column');
-        return;
+        return {
+          moveIsInvalidMessage: 'All letters must be placed in the same row or column'
+        };
       }
 
       // do all placed letters form a continious sequence?
@@ -233,27 +240,59 @@ class Game extends Component {
       }
 
       let index = placedIndices[0];
-      let wordLength = 0;
+      const placedWordIndices = [];
       while (true) {
         if (prevState.squares[index].letter === null || prevState.squares[index].letter === undefined) {
           break;
         }
-        wordLength = wordLength + 1;
+        placedWordIndices.push(index);
         index = index + step;
       }
 
-      if (wordLength < placedIndices.length) {
-        alert('Not ok: there are gaps in the letter sequence!');
-        return;
+      if (placedWordIndices.length < placedIndices.length) {
+        return {
+          moveIsInvalidMessage: 'there are gaps in the letter sequence'
+        };
       }
 
       // get all formed words
-      for (let i in placedIndices) {
-        
+      const wordIndices = [placedWordIndices];
+      placedIndices.map(i => {
+        const word = getWordAtIndex(i, stepAllWords, prevState.squares);
+        if (word.length > 0) {
+          wordIndices.push(word);
+        }
+      });
+
+      // validate all words
+      const invalidWords = [];
+      wordIndices.map(wi => {
+        const word = wi.map(i => prevState.squares[i].letter.letter).join('').toLowerCase();
+        const isValid = isWordValid(word);
+        if (isValid === false) {
+          invalidWords.push(word);
+        }
+      });
+
+      if (invalidWords.length > 0) {
+        return {
+          invalidWords: invalidWords
+        };
       }
 
-      alert(placedIndices);
+      alert(invalidWords);
+    });
+  }
 
+  closeMoveIsInvalidMessageHandler = () => {
+    this.setState({
+      moveIsInvalidMessage: null
+    });
+  }
+
+  closeInvalidWordsMessageHandler = () => {
+    this.setState({
+      invalidWords: null
     });
   }
 
@@ -270,8 +309,31 @@ class Game extends Component {
       );
     }
 
+    let moveIsInvalidMessage = null;
+    if (this.state.moveIsInvalidMessage !== null) {
+      moveIsInvalidMessage = (
+        <ErrorMessage
+          closeMessageHandler={this.closeMoveIsInvalidMessageHandler}>
+          Sorry, your move is invalid: {this.state.moveIsInvalidMessage}
+        </ErrorMessage>
+      );
+    }
+
+    let invalidWordsMessage = null;
+    if (this.state.invalidWords !== null) {
+      invalidWordsMessage = (
+        <ErrorMessage
+          closeMessageHandler={this.closeInvalidWordsMessageHandler}>
+          Ніт! Не знаю таких слів: {this.state.invalidWords}
+        </ErrorMessage>
+      );
+    }
+
     return(
       <div>
+        {moveIsInvalidMessage}
+        {invalidWordsMessage}
+
         {swapLetters}
 
         <Rack 
