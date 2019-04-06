@@ -4,7 +4,7 @@ import Rack from '../../components/Board/Rack/Rack';
 import GameControls from '../../components/GameControls/GameControls';
 import SwapLetters from '../SwapLetters/SwapLetters';
 import Modal from '../../components/UI/Modal/Modal';
-import getWordAtIndex from '../../utils/validateMove/getWordAtIndex';
+import getPerpendicularWordIndices from '../../utils/validateMove/getPerpendicularWordIndices';
 import isWordValid from '../../utils/validateMove/isWordValid';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 
@@ -205,6 +205,7 @@ class Game extends Component {
       const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort((a, b) => a - b);
       const boardSize = prevState.boardSize;
 
+      // are there any letters placed by the player?
       if (placedIndices.length === 0) {
         return {
           moveIsInvalidMessage: 'Place some letters!'
@@ -258,7 +259,7 @@ class Game extends Component {
       // get all formed words
       const wordIndices = [placedWordIndices];
       placedIndices.map(i => {
-        const word = getWordAtIndex(i, stepAllWords, prevState.squares);
+        const word = getPerpendicularWordIndices(i, stepAllWords, prevState.squares);
         if (word.length > 0) {
           wordIndices.push(word);
         }

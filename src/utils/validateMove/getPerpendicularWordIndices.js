@@ -1,4 +1,4 @@
-const getWordAtIndex = (index, step, squares) => {
+const getPerpendicularWordIndices = (index, step, squares) => {
   const wordIndices = [];
 
   // go up
@@ -8,7 +8,7 @@ const getWordAtIndex = (index, step, squares) => {
       break;
     }
     wordIndices.push(i);
-    i = i + step
+    i = i - step
   }
 
   // go down
@@ -26,7 +26,7 @@ const getWordAtIndex = (index, step, squares) => {
     wordIndices.push(index);
   }
 
-    return wordIndices.sort((a, b) => a - b);
+  return wordIndices.sort((a, b) => a - b);
 }
 
-export default getWordAtIndex;
+export default getPerpendicularWordIndices;
