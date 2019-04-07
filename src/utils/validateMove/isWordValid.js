@@ -1,5 +1,5 @@
 const isWordValid = (word) => {
-  return false;
+  return true;
 }
 
 export default isWordValid;

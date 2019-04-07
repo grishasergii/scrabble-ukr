@@ -6,6 +6,7 @@ import SwapLetters from '../SwapLetters/SwapLetters';
 import Modal from '../../components/UI/Modal/Modal';
 import getPerpendicularWordIndices from '../../utils/validateMove/getPerpendicularWordIndices';
 import isWordValid from '../../utils/validateMove/isWordValid';
+import isWordConnected from '../../utils/validateMove/isWordConnected';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 
 class Game extends Component {
@@ -179,7 +180,7 @@ class Game extends Component {
       const updatedPlayerRack = [...prevState.playerRack];
 
       const numNewLetters = Math.min(indices.size, prevState.bagOfLetters.length);
-      const shuffledBagOfLetters = prevState.bagOfLetters.sort(() => 0.5 - Math.random());
+      const shuffledBagOfLetters = [...prevState.bagOfLetters].sort(() => 0.5 - Math.random());
       const selectedLetters = shuffledBagOfLetters.slice(0, numNewLetters);
       const updatedBagOfLetters = shuffledBagOfLetters.slice(numNewLetters, shuffledBagOfLetters.length);
 
@@ -203,6 +204,8 @@ class Game extends Component {
   }
 
   playTurnHandler = () => {
+    // TODO this is catastrophicaly complicated, should be refactored
+
     this.setState((prevState) => {
       const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort((a, b) => a - b);
       const boardSize = prevState.boardSize;
@@ -218,7 +221,7 @@ class Game extends Component {
       // are all letters in the same row or column?
       const rows = new Set([]);
       const cols = new Set([]);
-      placedIndices.map(i => {
+      placedIndices.forEach(i => {
         const col = i % boardSize;
         const row = Math.floor(i / boardSize);
         rows.add(row);
@@ -257,9 +260,17 @@ class Game extends Component {
         }
       }
 
+      // is word connected
+      const isConnected = isWordConnected(placedIndices, step, stepAllWords, squares);
+      if (isConnected === false) {
+        return {
+          moveIsInvalidMessage: 'Sorry, word not connected'
+        };
+      }
+
       // get all formed words
       const wordIndices = [placedWordIndices];
-      placedIndices.map(i => {
+      placedIndices.forEach(i => {
         const word = getPerpendicularWordIndices(i, stepAllWords, squares);
         if (word.length > 0) {
           wordIndices.push(word);
@@ -268,7 +279,7 @@ class Game extends Component {
 
       // validate all words
       const invalidWords = [];
-      wordIndices.map(wi => {
+      wordIndices.forEach(wi => {
         const word = wi.map(i => squares[i].letter.letter).join('').toLowerCase();
         const isValid = isWordValid(word);
         if (isValid === false) {
@@ -282,7 +293,30 @@ class Game extends Component {
         };
       }
 
-      alert(invalidWords);
+      // mark placed letters as already played
+      placedIndices.forEach(i => {
+        squares[i].letter.alreadyPlayed = true;
+      });
+
+      // refill players rack
+      const updatedBagOfLetters = [...prevState.bagOfLetters].sort(() => 0.5 - Math.random());
+      const updatedPlayerRack = [...prevState.playerRack].map(l => {
+        if (l === null || l === undefined) {
+          return updatedBagOfLetters.pop();
+        }
+        return l;
+      });
+
+      // calculate score
+
+      // transfer turn
+
+      return {
+        squares: squares,
+        bagOfLetters: updatedBagOfLetters,
+        playerRack: updatedPlayerRack,
+        squaresWithPlacedLettersIndices: []
+      }
     });
   }
 
