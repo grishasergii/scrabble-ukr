@@ -7,7 +7,7 @@ import Letter from '../Letter/Letter';
 const rack = (props) => {
   const squares = props.letters.map((l, index) => {
     let letter = null;
-    if (l !== null) {
+    if (l !== null && l !== undefined) {
       letter = (
         <Letter 
           selectable={props.rackSelectable}

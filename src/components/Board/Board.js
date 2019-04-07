@@ -9,7 +9,7 @@ const board = (props) => {
     let letter = null;
     let squareClick = ()  => props.squareClick(sqIndex);
 
-    if (sq !== null && sq.letter !== null && sq.letter !== undefined) {
+    if (sq !== null && sq !== undefined && sq.letter !== null && sq.letter !== undefined) {
       letter = (
         <Letter 
           letter={sq.letter.letter} 
@@ -23,7 +23,7 @@ const board = (props) => {
       squareClick = null;
     }
     let bonus = null;
-    if (sq !== null) {
+    if (sq !== null && sq !== undefined) {
       bonus = <Bonus type={sq.bonus}/>;
     }
     return(
