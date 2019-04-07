@@ -1,4 +1,4 @@
-import getPerpendicularWordIndices from './getPerpendicularWordIndices';
+import getPerpendicularWordIndices from '../../../utils/validateMove/getPerpendicularWordIndices';
 
 describe('getPerpendicularWordIndices', () => {
   describe('when no perpendicular word', () => {
