@@ -16,7 +16,8 @@ const board = (props) => {
           value={sq.letter.value}
           clicked={() => props.letterClick(sq.letter, sqIndex, 'board')}
           selected={sq.letter.selected}
-          selectable={true} />
+          selectable={true}
+          alreadyPlayed={sq.letter.alreadyPlayed} />
       );
 
       squareClick = null;

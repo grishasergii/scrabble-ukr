@@ -5,9 +5,18 @@ const letter = (props) => {
   let onClick = null;
   const classes = [styles.Letter];
 
-  if (props.selectable === true) {
+  let alreadyPlayed = false;
+  if (props.alreadyPlayed === true) {
+    alreadyPlayed = true;
+  }
+
+  if (props.selectable === true && alreadyPlayed === false) {
     onClick = props.clicked;
     classes.push(styles.Selectable);
+  }
+
+  if (alreadyPlayed === true) {
+    classes.push(styles.AlreadyPlayed);
   }
 
   if (props.selected === true) {

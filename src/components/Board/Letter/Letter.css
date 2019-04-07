@@ -12,5 +12,9 @@
 }
 
 .Selected {
+  background-color: yellowgreen;
+}
+
+.AlreadyPlayed {
   border-style: dotted;
 }
