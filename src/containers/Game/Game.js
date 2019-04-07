@@ -96,6 +96,8 @@ class Game extends Component {
             selected: true
           };
           break;
+        default:
+          break;
       }
 
       return {
@@ -204,6 +206,7 @@ class Game extends Component {
     this.setState((prevState) => {
       const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort((a, b) => a - b);
       const boardSize = prevState.boardSize;
+      const squares = [...prevState.squares];
 
       // are there any letters placed by the player?
       if (placedIndices.length === 0) {
@@ -240,26 +243,24 @@ class Game extends Component {
         stepAllWords = 1;
       }
 
-      let index = placedIndices[0];
+
       const placedWordIndices = [];
-      while (true) {
-        if (prevState.squares[index].letter === null || prevState.squares[index].letter === undefined) {
-          break;
-        }
-        placedWordIndices.push(index);
-        index = index + step;
+      for (let i = placedIndices[0]; i < placedIndices[placedIndices.length-1] + step; i += step) {
+        placedWordIndices.push(i);
       }
 
-      if (placedWordIndices.length < placedIndices.length) {
-        return {
-          moveIsInvalidMessage: 'there are gaps in the letter sequence'
-        };
+      for (let i = 0; i < placedWordIndices.length; i++) {
+        if (squares[placedWordIndices[i]].letter === null || squares[placedWordIndices[i]].letter === undefined) {
+          return {
+            moveIsInvalidMessage: 'there are gaps in the letter sequence'
+          };         
+        }
       }
 
       // get all formed words
       const wordIndices = [placedWordIndices];
       placedIndices.map(i => {
-        const word = getPerpendicularWordIndices(i, stepAllWords, prevState.squares);
+        const word = getPerpendicularWordIndices(i, stepAllWords, squares);
         if (word.length > 0) {
           wordIndices.push(word);
         }
@@ -268,7 +269,7 @@ class Game extends Component {
       // validate all words
       const invalidWords = [];
       wordIndices.map(wi => {
-        const word = wi.map(i => prevState.squares[i].letter.letter).join('').toLowerCase();
+        const word = wi.map(i => squares[i].letter.letter).join('').toLowerCase();
         const isValid = isWordValid(word);
         if (isValid === false) {
           invalidWords.push(word);
