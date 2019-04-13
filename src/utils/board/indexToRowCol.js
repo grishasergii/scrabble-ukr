@@ -1,4 +1,4 @@
-const indexToRowCol = (index, num_rows, num_cols) => {
+const indexToRowCol = (index, num_cols) => {
   const row = Math.floor(index / num_cols);
   const col = index % num_cols;
 
