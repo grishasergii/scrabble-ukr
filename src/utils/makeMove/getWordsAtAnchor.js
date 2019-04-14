@@ -70,7 +70,7 @@ const getWordsAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step)
   return candidates;  
 };
 
-const getPlaceholder = (squares, step, anchorIndex, anchorRow, anchorCol, boardSize) => {
+const getPlaceholder = (tiles, step, anchorIndex, anchorRow, anchorCol, boardSize) => {
   let index = anchorIndex + step;
   const rowCol = indexToRowCol(index, boardSize);
   let row = rowCol.row;
@@ -78,16 +78,24 @@ const getPlaceholder = (squares, step, anchorIndex, anchorRow, anchorCol, boardS
 
   const placeholder = [];
   while (row === anchorRow || col === anchorCol) {
-    if (squares[index].letter === null || squares[index].letter === undefined) {
+    if (tiles[index].letter === null || tiles[index].letter === undefined) {
       placeholder.push(null);
     } else {
-      placeholder.push(squares[index].letter.letter);
+      placeholder.push(tiles[index].letter.letter);
     }
 
     index = index + step;
+    if (index >= tiles.length) {
+      break;
+    }
+    
     const rowCol = indexToRowCol(index, boardSize);
     row = rowCol.row;
     col = rowCol.col;
+
+    if (row < 0 || col < 0) {
+      break;
+    }
   }
 
   return placeholder;

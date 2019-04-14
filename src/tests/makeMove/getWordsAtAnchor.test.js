@@ -100,4 +100,51 @@ describe('getWordAtAnchor', () => {
       });
     });
   });
+
+  describe('when step is vertical', () => {
+    const step = 8;
+
+    describe('when there is no match', () => {
+      it('returns empty list', () => {
+        const dictionary = { };
+        
+        const anchorIndex = 5;
+        
+        const expected = [];
+    
+        const actual = getWordsAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
+        expect(actual).toEqual(expected);
+      });
+    });
+
+    describe('when there are multiple matches in the dictionary', () => {
+      it('returns expected words', () => {
+        const dictionary = {
+          'aden': ['dean', 'aden'],
+          'eert': ['tree', 'reet'],
+          'eenrt': ['enter'],
+          'an': ['an']
+        };
+        
+        const anchorIndex = 5;
+        
+        const expected = [
+          [
+            {index: 5, letter: 'e'},
+            {index: 13, letter: 'n'},
+            {index: 21, letter: 't'},
+            {index: 29, letter: 'e'},
+            {index: 37, letter: 'r'},
+          ],
+          [
+            {index: 5, letter: 'a'},
+            {index: 13, letter: 'n'},
+          ],
+        ];
+    
+        const actual = getWordsAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
+        expect(actual).toEqual(expected);
+      });
+    });
+  });
 });
