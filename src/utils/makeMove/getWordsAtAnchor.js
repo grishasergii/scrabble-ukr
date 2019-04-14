@@ -3,12 +3,6 @@ import Combinatorics from 'js-combinatorics';
 import getIndicesInPlaceholder from './getIndicesInPlaceholder';
 
 const getWordsAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step) => {
-  // if (anchors.length === 0) {
-  //   return null;
-  // }
-
-  // const anchorIndex = anchors[Math.floor(Math.random() * anchors.length)];
-
   const rackLetters =  rack.map(x => x.letter);
 
   const rowCol = indexToRowCol(anchorIndex, boardSize);
@@ -88,7 +82,7 @@ const getPlaceholder = (tiles, step, anchorIndex, anchorRow, anchorCol, boardSiz
     if (index >= tiles.length) {
       break;
     }
-    
+
     const rowCol = indexToRowCol(index, boardSize);
     row = rowCol.row;
     col = rowCol.col;
