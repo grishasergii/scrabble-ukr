@@ -1,8 +1,8 @@
-const getAnchors = (squares, stepVertical) => {
+const getAnchorIndices = (tiles, stepVertical) => {
   const anchorIndices = new Set();
-  const squaresLength = squares.length;
+  const squaresLength = tiles.length;
   const steps = [1, -1, stepVertical, -stepVertical];
-  for (const [index, square] of squares.entries()) {
+  for (const [index, square] of tiles.entries()) {
     let letter = square.letter;
 
     if (letter === null || letter === undefined) {
@@ -19,7 +19,7 @@ const getAnchors = (squares, stepVertical) => {
         continue;
       }
 
-      if (squares[i].letter === null || squares[i].letter === undefined) {
+      if (tiles[i].letter === null || tiles[i].letter === undefined) {
         anchorIndices.add(i);
       }
     }
@@ -32,4 +32,4 @@ const getAnchors = (squares, stepVertical) => {
   return anchorIndices;
 }
 
-export default getAnchors;
+export default getAnchorIndices;
