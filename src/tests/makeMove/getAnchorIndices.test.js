@@ -1,20 +1,20 @@
-import getAnchors from '../../utils/makeMove/getAnchors';
+import getAnchorIndices from '../../utils/makeMove/getAnchorIndices';
 
-describe('getAnchors', () => {
-  describe('when all squares are empty', () => {
+describe('getAnchorIndices', () => {
+  describe('when all tiles are empty', () => {
     it('should return the center square index', () => {
-      const squares = Array(15*15).fill({});
+      const tiles = Array(15*15).fill({});
       const stepVertical = 15;
 
-      const actual = getAnchors(squares, stepVertical);
+      const actual = getAnchorIndices(tiles, stepVertical);
 
       expect(actual).toEqual(113);
     });
   });
 
-  describe('when squares have letters', () => {
+  describe('when tiles have letters', () => {
     it('should return correct anchor indices', () => {
-      const squares = [
+      const tiles = [
         {letter: undefined}, {letter: null}, {letter: {}}, {letter: null}, {letter: null},
         {letter: null}, {letter: null}, {letter: {}}, {letter: null}, {letter: null},
         {letter: {}}, {letter: {}}, {letter: {}}, {letter: {}}, {letter: {}},
@@ -24,7 +24,7 @@ describe('getAnchors', () => {
       const stepVertical = 5;
       const expected = [1, 3, 5, 6, 8, 9, 15, 16, 18, 22, 23];
       
-      const actual = Array.from(getAnchors(squares, stepVertical)).sort((a, b) => a - b);
+      const actual = Array.from(getAnchorIndices(tiles, stepVertical)).sort((a, b) => a - b);
 
       expect(actual).toEqual(expected);
     });
@@ -32,7 +32,7 @@ describe('getAnchors', () => {
 
   describe('letters on the edges', () => {
     it('should return correct anchor indices', () => {
-      const squares = [
+      const tiles = [
         {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
@@ -43,7 +43,7 @@ describe('getAnchors', () => {
       const stepVertical = 5;
       const expected = [1, 5, 10, 16, 19, 20, 23];
 
-      const actual = Array.from(getAnchors(squares, stepVertical)).sort((a, b) => a - b);
+      const actual = Array.from(getAnchorIndices(tiles, stepVertical)).sort((a, b) => a - b);
 
       expect(actual).toEqual(expected);
     });

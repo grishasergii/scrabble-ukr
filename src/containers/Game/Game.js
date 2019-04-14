@@ -210,7 +210,7 @@ class Game extends Component {
       const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort((a, b) => a - b);
       const boardSize = prevState.boardSize;
       const squares = [...prevState.squares];
-
+      // ------------
       // are there any letters placed by the player?
       if (placedIndices.length === 0) {
         return {
@@ -292,6 +292,7 @@ class Game extends Component {
           invalidWords: invalidWords
         };
       }
+      //---------
 
       // mark placed letters as already played
       placedIndices.forEach(i => {
