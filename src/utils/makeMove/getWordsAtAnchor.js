@@ -1,5 +1,6 @@
 import indexToRowCol from '../board/indexToRowCol';
 import Combinatorics from 'js-combinatorics';
+import getIndicesInPlaceholder from './getIndicesInPlaceholder';
 
 const getWordsAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step) => {
   // if (anchors.length === 0) {
@@ -42,7 +43,7 @@ const getWordsAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step)
         continue;
       }
       for (const word of words) {
-        const indicesInPlaceholder = getIndicesInPlaceholder(placeHolder, word);
+        const indicesInPlaceholder = getIndicesInPlaceholder(placeHolder, placeholderAnchorIndex, word);
         if (indicesInPlaceholder === null) {
           continue;
         }
@@ -68,33 +69,6 @@ const getWordsAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step)
 
   return candidates;  
 };
-
-const getIndicesInPlaceholder = (placeholder, word) => {
-  for (let i = 0; i < placeholder.length - word.length; i++) {
-    const placeholderSlice = placeholder.slice(i, i+word.length);
-    let canFit = true;
-    for (let j = 0; j < word.length; j++) {
-      if (placeholderSlice[j] === null) {
-        continue;
-      }
-
-      if (word[j] !== placeholderSlice[j]) {
-        canFit = false;
-        break;
-      }
-    }
-
-    if (canFit === true) {
-      const indices = [];
-      for (let l = i; l < word.length; l++) {
-        indices.push(l);
-      }
-      return indices;
-    }
-  }
-
-  return null;
-}
 
 const getPlaceholder = (squares, step, anchorIndex, anchorRow, anchorCol, boardSize) => {
   let index = anchorIndex + step;

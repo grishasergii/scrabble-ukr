@@ -70,7 +70,7 @@ describe('getWordAtAnchor', () => {
           'aden': ['dean', 'aden'],
           'zean': ['zean'],
           'eert': ['tree', 'reet'],
-          'aednt': ['denta']
+          'adent': ['denta']
         };
   
         const expected = [
