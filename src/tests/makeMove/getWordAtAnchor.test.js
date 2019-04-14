@@ -1,7 +1,7 @@
 import getWordAtAnchor from '../../utils/makeMove/getWordAtAnchor';
 
 describe('getWordAtAnchor', () => {
-  const squares = [
+  const tiles = [
     {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 't'}},
     {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'm'}}, {letter: {letter: 'a'}}, {letter: {letter: 'n'}}, {letter: {letter: 'g'}}, {letter: {letter: 'o'}},
     {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'o'}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
@@ -45,7 +45,7 @@ describe('getWordAtAnchor', () => {
           ],
         ];
     
-        const actual = getWordAtAnchor(squares, rack, dictionary, anchorIndex, stepVertical, step);
+        const actual = getWordAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
         expect(actual).toEqual(expected);
       });
   
@@ -58,7 +58,7 @@ describe('getWordAtAnchor', () => {
           };
           const expected = [];
       
-          const actual = getWordAtAnchor(squares, rack, dictionary, anchorIndex, stepVertical, step);
+          const actual = getWordAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
           expect(actual).toEqual(expected);
         });
       });
@@ -95,7 +95,7 @@ describe('getWordAtAnchor', () => {
           ]
         ];
     
-        const actual = getWordAtAnchor(squares, rack, dictionary, anchorIndex, stepVertical, step);
+        const actual = getWordAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
         expect(actual).toEqual(expected);
       });
     });
