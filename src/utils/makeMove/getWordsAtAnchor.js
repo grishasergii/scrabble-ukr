@@ -1,7 +1,7 @@
 import indexToRowCol from '../board/indexToRowCol';
 import Combinatorics from 'js-combinatorics';
 
-const getWordAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step) => {
+const getWordsAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step) => {
   // if (anchors.length === 0) {
   //   return null;
   // }
@@ -119,4 +119,4 @@ const getPlaceholder = (squares, step, anchorIndex, anchorRow, anchorCol, boardS
   return placeholder;
 };
 
-export default getWordAtAnchor;
+export default getWordsAtAnchor;

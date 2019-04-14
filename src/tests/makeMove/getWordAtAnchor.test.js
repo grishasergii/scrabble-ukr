@@ -1,4 +1,4 @@
-import getWordAtAnchor from '../../utils/makeMove/getWordAtAnchor';
+import getWordsAtAnchor from '../../utils/makeMove/getWordsAtAnchor';
 
 describe('getWordAtAnchor', () => {
   const tiles = [
@@ -45,7 +45,7 @@ describe('getWordAtAnchor', () => {
           ],
         ];
     
-        const actual = getWordAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
+        const actual = getWordsAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
         expect(actual).toEqual(expected);
       });
   
@@ -58,7 +58,7 @@ describe('getWordAtAnchor', () => {
           };
           const expected = [];
       
-          const actual = getWordAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
+          const actual = getWordsAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
           expect(actual).toEqual(expected);
         });
       });
@@ -95,7 +95,7 @@ describe('getWordAtAnchor', () => {
           ]
         ];
     
-        const actual = getWordAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
+        const actual = getWordsAtAnchor(tiles, rack, dictionary, anchorIndex, stepVertical, step);
         expect(actual).toEqual(expected);
       });
     });
