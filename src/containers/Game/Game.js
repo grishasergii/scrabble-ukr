@@ -122,7 +122,12 @@ class Game extends Component {
       const updatedSquares = prevState.squares.map(x => { return {...x}; });
       updatedSquares[squareIndex].letter = prevState.selectedLetter.letter;
 
-      const updatedPlayerRack = [...prevState.playerRack];
+      const updatedPlayerRack = prevState.playerRack.map(x => {
+        if (x === null) {
+          return null;
+        }
+        return {...x};
+      });
 
       const updatedSquaresWithPlacedLettersIndices = new Set(prevState.squaresWithPlacedLettersIndices);
       updatedSquaresWithPlacedLettersIndices.add(squareIndex);
@@ -151,7 +156,12 @@ class Game extends Component {
   returnPlacedLettersToRackHandler = () => {
     this.setState((prevState) => {
       const updatedSquares = prevState.squares.map(x => { return {...x}; });;
-      const updatedPlayerRack = [...prevState.playerRack];
+      const updatedPlayerRack = prevState.playerRack.map(x => {
+        if (x === null) {
+          return null;
+        }
+        return {...x};
+      });
 
       let playerRackLetterIndex = 0;
       const playerRackLength = updatedPlayerRack.length;
@@ -178,7 +188,12 @@ class Game extends Component {
   swapLettersHandler = (indices) => {
     this.setState((prevState) => {
 
-      const updatedPlayerRack = [...prevState.playerRack];
+      const updatedPlayerRack = prevState.playerRack.map(x => {
+        if (x === null) {
+          return null;
+        }
+        return {...x};
+      });
 
       const numNewLetters = Math.min(indices.size, prevState.bagOfLetters.length);
       const shuffledBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}) .sort(() => 0.5 - Math.random());
@@ -226,7 +241,12 @@ class Game extends Component {
 
       // refill players rack
       const updatedBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}) .sort(() => 0.5 - Math.random());
-      const updatedPlayerRack = [...prevState.playerRack].map(l => {
+      const updatedPlayerRack = prevState.playerRack.map(x => {
+        if (x === null) {
+          return null;
+        }
+        return {...x};
+      }).map(l => {
         if (l === null || l === undefined) {
           return updatedBagOfLetters.pop();
         }
@@ -241,7 +261,7 @@ class Game extends Component {
         squares: squares,
         bagOfLetters: updatedBagOfLetters,
         playerRack: updatedPlayerRack,
-        squaresWithPlacedLettersIndices: []
+        squaresWithPlacedLettersIndices: new Set([])
       }
     });
   }
