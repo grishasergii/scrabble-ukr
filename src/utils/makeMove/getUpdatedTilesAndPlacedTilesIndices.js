@@ -16,7 +16,7 @@ const getUpdatedTilesAndPlacedTilesIndices = (tiles, boardSize, rack, dictionary
 
   const wordsAtAnchor = getWordsAtAnchor(tiles, rack, dictionary, anchorIndex, boardSize, step);
   for (let word of wordsAtAnchor) {
-    const updatedTiles = JSON.parse(JSON.stringify(tiles));
+    const updatedTiles = tiles.map(x => { return {...x}; });
     const placedTilesIndices = [];
     for (let letter of word) {
       if (updatedTiles[letter.index].letter !== null && updatedTiles[letter.index] !== undefined) {

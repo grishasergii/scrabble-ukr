@@ -4,12 +4,13 @@ import Rack from '../../components/Board/Rack/Rack';
 import GameControls from '../../components/GameControls/GameControls';
 import SwapLetters from '../SwapLetters/SwapLetters';
 import Modal from '../../components/UI/Modal/Modal';
-import getPerpendicularWordIndices from '../../utils/validateMove/getPerpendicularWordIndices';
-import isWordValid from '../../utils/validateMove/isWordValid';
-import isWordConnected from '../../utils/validateMove/isWordConnected';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
+import isValidWordPlacement from '../../utils/validateMove/isValidWordPlacement';
 
 class Game extends Component {
+  dictionary = {
+    'ab': []
+  };
   
   state = {
     boardSize: 15,
@@ -118,7 +119,7 @@ class Game extends Component {
         return;
       }
 
-      const updatedSquares = [...prevState.squares];
+      const updatedSquares = prevState.squares.map(x => { return {...x}; });
       updatedSquares[squareIndex].letter = prevState.selectedLetter.letter;
 
       const updatedPlayerRack = [...prevState.playerRack];
@@ -149,7 +150,7 @@ class Game extends Component {
 
   returnPlacedLettersToRackHandler = () => {
     this.setState((prevState) => {
-      const updatedSquares = [...prevState.squares];
+      const updatedSquares = prevState.squares.map(x => { return {...x}; });;
       const updatedPlayerRack = [...prevState.playerRack];
 
       let playerRackLetterIndex = 0;
@@ -204,95 +205,19 @@ class Game extends Component {
   }
 
   playTurnHandler = () => {
-    // TODO this is catastrophicaly complicated, should be refactored
 
     this.setState((prevState) => {
       const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort((a, b) => a - b);
       const boardSize = prevState.boardSize;
-      const squares = [...prevState.squares];
-      // ------------
-      // are there any letters placed by the player?
-      if (placedIndices.length === 0) {
-        return {
-          moveIsInvalidMessage: 'Place some letters!'
-        };
-      }
+      const squares = prevState.squares.map(x => { return {...x}; });
 
-      // are all letters in the same row or column?
-      const rows = new Set([]);
-      const cols = new Set([]);
-      placedIndices.forEach(i => {
-        const col = i % boardSize;
-        const row = Math.floor(i / boardSize);
-        rows.add(row);
-        cols.add(col);
-      });
+      const {isValid, errorMessage} = isValidWordPlacement(squares, boardSize, placedIndices, this.dictionary);
 
-      if (rows.size > 1 && cols.size > 1) {
-        return {
-          moveIsInvalidMessage: 'All letters must be placed in the same row or column'
-        };
-      }
-
-      // do all placed letters form a continious sequence?
-      let step = 0;
-      let stepAllWords = 0;
-      if (rows.size === 1) {
-        step = 1;
-        stepAllWords = boardSize;
-      }
-      if (cols.size === 1) {
-        step = boardSize;
-        stepAllWords = 1;
-      }
-
-
-      const placedWordIndices = [];
-      for (let i = placedIndices[0]; i < placedIndices[placedIndices.length-1] + step; i += step) {
-        placedWordIndices.push(i);
-      }
-
-      for (let i = 0; i < placedWordIndices.length; i++) {
-        if (squares[placedWordIndices[i]].letter === null || squares[placedWordIndices[i]].letter === undefined) {
-          return {
-            moveIsInvalidMessage: 'there are gaps in the letter sequence'
-          };         
-        }
-      }
-
-      // is word connected
-      const isConnected = isWordConnected(placedIndices, step, stepAllWords, squares);
-      if (isConnected === false) {
-        return {
-          moveIsInvalidMessage: 'Sorry, word not connected'
-        };
-      }
-
-      // get all formed words
-      const wordIndices = [placedWordIndices];
-      placedIndices.forEach(i => {
-        const word = getPerpendicularWordIndices(i, stepAllWords, squares);
-        if (word.length > 0) {
-          wordIndices.push(word);
-        }
-      });
-
-      // validate all words
-      const invalidWords = [];
-      wordIndices.forEach(wi => {
-        const word = wi.map(i => squares[i].letter.letter).join('').toLowerCase();
-        const isValid = isWordValid(word);
         if (isValid === false) {
-          invalidWords.push(word);
-        }
-      });
-
-      if (invalidWords.length > 0) {
         return {
-          invalidWords: invalidWords
+          moveIsInvalidMessage: errorMessage
         };
       }
-      //---------
 
       // mark placed letters as already played
       placedIndices.forEach(i => {
