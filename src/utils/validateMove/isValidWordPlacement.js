@@ -1,6 +1,6 @@
 import indexToRowCol from '../board/indexToRowCol';
 import isWordConnected from './isWordConnected';
-import getPerpendicularWordIndices from './getPerpendicularWordIndices';
+import getWordIndicesFromAnchor from './getWordIndicesFromAnchor';
 
 const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) => {
   // are there any letters placed by the player?
@@ -60,9 +60,9 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
   }
 
   // get all formed words
-  const wordIndices = [placedWordIndices];
+  const wordIndices = [getWordIndicesFromAnchor(tiles, placedTilesIndices[0], step, boardSize)];
   placedTilesIndices.forEach(i => {
-    const word = getPerpendicularWordIndices(i, stepAllWords, tiles);
+    const word = getWordIndicesFromAnchor(tiles, i, stepAllWords, boardSize);
     if (word.length > 0) {
       wordIndices.push(word);
     }
@@ -70,9 +70,9 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
 
   // validate all words
   const invalidWords = [];
-  wordIndices.forEach(wi => {
+  wordIndices.filter(wi => wi.length > 0).forEach(wi => {
     const word = wi.map(i => tiles[i].letter.letter).join('').toLowerCase();
-    const isValid = word in dictionary;
+    const isValid = word.split('').sort().join('') in dictionary;
     if (isValid === false) {
       invalidWords.push(word);
     }

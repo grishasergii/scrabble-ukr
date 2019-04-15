@@ -1,13 +1,13 @@
-import getUpdatedTilesAndPlacedTilesIndices from '../../utils/makeMove/getUpdatedTilesAndPlacedTilesIndices';
-import getAnchorIndices from '../../utils/makeMove/getAnchorIndices';
-import getWordsAtAnchor from '../../utils/makeMove/getWordsAtAnchor';
-import getWordBuildStepFromAnchor from '../../utils/makeMove/getWordBuildStepFromAnchor';
-import isValidWordPlacement from '../../utils/validateMove/isValidWordPlacement';
+import getUpdatedTilesAndPlacedTilesIndices from '../../../utils/makeMove/getUpdatedTilesAndPlacedTilesIndices';
+import getAnchorIndices from '../../../utils/makeMove/getAnchorIndices';
+import getWordsAtAnchor from '../../../utils/makeMove/getWordsAtAnchor';
+import getWordBuildStepFromAnchor from '../../../utils/makeMove/getWordBuildStepFromAnchor';
+import isValidWordPlacement from '../../../utils/validateMove/isValidWordPlacement';
 
-jest.mock('../../utils/makeMove/getAnchorIndices');
-jest.mock('../../utils/makeMove/getWordsAtAnchor');
-jest.mock('../../utils/makeMove/getWordBuildStepFromAnchor');
-jest.mock('../../utils/validateMove/isValidWordPlacement');
+jest.mock('../../../utils/makeMove/getAnchorIndices');
+jest.mock('../../../utils/makeMove/getWordsAtAnchor');
+jest.mock('../../../utils/makeMove/getWordBuildStepFromAnchor');
+jest.mock('../../../utils/validateMove/isValidWordPlacement');
 
 // https://stackoverflow.com/questions/41570273/how-to-test-a-function-that-output-is-random-using-jest
 const mockMath = Object.create(global.Math);

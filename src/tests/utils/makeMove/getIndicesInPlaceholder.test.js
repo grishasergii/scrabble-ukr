@@ -1,4 +1,4 @@
-import getIndicesInPlaceholder from '../../utils/makeMove/getIndicesInPlaceholder';
+import getIndicesInPlaceholder from '../../../utils/makeMove/getIndicesInPlaceholder';
 
 describe('getIndicesInPlaceholder', () => {
   describe('when the word does not fit in the placeholder', () => {

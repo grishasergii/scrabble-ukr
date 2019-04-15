@@ -1,48 +1,76 @@
-import isValidWordPlacement from '../../utils/validateMove/isValidWordPlacement';
+import isValidWordPlacement from '../../../utils/validateMove/isValidWordPlacement';
 
 describe('isValidWordPlacement', () => {
   describe('when is valid', () => {
     describe('when direction is horizontal', () => {
-      const tiles = [
-        {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
-        {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
-        {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: {letter: 'b'}}, {letter: {letter: 'a'}}, {letter: null},
-        {letter: null}, {letter: {letter: 'z'}}, {letter: null}, {letter: null}, {letter: null},
-        {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, 
-      ];
-      const dictionary = {
-        'aaba': [],
-        'az': []
-      };
-      const boardSize = 5;
-      const placedTilesIndices = [10, 11, 13];
-
-      const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
-
-      expect(isValid).toEqual(true);
-      expect(errorMessage).toBeNull();
+      describe('when placed letters cross the existing one', () => {
+        it('returns true and null error message', () => {
+          const tiles = [
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+            {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: {letter: 'b'}}, {letter: {letter: 'a'}}, {letter: null},
+            {letter: null}, {letter: {letter: 'z'}}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, 
+          ];
+          const dictionary = {
+            'aaab': [],
+            'az': []
+          };
+          const boardSize = 5;
+          const placedTilesIndices = [10, 11, 13];
+    
+          const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
+    
+          expect(isValid).toEqual(true);
+          expect(errorMessage).toBeNull();
+        });
+      });
+      describe('when placed letters do not cross the existing one', () => {
+        it('returns true and null error message', () => {
+          const tiles = [
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+            {letter: {letter: 'z'}}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: {letter: 'b'}}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          ];
+          const dictionary = {
+            'az': []
+          };
+          const boardSize = 5;
+          const placedTilesIndices = [5];
+    
+          const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
+    
+          expect(isValid).toEqual(true);
+          expect(errorMessage).toBeNull();
+        });
+      });
     });
 
     describe('when direction is vertical', () => {
-      const tiles = [
-        {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
-        {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'a'}},
-        {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 's'}}, {letter: {letter: 'a'}},
-        {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'd'}},
-        {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'a'}}, 
-      ];
-      const dictionary = {
-        'aada': [],
-        'sa': []
-      };
-      const boardSize = 5;
-      const placedTilesIndices = [9, 14, 24];
-
-      const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
-
-      expect(isValid).toEqual(true);
-      expect(errorMessage).toBeNull();
-
+      describe('when placed letters cross the existing one', () => {
+        it('returns true and null error message', () => {
+          const tiles = [
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'a'}},
+            {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 's'}}, {letter: {letter: 'a'}},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'd'}},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'a'}}, 
+          ];
+          const dictionary = {
+            'aaad': [],
+            'as': []
+          };
+          const boardSize = 5;
+          const placedTilesIndices = [9, 14, 24];
+    
+          const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
+    
+          expect(isValid).toEqual(true);
+          expect(errorMessage).toBeNull();
+        });
+      });
     });
   });
 

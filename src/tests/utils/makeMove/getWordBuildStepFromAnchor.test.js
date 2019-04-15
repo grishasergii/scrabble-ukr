@@ -1,4 +1,4 @@
-import getWordBuildStepFromAnchor from '../../utils/makeMove/getWordBuildStepFromAnchor';
+import getWordBuildStepFromAnchor from '../../../utils/makeMove/getWordBuildStepFromAnchor';
 
 describe('getWordBuildStepFromAnchor', () => {
   describe('when letter is to the left', () => {

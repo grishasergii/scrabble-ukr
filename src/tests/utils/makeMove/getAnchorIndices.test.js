@@ -1,4 +1,4 @@
-import getAnchorIndices from '../../utils/makeMove/getAnchorIndices';
+import getAnchorIndices from '../../../utils/makeMove/getAnchorIndices';
 
 describe('getAnchorIndices', () => {
   describe('when all tiles are empty', () => {

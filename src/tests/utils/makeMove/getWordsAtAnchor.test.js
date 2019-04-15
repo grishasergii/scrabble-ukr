@@ -1,4 +1,4 @@
-import getWordsAtAnchor from '../../utils/makeMove/getWordsAtAnchor';
+import getWordsAtAnchor from '../../../utils/makeMove/getWordsAtAnchor';
 
 describe('getWordAtAnchor', () => {
   const tiles = [

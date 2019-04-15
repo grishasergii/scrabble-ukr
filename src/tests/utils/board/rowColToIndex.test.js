@@ -1,4 +1,4 @@
-import rowColToIndex from '../../utils/board/rowColToIndex';
+import rowColToIndex from '../../../utils/board/rowColToIndex';
 
 describe('rowColToIndex', () => {
   it('returns correct index', () => {

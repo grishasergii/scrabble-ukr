@@ -1,4 +1,4 @@
-import indexToRowCol from '../../utils/board/indexToRowCol';
+import indexToRowCol from '../../../utils/board/indexToRowCol';
 
 describe('indexToRowCol', () => {
   describe('when square board', () => {
