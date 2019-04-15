@@ -78,10 +78,17 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     }
   });
 
-  if (invalidWords.length > 0) {
+  if (invalidWords.length === 1) {
     return {
       isValid: false,
-      errorMessage: invalidWords
+      errorMessage: `I do not know such word as "${invalidWords[0]}"`
+    };
+  }
+
+  if (invalidWords.length > 1) {
+    return {
+      isValid: false,
+      errorMessage: `I do not know the following words "${invalidWords.join(', ')}"`
     };
   }
 
