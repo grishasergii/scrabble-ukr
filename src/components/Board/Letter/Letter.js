@@ -23,8 +23,12 @@ const letter = (props) => {
     classes.push(styles.Selected);
   }
 
+  const spanStyle = {
+    borderColor: props.color
+  };
+
   return (
-    <span onClick={onClick} className={classes.join(' ')}>
+    <span onClick={onClick} className={classes.join(' ')} style={spanStyle}>
       {props.letter}<sup>{props.value}</sup>
     </span>
   );

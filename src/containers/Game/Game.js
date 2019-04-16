@@ -12,6 +12,8 @@ class Game extends Component {
     'ab': []
   };
   
+  playerColor = 'green';
+
   state = {
     boardSize: 15,
     bagOfLetters: [
@@ -39,23 +41,23 @@ class Game extends Component {
     selectedLetter: null,
     squaresWithPlacedLettersIndices: new Set([]),
     playerRack: [
-      { letter: 'A', value: '1' },
-      { letter: 'B', value: '1' },
-      { letter: 'C', value: '4' },
-      { letter: 'D', value: '1' },
-      { letter: 'E', value: '1' },
-      { letter: 'F', value: '1' },
-      { letter: 'G', value: '4' },
+      { letter: 'A', value: '1', color: this.playerColor },
+      { letter: 'B', value: '1', color: this.playerColor },
+      { letter: 'C', value: '4', color: this.playerColor },
+      { letter: 'D', value: '1', color: this.playerColor },
+      { letter: 'E', value: '1', color: this.playerColor },
+      { letter: 'F', value: '1', color: this.playerColor },
+      { letter: 'G', value: '4', color: this.playerColor },
     ],
     computerRack: [
-      { letter: 'C', value: '1' },
-      { letter: 'O', value: '1' },
-      { letter: 'M', value: '4' },
-      { letter: 'P', value: '1' },
-      { letter: 'U', value: '1' },
-      { letter: 'T', value: '1' },
-      { letter: 'E', value: '4' },
-      { letter: 'R', value: '4' },
+      { letter: 'C', value: '1', color: 'red' },
+      { letter: 'O', value: '1', color: 'red' },
+      { letter: 'M', value: '4', color: 'red' },
+      { letter: 'P', value: '1', color: 'red' },
+      { letter: 'U', value: '1', color: 'red' },
+      { letter: 'T', value: '1', color: 'red' },
+      { letter: 'E', value: '4', color: 'red' },
+      { letter: 'R', value: '4', color: 'red' },
     ],
     moveIsInvalidMessage: null,
     invalidWords: null
@@ -201,8 +203,11 @@ class Game extends Component {
       const updatedBagOfLetters = shuffledBagOfLetters.slice(numNewLetters, shuffledBagOfLetters.length);
 
       for (let i of Array.from(indices).slice(0, numNewLetters)) {
-        updatedBagOfLetters.push(updatedPlayerRack[i]);
-        updatedPlayerRack[i] = selectedLetters.pop();
+        updatedBagOfLetters.push({
+          ...updatedPlayerRack[i],
+          color: null
+        });
+        updatedPlayerRack[i] = {...selectedLetters.pop(), color: this.playerColor};
       }
 
       return {
@@ -248,7 +253,7 @@ class Game extends Component {
         return {...x};
       }).map(l => {
         if (l === null || l === undefined) {
-          return updatedBagOfLetters.pop();
+          return {...updatedBagOfLetters.pop(), color: this.playerColor};
         }
         return l;
       });

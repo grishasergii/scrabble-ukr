@@ -14,7 +14,8 @@ const rack = (props) => {
           letter={l.letter} 
           value={l.value}
           selected={l.selected}
-          clicked={() => props.letterClick(l, index, props.selectedFrom)} />
+          clicked={() => props.letterClick(l, index, props.selectedFrom)}
+          color={l.color} />
       );
     }
     return (<Square key={index}> {letter} </Square>);
