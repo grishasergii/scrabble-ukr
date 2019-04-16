@@ -5,7 +5,7 @@ describe('getWordAtAnchor', () => {
     {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 't'}},
     {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'm'}}, {letter: {letter: 'a'}}, {letter: {letter: 'n'}}, {letter: {letter: 'g'}}, {letter: {letter: 'o'}},
     {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'o'}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
-    {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'n'}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+    {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'n', alreadyPlayed: true}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
     {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'e'}}, {letter: {letter: 'a'}}, {letter: {letter: 'r'}}, {letter: {letter: 's'}}, {letter: null},
     {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'y'}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
     {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
@@ -15,7 +15,7 @@ describe('getWordAtAnchor', () => {
   const anchorIndex = 26;
 
   const rack = [
-    {letter: 'd'},
+    {letter: 'd', score: 1, color: 'blue'},
     {letter: 'e'},
     {letter: 'a'},
     {letter: 't'},

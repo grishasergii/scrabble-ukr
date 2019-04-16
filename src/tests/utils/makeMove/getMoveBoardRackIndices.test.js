@@ -1,4 +1,4 @@
-import getUpdatedTilesAndPlacedTilesIndices from '../../../utils/makeMove/getUpdatedTilesAndPlacedTilesIndices';
+import getMoveBoardRackIndices from '../../../utils/makeMove/getMoveBoardRackIndices';
 import getAnchorIndices from '../../../utils/makeMove/getAnchorIndices';
 import getWordsAtAnchor from '../../../utils/makeMove/getWordsAtAnchor';
 import getWordBuildStepFromAnchor from '../../../utils/makeMove/getWordBuildStepFromAnchor';
@@ -14,7 +14,7 @@ const mockMath = Object.create(global.Math);
 mockMath.random = () => 0;
 global.Math = mockMath;
 
-describe('getUpdatedTilesAndPlacedTilesIndices', () => {
+describe('getMoveBoardRackIndices', () => {
   afterEach(() => {
     getAnchorIndices.mockClear();
     getWordsAtAnchor.mockClear();
@@ -59,10 +59,9 @@ describe('getUpdatedTilesAndPlacedTilesIndices', () => {
         return {isValid: false};
       });
 
-      const {updatedTiles, placedTilesIndices} = getUpdatedTilesAndPlacedTilesIndices(tiles, boardSize, rack, dictionary);   
+      const boardRackIndices = getMoveBoardRackIndices(tiles, boardSize, rack, dictionary);   
 
-      expect(placedTilesIndices).toBeNull();
-      expect(updatedTiles).toBeNull();
+      expect(boardRackIndices).toBeNull();
     });
   });
 
@@ -77,7 +76,16 @@ describe('getUpdatedTilesAndPlacedTilesIndices', () => {
       ];
       const boardSize = 5;
       const dictionary = {'a': ['a']};
-      const rack = [{letter: 'a'}, {letter: 'b'}, {letter: 'c'}, {letter: 'd'}];
+      const rack = [
+        {letter: 'a'}, 
+        {letter: 'a'}, 
+        {letter: 'b'}, 
+        {letter: 'c'}, 
+        {letter: 'd'},
+        {letter: 'b'},
+        {letter: 'b'},
+        {letter: 'b'}
+      ];
 
       const anchorIndices = [5, 6, 7, 8, 9];
       getAnchorIndices.mockImplementation(() => anchorIndices);
@@ -119,7 +127,22 @@ describe('getUpdatedTilesAndPlacedTilesIndices', () => {
         {letter: null}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, {letter: null}, 
       ];
 
-      const {updatedTiles, placedTilesIndices} = getUpdatedTilesAndPlacedTilesIndices(tiles, boardSize, rack, dictionary);   
+      const expectedBoardRackIndices = [
+        {
+          boardIndex: 7,
+          rackIndex: 2
+        },
+        {
+          boardIndex: 17,
+          rackIndex: 5
+        },
+        {
+          boardIndex: 22,
+          rackIndex: 6
+        }
+      ];
+
+      const boardRackIndices = getMoveBoardRackIndices(tiles, boardSize, rack, dictionary);   
       
       expect(getAnchorIndices.mock.calls.length).toBe(1);
       expect(getAnchorIndices.mock.calls[0][0]).toEqual(tiles);
@@ -160,8 +183,7 @@ describe('getUpdatedTilesAndPlacedTilesIndices', () => {
       expect(isValidWordPlacement.mock.calls[1][2]).toEqual([7, 17, 22]);
       expect(isValidWordPlacement.mock.calls[1][3]).toEqual(dictionary);
 
-      expect(placedTilesIndices).toEqual([7, 17, 22]);
-      expect(updatedTiles).toEqual(expectedUpdatedTiles);
+      expect(boardRackIndices).toEqual(expectedBoardRackIndices);
     });
   });
 });

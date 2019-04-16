@@ -260,14 +260,20 @@ class Game extends Component {
 
       // calculate score
 
-      // transfer turn
-
       return {
         squares: squares,
         bagOfLetters: updatedBagOfLetters,
         playerRack: updatedPlayerRack,
         squaresWithPlacedLettersIndices: new Set([])
       }
+    }, () => {
+      this.playComputerMove();
+    });
+  }
+
+  playComputerMove = () => {
+    this.setState(prevState => {
+
     });
   }
 

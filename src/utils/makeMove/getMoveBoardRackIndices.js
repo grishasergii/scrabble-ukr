@@ -3,7 +3,7 @@ import getWordsAtAnchor from './getWordsAtAnchor';
 import getWordBuildStepFromAnchor from './getWordBuildStepFromAnchor';
 import isValidWordPlacement from '../validateMove/isValidWordPlacement';
 
-const getUpdatedTilesAndPlacedTilesIndices = (tiles, boardSize, rack, dictionary) => {
+const getMoveBoardRackIndices = (tiles, boardSize, rack, dictionary) => {
   const anchorIndices = getAnchorIndices(tiles, boardSize);
 
   if (anchorIndices.length === 0) {
@@ -18,27 +18,31 @@ const getUpdatedTilesAndPlacedTilesIndices = (tiles, boardSize, rack, dictionary
   for (let word of wordsAtAnchor) {
     const updatedTiles = tiles.map(x => { return {...x}; });
     const placedTilesIndices = [];
+    const boardRackIndices = [];
+    const tempRack = rack.map(x => { return {...x} });
     for (let letter of word) {
       if (updatedTiles[letter.index].letter !== null && updatedTiles[letter.index] !== undefined) {
         continue;
       }
 
-      updatedTiles[letter.index].letter = {letter: letter.letter};
+      const rackIndex = tempRack.findIndex(x => x.letter !== null &&  x.letter.toLowerCase() === letter.letter);
+      tempRack[rackIndex].letter = null;
+
+      boardRackIndices.push({
+        boardIndex: letter.index,
+        rackIndex: rackIndex
+      });
+
+      updatedTiles[letter.index].letter = { letter: letter.letter };
       placedTilesIndices.push(letter.index);
     }
     const {isValid, _} = isValidWordPlacement(updatedTiles, boardSize, placedTilesIndices, dictionary);
     if (isValid === true) {
-      return {
-        updatedTiles: updatedTiles,
-        placedTilesIndices: placedTilesIndices
-      }
+      return boardRackIndices;
     }
   }
 
-  return {
-    updatedTiles: null,
-    placedTilesIndices: null
-  }
+  return null;
 };
 
-export default getUpdatedTilesAndPlacedTilesIndices;
+export default getMoveBoardRackIndices;
