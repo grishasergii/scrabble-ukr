@@ -196,7 +196,7 @@ class Game extends Component {
       });
 
       const numNewLetters = Math.min(indices.size, prevState.bagOfLetters.length);
-      const shuffledBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}) .sort(() => 0.5 - Math.random());
+      const shuffledBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}).sort(() => 0.5 - Math.random());
       const selectedLetters = shuffledBagOfLetters.slice(0, numNewLetters);
       const updatedBagOfLetters = shuffledBagOfLetters.slice(numNewLetters, shuffledBagOfLetters.length);
 
@@ -240,7 +240,7 @@ class Game extends Component {
       });
 
       // refill players rack
-      const updatedBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}) .sort(() => 0.5 - Math.random());
+      const updatedBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}).sort(() => 0.5 - Math.random());
       const updatedPlayerRack = prevState.playerRack.map(x => {
         if (x === null) {
           return null;

@@ -39,7 +39,6 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     stepAllWords = 1;
   }
 
-  const placedWordIndices = [];
   for (let i = placedTilesIndices[0]; i < placedTilesIndices[placedTilesIndices.length-1] + step; i += step) {
     if (tiles[i].letter === null || tiles[i].letter === undefined) {
       return {
@@ -47,7 +46,6 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
         errorMessage: 'there are gaps in the letter sequence'
       };         
     }
-    placedWordIndices.push(i);
   }
 
   // is word connected
