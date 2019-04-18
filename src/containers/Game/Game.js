@@ -6,10 +6,15 @@ import SwapLetters from '../SwapLetters/SwapLetters';
 import Modal from '../../components/UI/Modal/Modal';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 import isValidWordPlacement from '../../utils/validateMove/isValidWordPlacement';
+import getMoveBoardRackIndices from '../../utils/makeMove/getMoveBoardRackIndices';
 
 class Game extends Component {
   dictionary = {
-    'ab': []
+    'ab': ['ab', 'ba'],
+    'br': ['br', 'rb'],
+    'aert': ['tear'],
+    'abc': ['cab', 'abc'],
+    'act': ['cat']
   };
   
   playerColor = 'green';
@@ -51,10 +56,6 @@ class Game extends Component {
     ],
     computerRack: [
       { letter: 'C', value: '1', color: 'red' },
-      { letter: 'O', value: '1', color: 'red' },
-      { letter: 'M', value: '4', color: 'red' },
-      { letter: 'P', value: '1', color: 'red' },
-      { letter: 'U', value: '1', color: 'red' },
       { letter: 'T', value: '1', color: 'red' },
       { letter: 'E', value: '4', color: 'red' },
       { letter: 'R', value: '4', color: 'red' },
@@ -273,7 +274,33 @@ class Game extends Component {
 
   playComputerMove = () => {
     this.setState(prevState => {
+      const moveBoardRackIndices = getMoveBoardRackIndices(
+        prevState.squares, 
+        prevState.boardSize, 
+        prevState.computerRack, 
+        this.dictionary);
+      
+      if (moveBoardRackIndices === null) {
+        alert('Computer pass!');
+        return;
+      }
 
+      const updatedTiles = prevState.squares.map(x => {return {...x}});
+      const updatedComputerRack = prevState.computerRack.map(x => {return {...x}});
+
+      for (let boardRackIndex of moveBoardRackIndices) {
+        updatedTiles[boardRackIndex.boardIndex].letter = {...updatedComputerRack[boardRackIndex.rackIndex], alreadyPlayed: true};
+        updatedComputerRack[boardRackIndex.rackIndex] = null;
+      }
+
+      // refill computer rack
+
+      // calculate score
+
+      return {
+        squares: updatedTiles,
+        computerRack: updatedComputerRack
+      }
     });
   }
 

@@ -2,6 +2,7 @@ import indexToRowCol from '../board/indexToRowCol';
 import Combinatorics from 'js-combinatorics';
 import getIndicesInPlaceholder from './getIndicesInPlaceholder';
 
+
 const getWordsAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step) => {
   const rackLetters =  rack.map(x => x.letter);
 
@@ -16,7 +17,7 @@ const getWordsAtAnchor = (tiles, rack, dictionary, anchorIndex, boardSize, step)
   const placeHolder = placeholderBack.reverse().concat(placeholderForward);
   const placeHolderLetters = placeHolder.filter(x => x !== null);
 
-  const letters = rackLetters.concat(placeHolderLetters);
+  const letters = rackLetters.concat(placeHolderLetters).map(x => x.toLowerCase());
 
   const maxWordLength = Math.min(placeHolder.length, letters.length);
 
