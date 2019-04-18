@@ -1,5 +1,4 @@
 import getAnchorIndices from './getAnchorIndices';
-import getWordsAtAnchor from './getWordsAtAnchor';
 import getWordBuildStepFromAnchor from './getWordBuildStepFromAnchor';
 import isValidWordPlacement from '../validateMove/isValidWordPlacement';
 import candidatesGenerator from './candidatesGenerator';
