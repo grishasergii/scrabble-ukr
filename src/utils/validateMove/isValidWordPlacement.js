@@ -70,7 +70,17 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
   const invalidWords = [];
   wordIndices.filter(wi => wi.length > 0).forEach(wi => {
     const word = wi.map(i => tiles[i].letter.letter).join('').toLowerCase();
-    const isValid = word.split('').sort().join('') in dictionary;
+    const sortedLetters = word.split('').sort().join('');
+    const possibleWords = dictionary[sortedLetters];
+    let isValid = false;
+    if (possibleWords !== null && possibleWords !== undefined) {
+      for (const w of possibleWords) {
+        if (w === word) {
+          isValid = true;
+          break;
+        }
+      }
+    }
     if (isValid === false) {
       invalidWords.push(word);
     }

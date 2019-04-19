@@ -13,8 +13,8 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, 
           ];
           const dictionary = {
-            'aaab': [],
-            'az': []
+            'aaab': ['aaba'],
+            'az': ['az']
           };
           const boardSize = 5;
           const placedTilesIndices = [10, 11, 13];
@@ -35,7 +35,7 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           ];
           const dictionary = {
-            'az': []
+            'az': ['za']
           };
           const boardSize = 5;
           const placedTilesIndices = [5];
@@ -59,8 +59,8 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'a'}}, 
           ];
           const dictionary = {
-            'aaad': [],
-            'as': []
+            'aaad': ['aada'],
+            'as': ['sa']
           };
           const boardSize = 5;
           const placedTilesIndices = [9, 14, 24];

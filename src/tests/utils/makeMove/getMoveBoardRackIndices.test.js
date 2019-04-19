@@ -16,51 +16,99 @@ describe('getMoveBoardRackIndices', () => {
     getWordBuildStepFromAnchor.mockClear();
   });
 
-  // describe('when no valid word placement', () => {
-  //   it('returns null', () => {
-  //     const tiles = [
-  //       {}, {}, {}, {}, {},
-  //       {}, {}, {}, {}, {},
-  //       {}, {}, {}, {}, {},
-  //       {}, {}, {}, {}, {},
-  //       {}, {}, {}, {}, {},
-  //     ];
-  //     const boardSize = 5;
-  //     const dictionary = {};
-  //     const rack = [];
+  describe('when everything is empty', () => {
+    it('returns null', () => {
+      const tiles = [
+        {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {},
+      ];
+      const boardSize = 5;
+      const dictionary = {};
+      const rack = [];
 
-  //     getAnchorIndices.mockImplementation(() => [0]);
+      getAnchorIndices.mockImplementation(() => [0]);
 
-  //     getWordBuildStepFromAnchor.mockImplementation(() => 0);
+      getWordBuildStepFromAnchor.mockImplementation(() => 1);
 
-  //     const wordsAtAnchor = [
-  //       [
-  //         {index: 0, letter: 'b'},
-  //         {index: 5, letter: 'b'},
-  //         {index: 10, letter: 'a'},
-  //         {index: 15, letter: 'a'},
-  //       ],        
-  //       [
-  //         {index: 7, letter: 'b'},
-  //         {index: 12, letter: 'a'},
-  //         {index: 17, letter: 'b'},
-  //         {index: 22, letter: 'b'},
-  //       ],
-  //     ];
-  //     getWordsAtAnchor.mockImplementation(() => wordsAtAnchor);
+      const boardRackIndices = getMoveBoardRackIndices(tiles, boardSize, rack, dictionary);   
 
-  //     isValidWordPlacement.mockImplementation(() => {
-  //       return {isValid: false};
-  //     });
+      expect(boardRackIndices).toBeNull();
+    });
+  });
 
-  //     const boardRackIndices = getMoveBoardRackIndices(tiles, boardSize, rack, dictionary);   
+  describe('when letters from rack can form a word', () => {
+    describe('when word can not fit the board', () => {
+      it('returns null', () => {
+        const tiles = [
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: {letter: 'n'}}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: {letter: 'd'}}, {letter: null}, {letter: null}, {letter: null}, 
+        ];
+        const dictionary = {'aert': ['tear']};
+        const boardSize = 5;
+        const rack = [{letter: 't'}, {letter: 'e'}, {letter: 'r'}, {letter: 's'}];
+        getAnchorIndices.mockImplementation(() => [12, 15, 20]);
+        getWordBuildStepFromAnchor.mockImplementation(() => 1);      
+        
+        const actual = getMoveBoardRackIndices(tiles, boardSize, rack, dictionary); 
 
-  //     expect(boardRackIndices).toBeNull();
-  //   });
-  // });
+        expect(actual).toBeNull();
+      });
+    });
+  });
 
   describe('when finds valid word placement', () => {
-    fit('returns updated tiles and placed tiles indices', () => {
+    describe('when acnhor is at column 0', () => {
+      fit('returns updated tiles and placed tiles indices', () => {
+        const tiles = [
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: {letter: 'e'}}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: {letter: 'r'}}, {letter: null}, {letter: null}, {letter: null}, 
+        ];
+        const boardSize = 5;
+        const dictionary = {'aert': ['tear']};
+        const rack = [
+          {letter: 't'}, 
+          {letter: 'r'}, 
+          {letter: 'c'}, 
+          {letter: 'a'},
+        ];
+  
+        const anchorIndices = [10, 12, 17];
+        getAnchorIndices.mockImplementation(() => anchorIndices);
+  
+        const step = 1;
+        getWordBuildStepFromAnchor.mockImplementation(() => step);
+  
+        const expectedBoardRackIndices = [
+          {
+            boardIndex: 10,
+            rackIndex: 0
+          },
+          {
+            boardIndex: 12,
+            rackIndex: 3
+          },
+          {
+            boardIndex: 13,
+            rackIndex: 1
+          },
+        ];
+  
+        const boardRackIndices = getMoveBoardRackIndices(tiles, boardSize, rack, dictionary);   
+        
+        expect(boardRackIndices).toEqual(expectedBoardRackIndices);
+      });
+    });
+
+    it('returns updated tiles and placed tiles indices', () => {
       const tiles = [
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
@@ -92,45 +140,6 @@ describe('getMoveBoardRackIndices', () => {
 
       const boardRackIndices = getMoveBoardRackIndices(tiles, boardSize, rack, dictionary);   
       
-      // expect(getAnchorIndices.mock.calls.length).toBe(1);
-      // expect(getAnchorIndices.mock.calls[0][0]).toEqual(tiles);
-      // expect(getAnchorIndices.mock.calls[0][1]).toEqual(boardSize);
-
-      // expect(getWordBuildStepFromAnchor.mock.calls.length).toBe(1);
-      // expect(getWordBuildStepFromAnchor.mock.calls[0][0]).toEqual(tiles);
-      // expect(getWordBuildStepFromAnchor.mock.calls[0][1]).toEqual(boardSize);
-      // expect(getWordBuildStepFromAnchor.mock.calls[0][2]).toEqual(5);
-
-      // expect(getWordsAtAnchor.mock.calls.length).toBe(1);
-      // expect(getWordsAtAnchor.mock.calls[0][0]).toEqual(tiles);
-      // expect(getWordsAtAnchor.mock.calls[0][1]).toEqual(rack);
-      // expect(getWordsAtAnchor.mock.calls[0][2]).toEqual(dictionary);
-      // expect(getWordsAtAnchor.mock.calls[0][3]).toEqual(5);
-      // expect(getWordsAtAnchor.mock.calls[0][4]).toEqual(boardSize);
-      // expect(getWordsAtAnchor.mock.calls[0][5]).toEqual(step);
-
-      // expect(isValidWordPlacement.mock.calls.length).toBe(2);
-      // expect(isValidWordPlacement.mock.calls[0][0]).toEqual([
-      //   {letter: {letter: 'b'}}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
-      //   {letter: {letter: 'b'}}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
-      //   {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, 
-      //   {letter: {letter: 'a'}}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
-      //   {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
-      // ]);
-      // expect(isValidWordPlacement.mock.calls[0][1]).toEqual(boardSize);
-      // expect(isValidWordPlacement.mock.calls[0][2]).toEqual([0, 5]);
-      // expect(isValidWordPlacement.mock.calls[0][3]).toEqual(dictionary);
-      // expect(isValidWordPlacement.mock.calls[1][0]).toEqual([
-      //   {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
-      //   {letter: null}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, {letter: null}, 
-      //   {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, 
-      //   {letter: {letter: 'a'}}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, {letter: null}, 
-      //   {letter: null}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, {letter: null}, 
-      // ]);
-      // expect(isValidWordPlacement.mock.calls[1][1]).toEqual(boardSize);
-      // expect(isValidWordPlacement.mock.calls[1][2]).toEqual([7, 17, 22]);
-      // expect(isValidWordPlacement.mock.calls[1][3]).toEqual(dictionary);
-
       expect(boardRackIndices).toEqual(expectedBoardRackIndices);
     });
   });
