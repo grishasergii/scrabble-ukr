@@ -40,35 +40,37 @@ function* candidatesGenerator(tiles, rack, anchorIndex, boardSize, step) {
     }
     emptyTilesIndicesRight.push(i);
   }
+  const emptyTilesIndices = emptyTilesIndicesLeft.concat([anchorIndex]).concat(emptyTilesIndicesRight);
 
-  const emptyTilesCount = emptyTilesIndicesLeft.length + emptyTilesIndicesRight.length + 1;
-
-  const maxCombinationLength = Math.min(lettersWithRackIndices.length, emptyTilesCount);
+  const maxCombinationLength = Math.min(lettersWithRackIndices.length, emptyTilesIndices.length);
   const seenCombinations = new Set();
   for (let combinationLength=maxCombinationLength; combinationLength > 1; combinationLength--) {
     const combinations = Combinatorics.combination(lettersWithRackIndices, combinationLength);
     let combination;
     while (combination = combinations.next()) {  
-      const lettersCombination = combination.map(x => x.letter);
-      if (seenCombinations.has(lettersCombination)) {
-        continue;
-      }
-      seenCombinations.add(lettersCombination);
-
-      const start = Math.max(0, emptyTilesIndicesLeft.length - combinationLength + 1);
-      for (let i =  start; i < emptyTilesIndicesLeft.length; i++) {
-        const leftPart = emptyTilesIndicesLeft.slice(i, i + combinationLength);
-        const rightPart = emptyTilesIndicesRight.slice(0, combinationLength - leftPart.length);
-        const tileIndices = leftPart.concat([anchorIndex]).concat(rightPart);
-        const boardRackIndices = [];
-        for (let j = 0; j < combination.length; j++) {
-          boardRackIndices.push({
-            boardIndex: tileIndices[j],
-            rackIndex: combination[j].indexInRack
-          });
+      const permutations = Combinatorics.permutation(combination);
+      let permuation;
+      while (permuation = permutations.next()) {
+        const lettersCombination = permuation.map(x => x.letter);
+        if (seenCombinations.has(lettersCombination)) {
+          continue;
         }
-
-        yield boardRackIndices;
+        seenCombinations.add(lettersCombination);
+  
+        const start = Math.max(0, emptyTilesIndicesLeft.length - combinationLength + 1);
+        const stop = emptyTilesIndices.length - combinationLength;
+        for (let i = start; i <= stop; i++) {
+          const tileIndices = emptyTilesIndices.slice(i, i + combinationLength);
+          const boardRackIndices = [];
+          for (let j = 0; j < permuation.length; j++) {
+            boardRackIndices.push({
+              boardIndex: tileIndices[j],
+              rackIndex: permuation[j].indexInRack
+            });
+          }
+  
+          yield boardRackIndices;
+        }
       }
     }
   }

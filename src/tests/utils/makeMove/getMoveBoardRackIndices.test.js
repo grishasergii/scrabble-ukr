@@ -64,7 +64,7 @@ describe('getMoveBoardRackIndices', () => {
 
   describe('when finds valid word placement', () => {
     describe('when acnhor is at column 0', () => {
-      fit('returns updated tiles and placed tiles indices', () => {
+      it('returns updated tiles and placed tiles indices', () => {
         const tiles = [
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
