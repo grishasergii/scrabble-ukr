@@ -17,7 +17,7 @@ class Game extends Component {
     'act': ['cat']
   };
   
-  colors = ['green', 'red', 'blue', 'purple', 'orange', 'yellow'];
+  colors = ['green', 'red', 'blue', 'purple', 'orange'];
   playerColor = '';
   computerColor = '';
 
@@ -28,16 +28,31 @@ class Game extends Component {
     this.playerColor = colorsShuffled.pop();
     this.computerColor = colorsShuffled.pop();
 
+    const bagOfLetters = [
+      ...Array(5).fill({letter: 'A', value: 1}),
+      ...Array(2).fill({letter: 'B', value: 1}),
+      ...Array(2).fill({letter: 'C', value: 1}),
+      ...Array(2).fill({letter: 'D', value: 1}),
+      ...Array(2).fill({letter: 'E', value: 1}),
+      ...Array(2).fill({letter: 'F', value: 1}),
+      ...Array(2).fill({letter: 'G', value: 1}),
+      ...Array(2).fill({letter: 'H', value: 1}),
+      ...Array(2).fill({letter: 'I', value: 1}),
+      ...Array(2).fill({letter: 'J', value: 1}),
+      ...Array(2).fill({letter: 'K', value: 1}),
+    ].sort(() => 0.5 - Math.random());
+
+    const playerRack = [];
+    const computerRack = [];
+
+    for (let i = 0; i < 7; i++) {
+      playerRack.push({...bagOfLetters.pop(), color: this.playerColor});
+      computerRack.push({...bagOfLetters.pop(), color: this.computerColor});
+    }
+
     this.state =  {
       boardSize: 15,
-      bagOfLetters: [
-        ...Array(5).fill({letter: 'A', value: 1}),
-        ...Array(2).fill({letter: 'B', value: 1}),
-        ...Array(2).fill({letter: 'C', value: 1}),
-        ...Array(2).fill({letter: 'D', value: 1}),
-        ...Array(2).fill({letter: 'E', value: 1}),
-        ...Array(2).fill({letter: 'F', value: 1}),
-      ],
+      bagOfLetters: bagOfLetters,
       squares: [
         {bonus: '3xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
         {}, {bonus: '2xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
@@ -57,24 +72,8 @@ class Game extends Component {
       ],
       selectedLetter: null,
       squaresWithPlacedLettersIndices: new Set([]),
-      playerRack: [
-        { letter: 'A', value: '1', color: this.playerColor },
-        { letter: 'B', value: '1', color: this.playerColor },
-        { letter: 'C', value: '4', color: this.playerColor },
-        { letter: 'D', value: '1', color: this.playerColor },
-        { letter: 'E', value: '1', color: this.playerColor },
-        { letter: 'F', value: '1', color: this.playerColor },
-        { letter: 'G', value: '4', color: this.playerColor },
-      ],
-      computerRack: [
-        { letter: 'C', value: '1', color: this.computerColor },
-        { letter: 'T', value: '1', color: this.computerColor },
-        { letter: 'E', value: '4', color: this.computerColor },
-        { letter: 'R', value: '4', color: this.computerColor },
-        { letter: 'T', value: '1', color: this.computerColor },
-        { letter: 'E', value: '4', color: this.computerColor },
-        { letter: 'R', value: '4', color: this.computerColor },
-      ],
+      playerRack: playerRack,
+      computerRack: computerRack,
       moveIsInvalidMessage: null,
       invalidWords: null
     };
@@ -262,13 +261,16 @@ class Game extends Component {
       });
 
       // refill players rack
-      const updatedBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}).sort(() => 0.5 - Math.random());
+      const updatedBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};});
       const updatedPlayerRack = prevState.playerRack.map(x => {
         if (x === null) {
           return null;
         }
         return {...x};
       }).map(l => {
+        if (updatedBagOfLetters.length === 0) {
+          return l;
+        }
         if (l === null || l === undefined) {
           return {...updatedBagOfLetters.pop(), color: this.playerColor};
         }
