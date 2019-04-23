@@ -17,51 +17,67 @@ class Game extends Component {
     'act': ['cat']
   };
   
-  playerColor = 'green';
+  colors = ['green', 'red', 'blue', 'purple', 'orange', 'yellow'];
+  playerColor = '';
+  computerColor = '';
 
-  state = {
-    boardSize: 15,
-    bagOfLetters: [
-      ...Array(5).fill({letter: 'A', value: 1}),
-      ...Array(2).fill({letter: 'B', value: 1}),
-      ...Array(2).fill({letter: 'C', value: 1}),
-    ],
-    squares: [
-      {bonus: '3xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {bonus: '2xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {bonus: '2xLS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-    ],
-    selectedLetter: null,
-    squaresWithPlacedLettersIndices: new Set([]),
-    playerRack: [
-      { letter: 'A', value: '1', color: this.playerColor },
-      { letter: 'B', value: '1', color: this.playerColor },
-      { letter: 'C', value: '4', color: this.playerColor },
-      { letter: 'D', value: '1', color: this.playerColor },
-      { letter: 'E', value: '1', color: this.playerColor },
-      { letter: 'F', value: '1', color: this.playerColor },
-      { letter: 'G', value: '4', color: this.playerColor },
-    ],
-    computerRack: [
-      { letter: 'C', value: '1', color: 'red' },
-      { letter: 'T', value: '1', color: 'red' },
-      { letter: 'E', value: '4', color: 'red' },
-      { letter: 'R', value: '4', color: 'red' },
-    ],
-    moveIsInvalidMessage: null,
-    invalidWords: null
+  constructor(props) {
+    super(props);
+
+    const colorsShuffled = this.colors.sort(() => 0.5 - Math.random());
+    this.playerColor = colorsShuffled.pop();
+    this.computerColor = colorsShuffled.pop();
+
+    this.state =  {
+      boardSize: 15,
+      bagOfLetters: [
+        ...Array(5).fill({letter: 'A', value: 1}),
+        ...Array(2).fill({letter: 'B', value: 1}),
+        ...Array(2).fill({letter: 'C', value: 1}),
+        ...Array(2).fill({letter: 'D', value: 1}),
+        ...Array(2).fill({letter: 'E', value: 1}),
+        ...Array(2).fill({letter: 'F', value: 1}),
+      ],
+      squares: [
+        {bonus: '3xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {bonus: '2xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {bonus: '2xLS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
+      ],
+      selectedLetter: null,
+      squaresWithPlacedLettersIndices: new Set([]),
+      playerRack: [
+        { letter: 'A', value: '1', color: this.playerColor },
+        { letter: 'B', value: '1', color: this.playerColor },
+        { letter: 'C', value: '4', color: this.playerColor },
+        { letter: 'D', value: '1', color: this.playerColor },
+        { letter: 'E', value: '1', color: this.playerColor },
+        { letter: 'F', value: '1', color: this.playerColor },
+        { letter: 'G', value: '4', color: this.playerColor },
+      ],
+      computerRack: [
+        { letter: 'C', value: '1', color: this.computerColor },
+        { letter: 'T', value: '1', color: this.computerColor },
+        { letter: 'E', value: '4', color: this.computerColor },
+        { letter: 'R', value: '4', color: this.computerColor },
+        { letter: 'T', value: '1', color: this.computerColor },
+        { letter: 'E', value: '4', color: this.computerColor },
+        { letter: 'R', value: '4', color: this.computerColor },
+      ],
+      moveIsInvalidMessage: null,
+      invalidWords: null
+    };
   }
 
   selectLetterHandler = (letter, index, selectedFrom) => {
