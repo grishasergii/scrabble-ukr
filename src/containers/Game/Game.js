@@ -7,6 +7,7 @@ import Modal from '../../components/UI/Modal/Modal';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 import isValidWordPlacement from '../../utils/validateMove/isValidWordPlacement';
 import getMoveBoardRackIndices from '../../utils/makeMove/getMoveBoardRackIndices';
+import ComputerPlayer from '../../components/ComputerPlayer/ComputerPlayer';
 
 class Game extends Component {
   dictionary = {
@@ -75,7 +76,8 @@ class Game extends Component {
       playerRack: playerRack,
       computerRack: computerRack,
       moveIsInvalidMessage: null,
-      invalidWords: null
+      invalidWords: null,
+      whoseTurn: 'player'
     };
   }
 
@@ -199,7 +201,7 @@ class Game extends Component {
         squares: updatedSquares,
         playerRack: updatedPlayerRack,
         squaresWithPlacedLettersIndices: new Set([])
-      }
+      };
     });
   }
 
@@ -255,8 +257,9 @@ class Game extends Component {
       return {
         showSwapLetters: false,
         playerRack: updatedPlayerRack,
-        bagOfLetters: updatedBagOfLetters
-      }
+        bagOfLetters: updatedBagOfLetters,
+        whoseTurn: 'computer'
+      };
     });
   }
   
@@ -295,10 +298,9 @@ class Game extends Component {
         squares: squares,
         bagOfLetters: updated.updatedBagOfLetters,
         playerRack: updated.updatedRack,
-        squaresWithPlacedLettersIndices: new Set([])
-      }
-    }, () => {
-      this.playComputerMove();
+        squaresWithPlacedLettersIndices: new Set([]),
+        whoseTurn: 'computer'
+      };
     });
   }
 
@@ -312,7 +314,9 @@ class Game extends Component {
       
       if (moveBoardRackIndices === null) {
         alert('Computer pass!');
-        return;
+        return {
+          whoseTurn: 'player'
+        };
       }
 
       const updatedTiles = prevState.squares.map(x => {return {...x}});
@@ -331,8 +335,9 @@ class Game extends Component {
       return {
         squares: updatedTiles,
         computerRack: updated.updatedRack,
-        bagOfLetters: updated.updatedBagOfLetters
-      }
+        bagOfLetters: updated.updatedBagOfLetters,
+        whoseTurn: 'player'
+      };
     });
   }
 
@@ -349,7 +354,9 @@ class Game extends Component {
   }
 
   passHandler = () => {
-    this.playComputerMove();
+    this.setState({
+      whoseTurn: 'computer'
+    });
   }
 
   render() {
@@ -385,6 +392,11 @@ class Game extends Component {
       );
     }
 
+    let computerPlayer = null;
+    if (this.state.whoseTurn === 'computer') {
+      computerPlayer = <ComputerPlayer componentDidMountHandler={this.playComputerMove} />
+    }
+
     return(
       <div>
         {moveIsInvalidMessage}
@@ -408,10 +420,13 @@ class Game extends Component {
           rackSelectable={true} />
         
         <GameControls
+          enabled={this.state.whoseTurn === 'player'}
           clear={this.returnPlacedLettersToRackHandler}
           swap={this.startSwapLettersHandler}
           play={this.playTurnHandler}
           pass={this.passHandler} />
+
+        {computerPlayer}
       </div>
     );
   }
