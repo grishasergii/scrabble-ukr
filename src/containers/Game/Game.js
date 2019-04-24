@@ -330,7 +330,7 @@ class Game extends Component {
 
       return {
         squares: updatedTiles,
-        computerRack: updated.updatedComputerRack,
+        computerRack: updated.updatedRack,
         bagOfLetters: updated.updatedBagOfLetters
       }
     });
@@ -346,6 +346,10 @@ class Game extends Component {
     this.setState({
       invalidWords: null
     });
+  }
+
+  passHandler = () => {
+    this.playComputerMove();
   }
 
   render() {
@@ -406,7 +410,8 @@ class Game extends Component {
         <GameControls
           clear={this.returnPlacedLettersToRackHandler}
           swap={this.startSwapLettersHandler}
-          play={this.playTurnHandler} />
+          play={this.playTurnHandler}
+          pass={this.passHandler} />
       </div>
     );
   }

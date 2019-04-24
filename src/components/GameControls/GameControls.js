@@ -4,7 +4,7 @@ const gameControls = (props) => {
   return (
     <div>
       <button onClick={props.play}>Play</button>
-      <button>Pass</button>
+      <button onClick={props.pass}>Pass</button>
       <button onClick={props.clear}>Clear</button>
       <button onClick={props.swap}>Swap</button>
     </div>

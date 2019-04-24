@@ -8,7 +8,7 @@ describe('getAnchorIndices', () => {
 
       const actual = getAnchorIndices(tiles, stepVertical);
 
-      expect(actual).toEqual(113);
+      expect(actual).toEqual([113]);
     });
   });
 

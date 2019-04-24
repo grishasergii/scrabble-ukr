@@ -26,7 +26,7 @@ const getAnchorIndices = (tiles, stepVertical) => {
   }
 
   if (anchorIndices.size === 0) {
-    return Math.ceil(squaresLength / 2);
+    return [Math.ceil(squaresLength / 2)];
   }
 
   return anchorIndices;
