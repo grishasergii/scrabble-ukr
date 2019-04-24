@@ -203,6 +203,32 @@ class Game extends Component {
     });
   }
 
+  refillRack = (rack, bagOfLetters, color) => {
+    let updatedRack = rack.map(x => {
+      if (x === null || x === undefined) {
+        return null;
+      }
+      return {...x};
+    });
+
+    const updatedBagOfLetters = bagOfLetters.map(x => {return {...x};});
+
+    updatedRack = updatedRack.map(l => {
+      if (updatedBagOfLetters.length === 0) {
+        return l;
+      }
+      if (l === null || l === undefined) {
+        return {...updatedBagOfLetters.pop(), color: color};
+      }
+      return l;
+    });
+
+    return {
+      updatedRack: updatedRack,
+      updatedBagOfLetters: updatedBagOfLetters
+    };
+  }
+
   swapLettersHandler = (indices) => {
     this.setState((prevState) => {
 
@@ -261,28 +287,14 @@ class Game extends Component {
       });
 
       // refill players rack
-      const updatedBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};});
-      const updatedPlayerRack = prevState.playerRack.map(x => {
-        if (x === null) {
-          return null;
-        }
-        return {...x};
-      }).map(l => {
-        if (updatedBagOfLetters.length === 0) {
-          return l;
-        }
-        if (l === null || l === undefined) {
-          return {...updatedBagOfLetters.pop(), color: this.playerColor};
-        }
-        return l;
-      });
+      const updated = this.refillRack(prevState.playerRack, prevState.bagOfLetters, this.playerColor);
 
       // calculate score
 
       return {
         squares: squares,
-        bagOfLetters: updatedBagOfLetters,
-        playerRack: updatedPlayerRack,
+        bagOfLetters: updated.updatedBagOfLetters,
+        playerRack: updated.updatedRack,
         squaresWithPlacedLettersIndices: new Set([])
       }
     }, () => {
@@ -312,12 +324,14 @@ class Game extends Component {
       }
 
       // refill computer rack
+      const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters, this.computerColor);
 
       // calculate score
 
       return {
         squares: updatedTiles,
-        computerRack: updatedComputerRack
+        computerRack: updated.updatedComputerRack,
+        bagOfLetters: updated.updatedBagOfLetters
       }
     });
   }
