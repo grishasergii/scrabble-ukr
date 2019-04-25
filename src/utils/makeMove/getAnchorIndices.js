@@ -2,8 +2,9 @@ const getAnchorIndices = (tiles, stepVertical) => {
   const anchorIndices = new Set();
   const squaresLength = tiles.length;
   const steps = [1, -1, stepVertical, -stepVertical];
-  for (const [index, square] of tiles.entries()) {
-    let letter = square.letter;
+  const tilesLength = tiles.length;
+  for (let index = 0; index < tilesLength; index++) {
+    const letter = tiles[index].letter;
 
     if (letter === null || letter === undefined) {
       continue;

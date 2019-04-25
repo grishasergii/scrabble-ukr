@@ -107,11 +107,8 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     const possibleWords = dictionary[sortedLetters];
     let isValid = false;
     if (possibleWords !== null && possibleWords !== undefined) {
-      for (const w of possibleWords) {
-        if (w === word) {
-          isValid = true;
-          break;
-        }
+      if (possibleWords.indexOf(word) > -1){
+        isValid = true;
       }
     }
     if (isValid === false) {
