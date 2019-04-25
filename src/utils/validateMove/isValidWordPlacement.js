@@ -39,7 +39,8 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     stepAllWords = 1;
   }
 
-  for (let i = placedTilesIndices[0]; i < placedTilesIndices[placedTilesIndices.length-1] + step; i += step) {
+  const stop = placedTilesIndices[placedTilesIndices.length-1] + step;
+  for (let i = placedTilesIndices[0]; i < stop; i += step) {
     if (tiles[i].letter === null || tiles[i].letter === undefined) {
       return {
         isValid: false,

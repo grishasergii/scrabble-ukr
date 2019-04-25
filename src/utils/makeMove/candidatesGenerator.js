@@ -15,7 +15,8 @@ function* candidatesGenerator(tiles, rack, anchorIndex, boardSize, step) {
   }
 
   const lettersWithRackIndices = [];
-  for (let i = 0; i < rack.length; i++) {
+  const rackLength = rack.length;
+  for (let i = 0; i < rackLength; i++) {
     if (rack[i] === null || rack[i] === undefined) {
       continue;
     }
@@ -62,7 +63,8 @@ function* candidatesGenerator(tiles, rack, anchorIndex, boardSize, step) {
         for (let i = start; i <= stop; i++) {
           const tileIndices = emptyTilesIndices.slice(i, i + combinationLength);
           const boardRackIndices = [];
-          for (let j = 0; j < permuation.length; j++) {
+          const permutationLength = permuation.length;
+          for (let j = 0; j < permutationLength; j++) {
             boardRackIndices.push({
               boardIndex: tileIndices[j],
               rackIndex: permuation[j].indexInRack

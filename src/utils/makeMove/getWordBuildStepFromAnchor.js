@@ -6,7 +6,7 @@ const getWordBuildStepFromAnchor = (tiles, boardSize, anchorIndex) => {
   const anchorCol = rowCol.col;
 
   const steps = [1, -1, boardSize, -boardSize];
-
+  const tilesLength = tiles.length;
   for (let step of steps) {
     const index = anchorIndex + step;
     const {row, col} = indexToRowCol(index, boardSize);
@@ -15,7 +15,7 @@ const getWordBuildStepFromAnchor = (tiles, boardSize, anchorIndex) => {
       continue;
     }
 
-    if (index < 0  || index >= tiles.length) {
+    if (index < 0  || index >= tilesLength) {
       continue;
     }
 

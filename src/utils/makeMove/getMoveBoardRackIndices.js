@@ -10,7 +10,6 @@ const getMoveBoardRackIndices = (tiles, boardSize, rack, dictionary) => {
     return [];
   }
 
-  // const anchorIndex = anchorIndices[Math.floor(Math.random() * anchorIndices.length)];
   const anchorIndex = anchorIndices[0];
   const step = getWordBuildStepFromAnchor(tiles, boardSize, anchorIndex);
 
