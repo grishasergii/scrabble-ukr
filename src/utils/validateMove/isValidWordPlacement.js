@@ -2,7 +2,7 @@ import indexToRowCol from '../board/indexToRowCol';
 import isWordConnected from './isWordConnected';
 import getWordIndicesFromAnchor from './getWordIndicesFromAnchor';
 
-const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) => {
+const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) => {
   // are there any letters placed by the player?
   if (placedTilesIndices.length === 0) {
     return {
@@ -62,7 +62,12 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
   let i = placedTilesIndices[0];
   const formedWordIndices = [];
   const startRowCol = indexToRowCol(i, boardSize);
+  const tilesLength = tiles.length;
   while (true) {
+    if (i >= tilesLength) {
+      break;
+    }
+
     const {row, col} = indexToRowCol(i, boardSize);
     if (row !== startRowCol.row && col !== startRowCol.col) {
       break;
@@ -74,7 +79,7 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
 
     formedWordIndices.push(i);
 
-    i =+ step;
+    i = i + step;
   }
 
   wordIndices.push(formedWordIndices);
@@ -127,4 +132,4 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
   }
 }
 
-export default isValidFormPlacement;
+export default isValidWordPlacement;

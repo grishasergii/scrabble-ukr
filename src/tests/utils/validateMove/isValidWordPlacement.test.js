@@ -35,10 +35,11 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           ];
           const dictionary = {
-            'az': ['za']
+            'az': ['za'],
+            'ab': ['ab']
           };
           const boardSize = 5;
-          const placedTilesIndices = [5];
+          const placedTilesIndices = [5, 6];
     
           const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
     
