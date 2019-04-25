@@ -311,9 +311,9 @@ class Game extends Component {
         prevState.boardSize, 
         prevState.computerRack, 
         this.dictionary);
-      
+
       if (moveBoardRackIndices === null) {
-        alert('Computer pass!');
+        console.log('computer pass');
         return {
           whoseTurn: 'player'
         };

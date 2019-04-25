@@ -63,8 +63,7 @@ function* candidatesGenerator(tiles, rack, anchorIndex, boardSize, step) {
         for (let i = start; i <= stop; i++) {
           const tileIndices = emptyTilesIndices.slice(i, i + combinationLength);
           const boardRackIndices = [];
-          const permutationLength = permuation.length;
-          for (let j = 0; j < permutationLength; j++) {
+          for (let j = 0; j < combinationLength; j++) {
             boardRackIndices.push({
               boardIndex: tileIndices[j],
               rackIndex: permuation[j].indexInRack
