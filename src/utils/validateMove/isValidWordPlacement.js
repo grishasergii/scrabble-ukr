@@ -14,11 +14,12 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
   // are all letters in the same row or column?
   const rows = new Set([]);
   const cols = new Set([]);
-  placedTilesIndices.forEach(i => {
-    const {row, col} = indexToRowCol(i, boardSize)
+  const placedTilesIndicesLength = placedTilesIndices.length;
+  for (let i = 0; i < placedTilesIndicesLength; i++) {
+    const {row, col} = indexToRowCol(placedTilesIndices[i], boardSize)
     rows.add(row);
-    cols.add(col);
-  });
+    cols.add(col);   
+  }
 
   if (rows.size > 1 && cols.size > 1) {
     return {
@@ -86,17 +87,22 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
   wordIndices.push(formedWordIndices);
 
   // get all adjacent words
-  placedTilesIndices.forEach(i => {
-    const word = getWordIndicesFromAnchor(tiles, i, stepAllWords, boardSize);
+  for (let i = 0; i < placedTilesIndicesLength; i++) {
+    const word = getWordIndicesFromAnchor(tiles, placedTilesIndices[i], stepAllWords, boardSize);
     if (word.length > 0) {
       wordIndices.push(word);
-    }
-  });
+    }  
+  }
 
   // validate all words
   const invalidWords = [];
-  wordIndices.filter(wi => wi.length > 0).forEach(wi => {
-    const word = wi.map(i => tiles[i].letter.letter).join('').toLowerCase();
+  const wordIndicesLength = wordIndices.length;
+  for (let i=0; i < wordIndicesLength; i ++) {
+    if (wordIndices[i].length === 0) {
+      continue;
+    }
+
+    const word = wordIndices[i].map(i => tiles[i].letter.letter).join('').toLowerCase();
     const sortedLetters = word.split('').sort().join('');
     const possibleWords = dictionary[sortedLetters];
     let isValid = false;
@@ -110,9 +116,9 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     }
     if (isValid === false) {
       invalidWords.push(word);
-    }
-  });
-
+    }    
+  }
+  
   if (invalidWords.length === 1) {
     return {
       isValid: false,
