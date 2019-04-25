@@ -30,7 +30,7 @@ const getAnchorIndices = (tiles, stepVertical) => {
     return [Math.ceil(squaresLength / 2)];
   }
 
-  return anchorIndices;
+  return Array.from(anchorIndices);
 }
 
 export default getAnchorIndices;
