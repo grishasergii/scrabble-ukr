@@ -57,8 +57,29 @@ const isValidFormPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     };
   }
 
-  // get all formed words
-  const wordIndices = [getWordIndicesFromAnchor(tiles, placedTilesIndices[0], step, boardSize)];
+  const wordIndices = [];
+  // get formed word
+  let i = placedTilesIndices[0];
+  const formedWordIndices = [];
+  const startRowCol = indexToRowCol(i, boardSize);
+  while (true) {
+    const {row, col} = indexToRowCol(i, boardSize);
+    if (row !== startRowCol.row && col !== startRowCol.col) {
+      break;
+    }
+
+    if (tiles[i].letter === null || tiles[i].letter === undefined) {
+      break;
+    }
+
+    formedWordIndices.push(i);
+
+    i =+ step;
+  }
+
+  wordIndices.push(formedWordIndices);
+
+  // get all adjacent words
   placedTilesIndices.forEach(i => {
     const word = getWordIndicesFromAnchor(tiles, i, stepAllWords, boardSize);
     if (word.length > 0) {

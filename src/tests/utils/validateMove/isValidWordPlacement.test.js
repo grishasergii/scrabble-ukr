@@ -195,6 +195,26 @@ describe('isValidWordPlacement', () => {
   });
 
   describe('when not in dictionary', () => {
+    describe('when single letter placed', () => {
+      it('returns false and an error message', () => {
+        const tiles = [
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, {letter: null},
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+        ];
+        const dictionary = [];
+        const boardSize = 5;
+        const placedTilesIndices = [11];
+
+        const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
+    
+        expect(isValid).toEqual(false);
+        expect(errorMessage).toBeDefined();        
+      });
+    });
+
     describe('when no connected words', () => {
       describe('when direction is horizontal', () => {
         it('returns false and an error message', () => {

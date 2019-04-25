@@ -2,6 +2,26 @@ import getWordIndicesFromAnchor from '../../../utils/validateMove/getWordIndices
 
 describe('getWordIndicesFromAnchor', () => {
   describe('when direction is horizontal', () => {
+    describe('when single letter', () => {
+      it('returns empty array', () => {
+        const tiles = [
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: {}}, {letter: null}, {letter: null},
+          {letter: null}, {letter: {}}, {letter: null}, {letter: null},
+          {letter: null}, {letter: null}, {letter: null}, {letter: null},
+        ];
+        const boardSize = 4;
+        const step = 1;
+        const startIndex = 5;
+  
+        const expected = [];
+  
+        const actual = getWordIndicesFromAnchor(tiles, startIndex, step, boardSize)
+  
+        expect(actual).toEqual(expected);
+      });
+    });
+
     it('returns correct indices', () => {
       const tiles = [
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
