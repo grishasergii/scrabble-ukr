@@ -9,7 +9,7 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
             {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: {letter: 'b'}}, {letter: {letter: 'a'}}, {letter: null},
-            {letter: null}, {letter: {letter: 'z'}}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: {letter: 'z', alreadyPlayed: true}}, {letter: null}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, 
           ];
           const dictionary = {
@@ -48,6 +48,28 @@ describe('isValidWordPlacement', () => {
         });
       });
     });
+    describe('when single letter is placed', () => {
+      it('returns true and null error message', () => {
+        const tiles = [
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, {letter: null},
+          {letter: {letter: 'a'}}, {letter: {letter: 'b', alreadyPlayed: true}}, {letter: null}, {letter: null}, {letter: null},
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+        ];
+        const dictionary = {
+          'az': ['za'],
+          'ab': ['ab']
+        };
+        const boardSize = 5;
+        const placedTilesIndices = [10];
+  
+        const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
+  
+        expect(isValid).toEqual(true);
+        expect(errorMessage).toBeNull();       
+      });
+    });
 
     describe('when direction is vertical', () => {
       describe('when placed letters cross the existing one', () => {
@@ -70,6 +92,29 @@ describe('isValidWordPlacement', () => {
     
           expect(isValid).toEqual(true);
           expect(errorMessage).toBeNull();
+        });
+      });
+
+      describe('when single letter is placed', () => {
+        it('returns true and null error message', () => {
+          const tiles = [
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, {letter: null},
+            {letter: {letter: 'a'}}, {letter: {letter: 'b', alreadyPlayed: true}}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          ];
+          const dictionary = {
+            'az': ['za'],
+            'ab': ['ab']
+          };
+          const boardSize = 5;
+          const placedTilesIndices = [6];
+    
+          const {isValid, errorMessage} = isValidWordPlacement(tiles, boardSize, placedTilesIndices, dictionary);
+    
+          expect(isValid).toEqual(true);
+          expect(errorMessage).toBeNull();       
         });
       });
     });
@@ -157,13 +202,13 @@ describe('isValidWordPlacement', () => {
     describe('when direction is horizontal', () => {
       it('returns false and an error message', () => {
         const tiles = [
-          {letter: null}, {letter: {}}, {letter: {}}, {letter: {}}, {letter: {}},
+          {letter: null}, {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: {letter: 'a'}}, {letter: {letter: 'a'}},
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
-          {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          {letter: {letter: 'a', alreadyPlayed: true}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
         ];
-        const dictionary = {};
+        const dictionary = {'aaaa': ['aaaa']};
         const boardSize = 5;
         const placedTilesIndices = [1, 2, 3, 4];
   
@@ -178,12 +223,12 @@ describe('isValidWordPlacement', () => {
       it('returns false and an error message', () => {
         const tiles = [
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
-          {letter: null}, {letter: null}, {letter: {}}, {letter: null}, {letter: null},
-          {letter: null}, {letter: null}, {letter: {}}, {letter: null}, {letter: {}},
-          {letter: null}, {letter: null}, {letter: {}}, {letter: null}, {letter: null},
-          {letter: null}, {letter: null}, {letter: {}}, {letter: null}, {letter: null}, 
+          {letter: null}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null},
+          {letter: null}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: {}},
+          {letter: null}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null},
+          {letter: {letter: 'a', alreadyPlayed: true}}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, 
         ];
-        const dictionary = {};
+        const dictionary = {'aaaa': ['aaaa']};
         const boardSize = 5;
         const placedTilesIndices = [7, 12, 17, 22];
   

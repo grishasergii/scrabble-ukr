@@ -11,6 +11,8 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     };
   }
 
+  const tilesLength = tiles.length;
+
   // are all letters in the same row or column?
   const rows = new Set([]);
   const cols = new Set([]);
@@ -39,6 +41,27 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     step = boardSize;
     stepAllWords = 1;
   }
+  if (cols.size === 1 && rows.size === 1) {
+    const steps = [1, -1, boardSize, -boardSize];
+    const indices = steps.map(s => s + placedTilesIndices[0]);
+    for (let i=0; i<4; i++) {
+      const index = indices[i];
+      if (index < 0 || index >= tilesLength) {
+        continue;
+      }
+      if (tiles[index].letter !== null && tiles[index].letter !== undefined) {
+        if (tiles[index].letter.alreadyPlayed === true) {
+          step = Math.abs(steps[i]);
+          if (step === 1) {
+            stepAllWords = boardSize;
+          } else {
+            stepAllWords = 1;
+          }
+          break;
+        } 
+      }
+    }
+  }
 
   const stop = placedTilesIndices[placedTilesIndices.length-1] + step;
   for (let i = placedTilesIndices[0]; i < stop; i += step) {
@@ -50,21 +73,11 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     }
   }
 
-  // is word connected
-  const isConnected = isWordConnected(placedTilesIndices, step, stepAllWords, tiles);
-  if (isConnected === false) {
-    return {
-      isValid: false,
-      errorMessage: 'Sorry, word not connected'
-    };
-  }
-
-  const wordIndices = [];
-  // get formed word
+  // is placed letter sequence a valid word?
   let i = placedTilesIndices[0];
-  const formedWordIndices = [];
   const startRowCol = indexToRowCol(i, boardSize);
-  const tilesLength = tiles.length;
+
+  let lettersSequence = [];
   while (true) {
     if (i >= tilesLength) {
       break;
@@ -79,14 +92,36 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
       break;
     }
 
-    formedWordIndices.push(i);
+    lettersSequence.push(tiles[i].letter.letter.toLowerCase());
 
     i = i + step;
   }
 
-  wordIndices.push(formedWordIndices);
+  const match = dictionary[[...lettersSequence].sort().join('')];
+  if (match === null || match === undefined) {
+    return {
+      isValid: false,
+      errorMessage: `I do not know such word as ${lettersSequence.join('')}`
+    };   
+  }
+  if (match.indexOf(lettersSequence.join('')) === -1) {
+    return {
+      isValid: false,
+      errorMessage: `I do not know such word as ${lettersSequence.join('')}`
+    };      
+  }
 
-  // get all adjacent words
+  // is word connected to already placed tiles?
+  const isConnected = isWordConnected(placedTilesIndices, step, stepAllWords, tiles);
+  if (isConnected === false) {
+    return {
+      isValid: false,
+      errorMessage: 'Sorry, word not connected'
+    };
+  }
+
+  // are all adjacent words valid?
+  const wordIndices = [];
   for (let i = 0; i < placedTilesIndicesLength; i++) {
     const word = getWordIndicesFromAnchor(tiles, placedTilesIndices[i], stepAllWords, boardSize);
     if (word.length > 0) {
@@ -94,7 +129,6 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     }  
   }
 
-  // validate all words
   const invalidWords = [];
   const wordIndicesLength = wordIndices.length;
   for (let i=0; i < wordIndicesLength; i ++) {
