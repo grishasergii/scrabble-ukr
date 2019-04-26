@@ -30,17 +30,48 @@ class Game extends Component {
     this.computerColor = colorsShuffled.pop();
 
     const bagOfLetters = [
-      ...Array(5).fill({letter: 'A', value: 1}),
-      ...Array(2).fill({letter: 'B', value: 1}),
-      ...Array(2).fill({letter: 'C', value: 1}),
-      ...Array(2).fill({letter: 'D', value: 1}),
-      ...Array(2).fill({letter: 'E', value: 1}),
-      ...Array(2).fill({letter: 'F', value: 1}),
-      ...Array(2).fill({letter: 'G', value: 1}),
-      ...Array(2).fill({letter: 'H', value: 1}),
-      ...Array(2).fill({letter: 'I', value: 1}),
-      ...Array(2).fill({letter: 'J', value: 1}),
-      ...Array(2).fill({letter: 'K', value: 1}),
+      ...Array(10).fill({letter: 'О', value: 1}),
+      ...Array(8).fill({letter: 'А', value: 1}),
+      ...Array(7).fill({letter: 'И', value: 1}),
+      ...Array(7).fill({letter: 'Н', value: 1}),
+      ...Array(4).fill({letter: 'В', value: 1}),
+      ...Array(5).fill({letter: 'Е', value: 1}),
+      ...Array(5).fill({letter: 'І', value: 1}),
+      ...Array(5).fill({letter: 'Т', value: 1}),
+      ...Array(5).fill({letter: 'Р', value: 1}),
+
+      ...Array(4).fill({letter: 'К', value: 2}),
+      ...Array(4).fill({letter: 'С', value: 2}),
+      ...Array(3).fill({letter: 'Д', value: 2}),
+      ...Array(3).fill({letter: 'Л', value: 2}),
+      ...Array(3).fill({letter: 'М', value: 2}),
+      ...Array(3).fill({letter: 'П', value: 2}),
+
+      ...Array(3).fill({letter: 'У', value: 3}),
+
+      ...Array(2).fill({letter: 'З', value: 4}),
+      ...Array(2).fill({letter: 'Я', value: 4}),
+      ...Array(2).fill({letter: 'Б', value: 4}),
+      ...Array(2).fill({letter: 'Г', value: 4}),
+
+      ...Array(1).fill({letter: 'Ч', value: 5}),
+      ...Array(1).fill({letter: 'Х', value: 5}),
+      ...Array(1).fill({letter: 'Й', value: 5}),
+      ...Array(1).fill({letter: 'Ь', value: 5}),
+
+      ...Array(1).fill({letter: 'Ж', value: 6}),
+      ...Array(1).fill({letter: 'Ї', value: 6}),
+      ...Array(1).fill({letter: 'Ц', value: 6}),
+      ...Array(1).fill({letter: 'Ш', value: 6}),
+
+      ...Array(1).fill({letter: 'Ю', value: 7}),
+
+      ...Array(1).fill({letter: 'Є', value: 8}),
+      ...Array(1).fill({letter: 'Ф', value: 8}),
+      ...Array(1).fill({letter: 'Щ', value: 8}),
+
+      ...Array(1).fill({letter: 'Ґ', value: 10}),
+      ...Array(1).fill({letter: '\'', value: 10}),
     ].sort(() => 0.5 - Math.random());
 
     const playerRack = [];
