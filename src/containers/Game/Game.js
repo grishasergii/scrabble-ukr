@@ -8,6 +8,7 @@ import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 import isValidWordPlacement from '../../utils/validateMove/isValidWordPlacement';
 import getMoveBoardRackIndices from '../../utils/makeMove/getMoveBoardRackIndices';
 import ComputerPlayer from '../../components/ComputerPlayer/ComputerPlayer';
+import TilesLeft from '../../components/Info/TilesLeft/TilesLeft';
 
 class Game extends Component {
   // dictionary = {
@@ -459,6 +460,9 @@ class Game extends Component {
           swap={this.startSwapLettersHandler}
           play={this.playTurnHandler}
           pass={this.passHandler} />
+        
+        <TilesLeft
+          tilesCount={this.state.bagOfLetters.length} />
 
         {computerPlayer}
       </div>
