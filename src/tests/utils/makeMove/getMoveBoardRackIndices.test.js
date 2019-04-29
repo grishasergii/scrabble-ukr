@@ -26,7 +26,7 @@ describe('getMoveBoardRackIndices', () => {
         {}, {}, {}, {}, {},
       ];
       const boardSize = 5;
-      const dictionary = {};
+      const dictionary = new Set([]);
       const rack = [];
 
       getAnchorIndices.mockImplementation(() => [0]);
@@ -49,7 +49,7 @@ describe('getMoveBoardRackIndices', () => {
           {letter: null}, {letter: {letter: 'n'}}, {letter: null}, {letter: null}, {letter: null}, 
           {letter: null}, {letter: {letter: 'd'}}, {letter: null}, {letter: null}, {letter: null}, 
         ];
-        const dictionary = {'aert': ['tear']};
+        const dictionary = new Set(['tear']);
         const boardSize = 5;
         const rack = [{letter: 't'}, {letter: 'e'}, {letter: 'r'}, {letter: 's'}];
         getAnchorIndices.mockImplementation(() => [12, 15, 20]);
@@ -73,7 +73,7 @@ describe('getMoveBoardRackIndices', () => {
           {letter: null}, {letter: {letter: 'r'}}, {letter: null}, {letter: null}, {letter: null}, 
         ];
         const boardSize = 5;
-        const dictionary = {'aert': ['tear']};
+        const dictionary = new Set(['tear']);
         const rack = [
           {letter: 't'}, 
           {letter: 'r'}, 
@@ -117,7 +117,7 @@ describe('getMoveBoardRackIndices', () => {
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
       ];
       const boardSize = 5;
-      const dictionary = {'abc': ['cab']};
+      const dictionary = new Set(['cab']);
       const rack = [
         {letter: 'a'}, 
         {letter: 'b'}, 

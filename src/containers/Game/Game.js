@@ -10,13 +10,13 @@ import getMoveBoardRackIndices from '../../utils/makeMove/getMoveBoardRackIndice
 import ComputerPlayer from '../../components/ComputerPlayer/ComputerPlayer';
 
 class Game extends Component {
-  dictionary = {
-    'ab': ['ab', 'ba'],
-    'br': ['br', 'rb'],
-    'aert': ['tear'],
-    'abc': ['cab', 'abc'],
-    'act': ['cat']
-  };
+  // dictionary = {
+  //   'ab': ['ab', 'ba'],
+  //   'br': ['br', 'rb'],
+  //   'aert': ['tear'],
+  //   'abc': ['cab', 'abc'],
+  //   'act': ['cat']
+  // };
   
   colors = ['green', 'red', 'blue', 'purple', 'orange'];
   playerColor = '';
@@ -29,6 +29,9 @@ class Game extends Component {
     this.playerColor = colorsShuffled.pop();
     this.computerColor = colorsShuffled.pop();
 
+    this.dictionary = new Set(require('../../assets/dict_ukr.json'));
+
+    // https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Ukrainian
     const bagOfLetters = [
       ...Array(10).fill({letter: 'О', value: 1}),
       ...Array(8).fill({letter: 'А', value: 1}),

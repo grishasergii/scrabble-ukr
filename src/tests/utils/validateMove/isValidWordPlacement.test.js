@@ -12,10 +12,7 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: {letter: 'z', alreadyPlayed: true}}, {letter: null}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'b'}}, {letter: null}, 
           ];
-          const dictionary = {
-            'aaab': ['aaba'],
-            'az': ['az']
-          };
+          const dictionary = new Set(['aaba', 'az']); 
           const boardSize = 5;
           const placedTilesIndices = [10, 11, 13];
     
@@ -34,10 +31,7 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           ];
-          const dictionary = {
-            'az': ['za'],
-            'ab': ['ab']
-          };
+          const dictionary = new Set(['ab', 'za']); 
           const boardSize = 5;
           const placedTilesIndices = [5, 6];
     
@@ -57,10 +51,7 @@ describe('isValidWordPlacement', () => {
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
         ];
-        const dictionary = {
-          'az': ['za'],
-          'ab': ['ab']
-        };
+        const dictionary = new Set(['ab', 'za']); 
         const boardSize = 5;
         const placedTilesIndices = [10];
   
@@ -81,10 +72,7 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'd'}},
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'a'}}, 
           ];
-          const dictionary = {
-            'aaad': ['aada'],
-            'as': ['sa']
-          };
+          const dictionary = new Set(['aada', 'sa']); 
           const boardSize = 5;
           const placedTilesIndices = [9, 14, 24];
     
@@ -104,10 +92,7 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           ];
-          const dictionary = {
-            'az': ['za'],
-            'ab': ['ab']
-          };
+          const dictionary = new Set(['ab', 'za']); 
           const boardSize = 5;
           const placedTilesIndices = [6];
     
@@ -123,7 +108,7 @@ describe('isValidWordPlacement', () => {
   describe('when no letters were placed', () => {
     it('returns false and an error message', () => {
       const tiles = [];
-      const dictionary = {};
+      const dictionary = new Set([]);
       const boardSize = 0;
       const placedTilesIndices = [];
 
@@ -137,7 +122,7 @@ describe('isValidWordPlacement', () => {
   describe('when placed in different rows and columns', () => {
     it('returns false and an error message', () => {
       const tiles = [];
-      const dictionary = {};
+      const dictionary = new Set([]);
       const boardSize = 15;
       const placedTilesIndices = [46, 47, 48, 63];
 
@@ -149,7 +134,7 @@ describe('isValidWordPlacement', () => {
 
     it('returns false and an error message', () => {
       const tiles = [];
-      const dictionary = {};
+      const dictionary = new Set([]);
       const boardSize = 15;
       const placedTilesIndices = [20, 35, 50, 64];
 
@@ -169,7 +154,7 @@ describe('isValidWordPlacement', () => {
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
       ];
-      const dictionary = {};
+      const dictionary = new Set([]);
       const boardSize = 5;
       const placedTilesIndices = [10, 11, 13];
 
@@ -187,7 +172,7 @@ describe('isValidWordPlacement', () => {
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
         {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {}}, 
       ];
-      const dictionary = {};
+      const dictionary = new Set([]);
       const boardSize = 5;
       const placedTilesIndices = [9, 14, 24];
 
@@ -208,7 +193,7 @@ describe('isValidWordPlacement', () => {
           {letter: {letter: 'a', alreadyPlayed: true}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
         ];
-        const dictionary = {'aaaa': ['aaaa']};
+        const dictionary = new Set(['aaaa']);
         const boardSize = 5;
         const placedTilesIndices = [1, 2, 3, 4];
   
@@ -228,7 +213,7 @@ describe('isValidWordPlacement', () => {
           {letter: null}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null},
           {letter: {letter: 'a', alreadyPlayed: true}}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, 
         ];
-        const dictionary = {'aaaa': ['aaaa']};
+        const dictionary = new Set(['aaaa']);
         const boardSize = 5;
         const placedTilesIndices = [7, 12, 17, 22];
   
@@ -250,7 +235,7 @@ describe('isValidWordPlacement', () => {
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
           {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
         ];
-        const dictionary = [];
+        const dictionary = new Set([]);
         const boardSize = 5;
         const placedTilesIndices = [11];
 
@@ -271,9 +256,7 @@ describe('isValidWordPlacement', () => {
             {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
           ];
-          const dictionary = {
-            'aaab': []
-          };
+          const dictionary = new Set(['aaa']);
           const boardSize = 5;
           const placedTilesIndices = [1, 2, 3, 4];
     
@@ -292,9 +275,7 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, 
           ];
-          const dictionary = {
-            'aaab': []
-          };
+          const dictionary = new Set(['aaab']);
           const boardSize = 5;
           const placedTilesIndices = [7, 12, 17, 22];
     
@@ -316,10 +297,7 @@ describe('isValidWordPlacement', () => {
             {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
           ];
-          const dictionary = {
-            'aaaa': [],
-            'bc': []
-          };
+          const dictionary = new Set(['aaab']);
           const boardSize = 5;
           const placedTilesIndices = [1, 2, 3, 4];
     
@@ -338,10 +316,7 @@ describe('isValidWordPlacement', () => {
             {letter: null}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null},
             {letter: null}, {letter: null}, {letter: {letter: 'a'}}, {letter: null}, {letter: null}, 
           ];
-          const dictionary = {
-            'aaaa': [],
-            'aab': []
-          };
+          const dictionary = new Set(['aaaa', 'aab']);
           const boardSize = 5;
           const placedTilesIndices = [7, 12, 17, 22];
     

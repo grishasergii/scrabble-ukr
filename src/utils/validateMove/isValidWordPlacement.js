@@ -97,20 +97,13 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     i = i + step;
   }
 
-  const match = dictionary[[...lettersSequence].sort().join('')];
-  if (match === null || match === undefined) {
+  if (dictionary.has(lettersSequence.join('')) === false) {
     return {
       isValid: false,
       errorMessage: `I do not know such word as ${lettersSequence.join('')}`
     };   
   }
-  if (match.indexOf(lettersSequence.join('')) === -1) {
-    return {
-      isValid: false,
-      errorMessage: `I do not know such word as ${lettersSequence.join('')}`
-    };      
-  }
-
+  
   // is word connected to already placed tiles?
   const isConnected = isWordConnected(placedTilesIndices, step, stepAllWords, tiles);
   if (isConnected === false) {
@@ -137,17 +130,9 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
     }
 
     const word = wordIndices[i].map(i => tiles[i].letter.letter).join('').toLowerCase();
-    const sortedLetters = word.split('').sort().join('');
-    const possibleWords = dictionary[sortedLetters];
-    let isValid = false;
-    if (possibleWords !== null && possibleWords !== undefined) {
-      if (possibleWords.indexOf(word) > -1){
-        isValid = true;
-      }
-    }
-    if (isValid === false) {
+    if (dictionary.has(word) === false) {
       invalidWords.push(word);
-    }    
+    }
   }
   
   if (invalidWords.length === 1) {
