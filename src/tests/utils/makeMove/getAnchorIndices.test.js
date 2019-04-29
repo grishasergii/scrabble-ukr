@@ -47,5 +47,22 @@ describe('getAnchorIndices', () => {
 
       expect(actual).toEqual(expected);
     });
+
+    it('should return correct anchor indices', () => {
+      const tiles = [
+        {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+        {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+        {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+        {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+        {letter: {}}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+      ];
+
+      const stepVertical = 5;
+      const expected = [1, 6, 11, 16, 21];
+
+      const actual = Array.from(getAnchorIndices(tiles, stepVertical)).sort((a, b) => a - b);
+
+      expect(actual).toEqual(expected);
+    });
   })
 });
