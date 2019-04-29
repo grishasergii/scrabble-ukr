@@ -74,33 +74,13 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
   }
 
   // is placed letter sequence a valid word?
-  let i = placedTilesIndices[0];
-  const startRowCol = indexToRowCol(i, boardSize);
+  const lettersIndices = getWordIndicesFromAnchor(tiles, placedTilesIndices[0], step, boardSize);
+  const lettersSequence = lettersIndices.map(i => tiles[i].letter.letter.toLowerCase()).join('');
 
-  let lettersSequence = [];
-  while (true) {
-    if (i >= tilesLength) {
-      break;
-    }
-
-    const {row, col} = indexToRowCol(i, boardSize);
-    if (row !== startRowCol.row && col !== startRowCol.col) {
-      break;
-    }
-
-    if (tiles[i].letter === null || tiles[i].letter === undefined) {
-      break;
-    }
-
-    lettersSequence.push(tiles[i].letter.letter.toLowerCase());
-
-    i = i + step;
-  }
-
-  if (dictionary.has(lettersSequence.join('')) === false) {
+  if (dictionary.has(lettersSequence) === false) {
     return {
       isValid: false,
-      errorMessage: `I do not know such word as ${lettersSequence.join('')}`
+      errorMessage: `I do not know such word as ${lettersSequence}`
     };   
   }
   
@@ -121,7 +101,7 @@ const isValidWordPlacement = (tiles, boardSize, placedTilesIndices, dictionary) 
       wordIndices.push(word);
     }  
   }
-
+  
   const invalidWords = [];
   const wordIndicesLength = wordIndices.length;
   for (let i=0; i < wordIndicesLength; i ++) {
