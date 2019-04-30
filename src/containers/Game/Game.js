@@ -11,15 +11,7 @@ import ComputerPlayer from '../../components/ComputerPlayer/ComputerPlayer';
 import TilesLeft from '../../components/Info/TilesLeft/TilesLeft';
 
 class Game extends Component {
-  // dictionary = {
-  //   'ab': ['ab', 'ba'],
-  //   'br': ['br', 'rb'],
-  //   'aert': ['tear'],
-  //   'abc': ['cab', 'abc'],
-  //   'act': ['cat']
-  // };
-  
-  colors = ['green', 'red', 'blue', 'purple', 'orange'];
+  colors = ['green', 'red', 'blue'];
   playerColor = '';
   computerColor = '';
 
