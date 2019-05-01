@@ -326,8 +326,10 @@ class Game extends Component {
 
       // calculate score
       const wordsWithScore = getWordsWithScore(tiles, placedIndices, boardSize, direction);
-      const totalScore = wordsWithScore.reduce((accumulator, currentValue) => accumulator + currentValue.score);
-
+      let totalScore = 0;
+      for (const wordScore of wordsWithScore) {
+        totalScore = totalScore + wordScore.score;
+      }
 
       // mark placed letters as already played
       placedIndices.forEach(i => {
@@ -344,7 +346,7 @@ class Game extends Component {
         squaresWithPlacedLettersIndices: new Set([]),
         whoseTurn: 'computer',
         lastMove: new Set(placedIndices),
-        playerScore: totalScore
+        playerScore: prevState.playerScore + totalScore
       };
     });
   }
@@ -379,15 +381,17 @@ class Game extends Component {
       const placedTilesIndices = moveBoardRackIndices.map(x => x.boardIndex);
       const direction = getDirection(updatedTiles, placedTilesIndices, prevState.boardSize);
       const wordsWithScore = getWordsWithScore(updatedTiles, placedTilesIndices, prevState.boardSize, direction);
-      const totalScore = wordsWithScore.reduce((accumulator, currentValue) => accumulator + currentValue.score);
-
+      let totalScore = 0;
+      for (const wordScore of wordsWithScore) {
+        totalScore = totalScore + wordScore.score;
+      }
       return {
         squares: updatedTiles,
         computerRack: updated.updatedRack,
         bagOfLetters: updated.updatedBagOfLetters,
         whoseTurn: 'player',
         lastMove: new Set(moveBoardRackIndices.map(x => x.boardIndex)),
-        computerScore: totalScore
+        computerScore: prevState.computerScore + totalScore
       };
     });
   }

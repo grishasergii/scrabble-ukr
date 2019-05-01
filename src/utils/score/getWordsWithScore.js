@@ -15,7 +15,7 @@ const getWordsWithScore = (tiles, placedTilesIndices, boardSize, direction) => {
   const primaryWordIndices = getWordIndicesFromAnchor(tiles, placedTilesIndices[0], stepPrimary, boardSize);
 
   scores.push({
-    word: primaryWordIndices.map(i => tiles[i.letter.letter.toLower()]).join(''),
+    word: primaryWordIndices.map(i => tiles[i].letter.letter.toLowerCase()).join(''),
     score: getWordScore(primaryWordIndices, tiles)
   })
 
@@ -26,7 +26,7 @@ const getWordsWithScore = (tiles, placedTilesIndices, boardSize, direction) => {
     }
 
     scores.push({
-      word: secondaryWordIndices.map(i => tiles[i.letter.letter.toLower()]).join(''),
+      word: secondaryWordIndices.map(i => tiles[i].letter.letter.toLowerCase()).join(''),
       score: getWordScore(secondaryWordIndices, tiles)
     });
   }
