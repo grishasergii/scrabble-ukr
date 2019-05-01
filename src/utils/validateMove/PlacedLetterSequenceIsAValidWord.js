@@ -12,10 +12,8 @@ class PlacedLetterSequenceIsAValidWord extends ValidationRule {
     const lettersSequence = lettersIndices.map(i => tiles[i].letter.letter.toLowerCase()).join('');
 
     if (dictionary.has(lettersSequence) === false) {
-      return {
-        isValid: false,
-        errorMessage: `I do not know such word as ${lettersSequence}`
-      };   
+      this.errorMessage = `I do not know such word as ${lettersSequence}`;
+      return false;   
     }
     
     return true;

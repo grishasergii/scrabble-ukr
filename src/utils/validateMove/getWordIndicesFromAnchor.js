@@ -16,7 +16,7 @@ const getWordIndicesFromAnchor = (tiles, anchorIndex, step, boardSize) => {
     while (tiles[index].letter !== null && tiles[index].letter !== undefined) {
       indices.push(index);
       index = index + s;
-      if (index >= tilesLength) {
+      if (index >= tilesLength || index < 0) {
         break;
       }
       const {row, col} = indexToRowCol(index, boardSize);
