@@ -108,7 +108,8 @@ class Game extends Component {
       computerRack: computerRack,
       moveIsInvalidMessage: null,
       invalidWords: null,
-      whoseTurn: 'player'
+      whoseTurn: 'player',
+      lastMove: []
     };
   }
 
@@ -301,7 +302,6 @@ class Game extends Component {
   }
 
   playTurnHandler = () => {
-
     this.setState((prevState) => {
       const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort((a, b) => a - b);
       const boardSize = prevState.boardSize;
@@ -314,7 +314,7 @@ class Game extends Component {
         dictionary: this.dictionary,
         direction: direction
       });
-      
+
       if (isValid === false) {
         return {
           moveIsInvalidMessage: errorMessage
@@ -336,7 +336,8 @@ class Game extends Component {
         bagOfLetters: updated.updatedBagOfLetters,
         playerRack: updated.updatedRack,
         squaresWithPlacedLettersIndices: new Set([]),
-        whoseTurn: 'computer'
+        whoseTurn: 'computer',
+        lastMove: new Set(placedIndices)
       };
     });
   }
@@ -373,7 +374,8 @@ class Game extends Component {
         squares: updatedTiles,
         computerRack: updated.updatedRack,
         bagOfLetters: updated.updatedBagOfLetters,
-        whoseTurn: 'player'
+        whoseTurn: 'player',
+        lastMove: new Set(moveBoardRackIndices.map(x => x.boardIndex))
       };
     });
   }
@@ -448,7 +450,8 @@ class Game extends Component {
         <Board 
           squareClick={this.placeLetterOnBoardHandler} 
           letterClick={this.selectLetterHandler} 
-          squares={this.state.squares} />
+          squares={this.state.squares}
+          lastMove={this.state.lastMove} />
 
         <Rack 
           letterClick={this.selectLetterHandler} 

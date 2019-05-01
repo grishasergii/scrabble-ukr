@@ -10,6 +10,11 @@ const board = (props) => {
     let squareClick = ()  => props.squareClick(sqIndex);
 
     if (sq !== null && sq !== undefined && sq.letter !== null && sq.letter !== undefined) {
+      let highlighted = false;
+      if (props.lastMove.has(sqIndex)) {
+        highlighted = true;
+      }
+
       letter = (
         <Letter 
           letter={sq.letter.letter} 
@@ -18,7 +23,9 @@ const board = (props) => {
           selected={sq.letter.selected}
           selectable={true}
           alreadyPlayed={sq.letter.alreadyPlayed}
-          color={sq.letter.color} />
+          color={sq.letter.color}
+          highlighted={highlighted}
+        />
       );
 
       squareClick = null;

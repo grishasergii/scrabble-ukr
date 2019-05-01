@@ -18,3 +18,7 @@
 .AlreadyPlayed {
   border-style: dotted;
 }
+
+.Highlighted {
+  background-color: blanchedalmond;
+}

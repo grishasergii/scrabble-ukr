@@ -23,6 +23,10 @@ const letter = (props) => {
     classes.push(styles.Selected);
   }
 
+  if (props.highlighted === true) {
+    classes.push(styles.Highlighted);
+  }
+
   const spanStyle = {
     borderColor: props.color
   };
