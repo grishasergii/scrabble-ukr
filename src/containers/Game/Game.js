@@ -12,6 +12,7 @@ import PlayerMoveValidation from '../../utils/validateMove/PlayerMoveValidation'
 import getDirection from '../../utils/validateMove/getDirection';
 import Score from '../../components/Info/Score/Score';
 import getWordsWithScore from '../../utils/score/getWordsWithScore';
+import Log from '../../components/Info/Log/Log';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -112,7 +113,8 @@ class Game extends Component {
       whoseTurn: 'player',
       lastMove: new Set([]),
       playerScore: 0,
-      computerScore: 0
+      computerScore: 0,
+      gameEvents: []
     };
   }
 
@@ -339,6 +341,12 @@ class Game extends Component {
       // refill players rack
       const updated = this.refillRack(prevState.playerRack, prevState.bagOfLetters, this.playerColor);
 
+      // update game events log
+      const updatedGameEvents = [...prevState.gameEvents];
+      for (const wordWithScore of wordsWithScore) {
+        updatedGameEvents.push(`Player played ${wordWithScore.word} with score ${wordWithScore.score}`);
+      }
+
       return {
         squares: tiles,
         bagOfLetters: updated.updatedBagOfLetters,
@@ -346,7 +354,8 @@ class Game extends Component {
         squaresWithPlacedLettersIndices: new Set([]),
         whoseTurn: 'computer',
         lastMove: new Set(placedIndices),
-        playerScore: prevState.playerScore + totalScore
+        playerScore: prevState.playerScore + totalScore,
+        gameEvents: updatedGameEvents
       };
     });
   }
@@ -362,7 +371,8 @@ class Game extends Component {
       if (moveBoardRackIndices === null) {
         console.log('computer pass');
         return {
-          whoseTurn: 'player'
+          whoseTurn: 'player',
+          gameEvents: [...prevState.gameEvents].push('Computer passed')
         };
       }
 
@@ -370,12 +380,9 @@ class Game extends Component {
       const updatedComputerRack = prevState.computerRack.map(x => {return {...x}});
 
       for (let boardRackIndex of moveBoardRackIndices) {
-        updatedTiles[boardRackIndex.boardIndex].letter = {...updatedComputerRack[boardRackIndex.rackIndex], alreadyPlayed: true};
+        updatedTiles[boardRackIndex.boardIndex].letter = {...updatedComputerRack[boardRackIndex.rackIndex]};
         updatedComputerRack[boardRackIndex.rackIndex] = null;
       }
-
-      // refill computer rack
-      const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters, this.computerColor);
 
       // calculate score
       const placedTilesIndices = moveBoardRackIndices.map(x => x.boardIndex);
@@ -385,13 +392,28 @@ class Game extends Component {
       for (const wordScore of wordsWithScore) {
         totalScore = totalScore + wordScore.score;
       }
+
+      for (let boardRackIndex of moveBoardRackIndices) {
+        updatedTiles[boardRackIndex.boardIndex].letter = {...updatedTiles[boardRackIndex.boardIndex].letter, alreadyPlayed: true};
+      }
+
+      // refill computer rack
+      const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters, this.computerColor);
+
+      // update game events log
+      const updatedGameEvents = [...prevState.gameEvents];
+      for (const wordWithScore of wordsWithScore) {
+        updatedGameEvents.push(`Computer played ${wordWithScore.word} with score ${wordWithScore.score}`);
+      }
+
       return {
         squares: updatedTiles,
         computerRack: updated.updatedRack,
         bagOfLetters: updated.updatedBagOfLetters,
         whoseTurn: 'player',
         lastMove: new Set(moveBoardRackIndices.map(x => x.boardIndex)),
-        computerScore: prevState.computerScore + totalScore
+        computerScore: prevState.computerScore + totalScore,
+        gameEvents: updatedGameEvents
       };
     });
   }
@@ -409,8 +431,13 @@ class Game extends Component {
   }
 
   passHandler = () => {
-    this.setState({
-      whoseTurn: 'computer'
+    this.setState(prevState => {
+      const updatedGameEvents = [...prevState.gameEvents];
+      updatedGameEvents.push('You passed');
+      return {
+        whoseTurn: 'computer',
+        gameEvents: updatedGameEvents
+      };
     });
   }
 
@@ -488,6 +515,10 @@ class Game extends Component {
 
         <TilesLeft
           tilesCount={this.state.bagOfLetters.length} />
+        
+        <Log 
+          events={this.state.gameEvents}
+        />
 
         {computerPlayer}
       </div>
