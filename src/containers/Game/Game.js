@@ -307,11 +307,14 @@ class Game extends Component {
       const boardSize = prevState.boardSize;
       const tiles = prevState.squares.map(x => { return {...x}; });
       const direction = getDirection(tiles, placedIndices, boardSize);
-      const {isValid, errorMessage} = this.playerMoveValidator.validate({tiles: tiles, 
-                                                                         boardSize: boardSize, 
-                                                                         placedTilesIndices: placedIndices, 
-                                                                         dictionary: this.dictionary,
-                                                                         direction: direction});
+      const {isValid, errorMessage} = this.playerMoveValidator.validate({
+        tiles: tiles, 
+        boardSize: boardSize, 
+        placedTilesIndices: placedIndices, 
+        dictionary: this.dictionary,
+        direction: direction
+      });
+      
       if (isValid === false) {
         return {
           moveIsInvalidMessage: errorMessage
