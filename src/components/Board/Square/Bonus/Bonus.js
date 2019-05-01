@@ -3,36 +3,37 @@ import styles from './Bonus.css';
 
 const bonus = (props) => {
   let bonusText = null;
-  let color = null;
+  let style = null;
 
   switch(props.type) {
     case('3xWS'):
       bonusText = 'TW';
-      color = 'red';
+      style = {backgroundColor: '#80201d'};
       break;
     case('2xWS'):
       bonusText = 'DW';
-      color= 'pink';
+      style = {backgroundColor: '#d15d30'};
       break;
     case('3xLS'):
       bonusText = 'TL';
-      color = 'blue';
+      style = {backgroundColor: '#294f80'};
       break;
     case('2xLS'):
       bonusText = 'DL';
-      color = 'cyan';
+      style = {backgroundColor: '#3d8029'};
       break;
     case('start'):
-      color = 'yellow';
+      style = {backgroundColor: '#d6c755', fontSize: '2em'};
+      bonusText = String.fromCharCode(9734);
       break;
     default:
       bonusText = null;
-      color = null;
+      style = null;
   }
 
   return (
-    <div className={styles.Bonus} style={{backgroundColor: color}}>
-      
+    <div className={styles.Bonus} style={style}>
+      {bonusText}
     </div>
   );
 }

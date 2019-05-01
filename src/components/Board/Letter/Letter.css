@@ -9,12 +9,18 @@
 
   margin: 2px;
 
-  color: black;
   background-color: white;
   text-align: center;
   padding: 2px;
   border: 2px solid;
   border-radius: 5px;
+
+  text-align: center;
+
+
+  color: black;
+  font-weight: bold;
+
 }
 
 .Selectable {
@@ -30,5 +36,5 @@
 }
 
 .Highlighted {
-  background-color: blanchedalmond;
+  background-color: #f0c546;
 }

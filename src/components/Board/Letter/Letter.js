@@ -32,9 +32,9 @@ const letter = (props) => {
   };
 
   return (
-    <span onClick={onClick} className={classes.join(' ')} style={spanStyle}>
+    <div onClick={onClick} className={classes.join(' ')} style={spanStyle}>
       {props.letter}<sup>{props.value}</sup>
-    </span>
+    </div>
   );
 }
 

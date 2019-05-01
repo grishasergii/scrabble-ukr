@@ -6,4 +6,10 @@
   right: 0;
   z-index: 0;
   overflow: hidden;
+
+  text-align: center;
+  vertical-align: middle;
+  line-height: 30px;
+  color: white;
+  font-weight: bold;
 }
