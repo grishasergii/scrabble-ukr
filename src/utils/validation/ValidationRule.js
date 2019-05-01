@@ -3,8 +3,8 @@ class ValidationRule {
     this.errorMessage = null;
   }
 
-  isSatisfied({}) {
-    throw new Exception('not implemented');
+  isSatisfied(args = {}) {
+    throw new Error('not implemented');
   }
 }
 

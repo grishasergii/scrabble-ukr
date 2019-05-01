@@ -9,7 +9,7 @@ class Validation {
   }
 
   validate(args) {
-    for (let rule of rules) {
+    for (let rule of this.rules) {
       const isValid = rule.isSatisfied(args);
       if (isValid === false) {
         return {

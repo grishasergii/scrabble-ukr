@@ -1,6 +1,10 @@
 import indexToRowCol from '../board/indexToRowCol';
 
 const getDirection = (tiles, placedTilesIndices, boardSize) => {
+  if (placedTilesIndices.length === 0) {
+    return '';
+  }
+  
   const rows = new Set([]);
   const cols = new Set([]);
 

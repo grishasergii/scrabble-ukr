@@ -5,10 +5,12 @@ import GameControls from '../../components/GameControls/GameControls';
 import SwapLetters from '../SwapLetters/SwapLetters';
 import Modal from '../../components/UI/Modal/Modal';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
-import isValidWordPlacement from '../../utils/validateMove/isValidWordPlacement';
 import getMoveBoardRackIndices from '../../utils/makeMove/getMoveBoardRackIndices';
 import ComputerPlayer from '../../components/ComputerPlayer/ComputerPlayer';
 import TilesLeft from '../../components/Info/TilesLeft/TilesLeft';
+import PlayerMoveValidation from '../../utils/validateMove/PlayerMoveValidation';
+import getDirection from '../../utils/validateMove/getDirection';
+
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -23,6 +25,8 @@ class Game extends Component {
     this.computerColor = colorsShuffled.pop();
 
     this.dictionary = new Set(require('../../assets/dict_ukr.json'));
+
+    this.playerMoveValidator = new PlayerMoveValidation();
 
     // https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Ukrainian
     const bagOfLetters = [
@@ -301,11 +305,14 @@ class Game extends Component {
     this.setState((prevState) => {
       const placedIndices = [...prevState.squaresWithPlacedLettersIndices].sort((a, b) => a - b);
       const boardSize = prevState.boardSize;
-      const squares = prevState.squares.map(x => { return {...x}; });
-
-      const {isValid, errorMessage} = isValidWordPlacement(squares, boardSize, placedIndices, this.dictionary);
-
-        if (isValid === false) {
+      const tiles = prevState.squares.map(x => { return {...x}; });
+      const direction = getDirection(tiles, placedIndices, boardSize);
+      const {isValid, errorMessage} = this.playerMoveValidator.validate({tiles: tiles, 
+                                                                         boardSize: boardSize, 
+                                                                         placedTilesIndices: placedIndices, 
+                                                                         dictionary: this.dictionary,
+                                                                         direction: direction});
+      if (isValid === false) {
         return {
           moveIsInvalidMessage: errorMessage
         };
@@ -313,7 +320,7 @@ class Game extends Component {
 
       // mark placed letters as already played
       placedIndices.forEach(i => {
-        squares[i].letter.alreadyPlayed = true;
+        tiles[i].letter.alreadyPlayed = true;
       });
 
       // refill players rack
@@ -322,7 +329,7 @@ class Game extends Component {
       // calculate score
 
       return {
-        squares: squares,
+        squares: tiles,
         bagOfLetters: updated.updatedBagOfLetters,
         playerRack: updated.updatedRack,
         squaresWithPlacedLettersIndices: new Set([]),
