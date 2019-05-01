@@ -82,26 +82,27 @@ class Game extends Component {
       computerRack.push({...bagOfLetters.pop(), color: this.computerColor});
     }
 
+    const squares = Array(225).fill({});
+
+    const bonuses = [
+      {bonus: '3xWS', indices: [0, 7, 14, 105, 119, 210, 217, 224]},
+      {bonus: '2xWS', indices: [16, 32, 48, 64, 28, 42, 56, 70, 196, 182, 168, 154, 208, 192, 176, 160]},
+      {bonus: '3xLS', indices: [20, 24, 76, 136, 88, 148, 200, 204, 80, 84, 140, 144]},
+      {bonus: '2xLS', indices: [36, 52, 38, 92, 108, 122, 102, 116, 132, 186, 172, 188, 96, 126, 98, 128, 3, 11, 45, 165, 213, 221, 59, 179]},
+      {bonus: 'start', indices: [112]}
+    ];
+
+    for (const bonus of bonuses) {
+      for (const i of bonus.indices) {
+        squares[i] = {bonus: bonus.bonus};
+        console.log(i);
+      }
+    }
+
     this.state =  {
       boardSize: 15,
       bagOfLetters: bagOfLetters,
-      squares: [
-        {bonus: '3xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {bonus: '2xWS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {bonus: '2xLS'}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-        {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {},
-      ],
+      squares: squares,
       selectedLetter: null,
       squaresWithPlacedLettersIndices: new Set([]),
       playerRack: playerRack,
@@ -109,7 +110,7 @@ class Game extends Component {
       moveIsInvalidMessage: null,
       invalidWords: null,
       whoseTurn: 'player',
-      lastMove: []
+      lastMove: new Set([])
     };
   }
 

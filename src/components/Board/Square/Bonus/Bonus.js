@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './Bonus.css';
 
 const bonus = (props) => {
   let bonusText = null;
@@ -21,13 +22,18 @@ const bonus = (props) => {
       bonusText = 'DL';
       color = 'cyan';
       break;
+    case('start'):
+      color = 'yellow';
+      break;
     default:
       bonusText = null;
       color = null;
   }
 
   return (
-    <span style={{color: color}}>{bonusText}</span>
+    <div className={styles.Bonus} style={{backgroundColor: color}}>
+      
+    </div>
   );
 }
 

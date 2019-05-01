@@ -1,4 +1,14 @@
 .Letter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+  overflow: hidden;
+
+  margin: 2px;
+
   color: black;
   background-color: white;
   text-align: center;

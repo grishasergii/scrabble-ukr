@@ -6,6 +6,7 @@ const square = (props) => {
   if (props.click !== null && props.click !== undefined) {
     classes.push(styles.Selectable);
   }
+
   return (
     <div onClick={props.click} className={classes.join(' ')}>
       {props.children}

@@ -31,7 +31,7 @@ const board = (props) => {
       squareClick = null;
     }
     let bonus = null;
-    if (sq !== null && sq !== undefined) {
+    if (sq.bonus !== null && sq.bonus !== undefined) {
       bonus = <Bonus type={sq.bonus}/>;
     }
     return(
@@ -41,6 +41,7 @@ const board = (props) => {
       </Square>
     );
   });
+
   return (
     <div className={styles.Board}>
       {squares}
