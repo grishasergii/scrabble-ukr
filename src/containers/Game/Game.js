@@ -10,6 +10,7 @@ import ComputerPlayer from '../../components/ComputerPlayer/ComputerPlayer';
 import TilesLeft from '../../components/Info/TilesLeft/TilesLeft';
 import PlayerMoveValidation from '../../utils/validateMove/PlayerMoveValidation';
 import getDirection from '../../utils/validateMove/getDirection';
+import Score from '../../components/Info/Score/Score';
 
 
 class Game extends Component {
@@ -110,7 +111,9 @@ class Game extends Component {
       moveIsInvalidMessage: null,
       invalidWords: null,
       whoseTurn: 'player',
-      lastMove: new Set([])
+      lastMove: new Set([]),
+      playerScore: 0,
+      computerScore: 0
     };
   }
 
@@ -467,6 +470,10 @@ class Game extends Component {
           play={this.playTurnHandler}
           pass={this.passHandler} />
         
+        <Score
+          playerScore={this.state.playerScore}
+          computerScore={this.state.computerScore} />
+
         <TilesLeft
           tilesCount={this.state.bagOfLetters.length} />
 
