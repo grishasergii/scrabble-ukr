@@ -11,7 +11,7 @@ import TilesLeft from '../../components/Info/TilesLeft/TilesLeft';
 import PlayerMoveValidation from '../../utils/validateMove/PlayerMoveValidation';
 import getDirection from '../../utils/validateMove/getDirection';
 import Score from '../../components/Info/Score/Score';
-
+import getWordsWithScore from '../../utils/score/getWordsWithScore';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -86,17 +86,16 @@ class Game extends Component {
     const squares = Array(225).fill({});
 
     const bonuses = [
-      {bonus: '3xWS', indices: [0, 7, 14, 105, 119, 210, 217, 224]},
-      {bonus: '2xWS', indices: [16, 32, 48, 64, 28, 42, 56, 70, 196, 182, 168, 154, 208, 192, 176, 160]},
-      {bonus: '3xLS', indices: [20, 24, 76, 136, 88, 148, 200, 204, 80, 84, 140, 144]},
-      {bonus: '2xLS', indices: [36, 52, 38, 92, 108, 122, 102, 116, 132, 186, 172, 188, 96, 126, 98, 128, 3, 11, 45, 165, 213, 221, 59, 179]},
-      {bonus: 'start', indices: [112]}
+      {type: '3xWS', wordMultiplier: 3, letterMultiplier: 1, indices: [0, 7, 14, 105, 119, 210, 217, 224]},
+      {type: '2xWS', wordMultiplier: 2, letterMultiplier: 1, indices: [16, 32, 48, 64, 28, 42, 56, 70, 196, 182, 168, 154, 208, 192, 176, 160]},
+      {type: '3xLS', wordMultiplier: 1, letterMultiplier: 3, indices: [20, 24, 76, 136, 88, 148, 200, 204, 80, 84, 140, 144]},
+      {type: '2xLS', wordMultiplier: 1, letterMultiplier: 2, indices: [36, 52, 38, 92, 108, 122, 102, 116, 132, 186, 172, 188, 96, 126, 98, 128, 3, 11, 45, 165, 213, 221, 59, 179]},
+      {type: 'start', wordMultiplier: 2, letterMultiplier: 1, indices: [112]}
     ];
 
     for (const bonus of bonuses) {
       for (const i of bonus.indices) {
-        squares[i] = {bonus: bonus.bonus};
-        console.log(i);
+        squares[i] = {bonus: {type: bonus.type, wordMultiplier: bonus.wordMultiplier, letterMultiplier: bonus.letterMultiplier}};
       }
     }
 
@@ -325,6 +324,11 @@ class Game extends Component {
         };
       }
 
+      // calculate score
+      const wordsWithScore = getWordsWithScore(tiles, placedIndices, boardSize, direction);
+      const totalScore = wordsWithScore.reduce((accumulator, currentValue) => accumulator + currentValue.score);
+
+
       // mark placed letters as already played
       placedIndices.forEach(i => {
         tiles[i].letter.alreadyPlayed = true;
@@ -333,15 +337,14 @@ class Game extends Component {
       // refill players rack
       const updated = this.refillRack(prevState.playerRack, prevState.bagOfLetters, this.playerColor);
 
-      // calculate score
-
       return {
         squares: tiles,
         bagOfLetters: updated.updatedBagOfLetters,
         playerRack: updated.updatedRack,
         squaresWithPlacedLettersIndices: new Set([]),
         whoseTurn: 'computer',
-        lastMove: new Set(placedIndices)
+        lastMove: new Set(placedIndices),
+        playerScore: totalScore
       };
     });
   }
@@ -373,13 +376,18 @@ class Game extends Component {
       const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters, this.computerColor);
 
       // calculate score
+      const placedTilesIndices = moveBoardRackIndices.map(x => x.boardIndex);
+      const direction = getDirection(updatedTiles, placedTilesIndices, prevState.boardSize);
+      const wordsWithScore = getWordsWithScore(updatedTiles, placedTilesIndices, prevState.boardSize, direction);
+      const totalScore = wordsWithScore.reduce((accumulator, currentValue) => accumulator + currentValue.score);
 
       return {
         squares: updatedTiles,
         computerRack: updated.updatedRack,
         bagOfLetters: updated.updatedBagOfLetters,
         whoseTurn: 'player',
-        lastMove: new Set(moveBoardRackIndices.map(x => x.boardIndex))
+        lastMove: new Set(moveBoardRackIndices.map(x => x.boardIndex)),
+        computerScore: totalScore
       };
     });
   }

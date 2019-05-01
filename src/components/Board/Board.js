@@ -32,7 +32,7 @@ const board = (props) => {
     }
     let bonus = null;
     if (sq.bonus !== null && sq.bonus !== undefined) {
-      bonus = <Bonus type={sq.bonus}/>;
+      bonus = <Bonus bonus={sq.bonus}/>;
     }
     return(
       <Square key={sqIndex} click={squareClick}>

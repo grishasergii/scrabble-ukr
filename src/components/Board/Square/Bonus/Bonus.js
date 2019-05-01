@@ -5,7 +5,7 @@ const bonus = (props) => {
   let bonusText = null;
   let style = null;
 
-  switch(props.type) {
+  switch(props.bonus.type) {
     case('3xWS'):
       bonusText = 'TW';
       style = {backgroundColor: '#80201d'};
