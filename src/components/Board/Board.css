@@ -1,7 +1,8 @@
 .Board {
+  margin: 5px;
   display: grid;
   grid-template-columns: repeat(15, auto);
-  justify-content: center;
+  justify-content: left;
 
-  grid-gap: 1px;
+  grid-gap: 3px;
 }
