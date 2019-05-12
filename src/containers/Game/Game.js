@@ -256,7 +256,7 @@ class Game extends Component {
       if (updatedBagOfLetters.length === 0) {
         return l;
       }
-      if (l === null || l === undefined) {
+      if (l === null) {
         return {...updatedBagOfLetters.pop(), color: color};
       }
       return l;
@@ -367,17 +367,24 @@ class Game extends Component {
         prevState.boardSize, 
         prevState.computerRack, 
         this.dictionary);
+      
+      const updatedGameEvents = [...prevState.gameEvents];
 
       if (moveBoardRackIndices === null) {
-        console.log('computer pass');
+        updatedGameEvents.push('Computer passed');
         return {
           whoseTurn: 'player',
-          gameEvents: [...prevState.gameEvents].push('Computer passed')
+          gameEvents: updatedGameEvents
         };
       }
 
       const updatedTiles = prevState.squares.map(x => {return {...x}});
-      const updatedComputerRack = prevState.computerRack.map(x => {return {...x}});
+      const updatedComputerRack = prevState.computerRack.map(x => {
+        if (x === null || x === undefined) {
+          return null;
+        }
+        return {...x};
+      });
 
       for (let boardRackIndex of moveBoardRackIndices) {
         updatedTiles[boardRackIndex.boardIndex].letter = {...updatedComputerRack[boardRackIndex.rackIndex]};
@@ -401,7 +408,7 @@ class Game extends Component {
       const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters, this.computerColor);
 
       // update game events log
-      const updatedGameEvents = [...prevState.gameEvents];
+      
       for (const wordWithScore of wordsWithScore) {
         updatedGameEvents.push(`Computer played ${wordWithScore.word} with score ${wordWithScore.score}`);
       }
