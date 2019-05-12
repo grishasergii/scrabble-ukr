@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import Modal from '../UI/Modal/Modal';
+import Spinner from '../UI/Spinner/Spinner';
 
 class ComputerPlayer extends Component {
 
@@ -10,7 +11,7 @@ class ComputerPlayer extends Component {
 
   render() {
     return <Auxiliary>
-      <Modal>Computer is thinking...</Modal>
+      <Modal><Spinner/>Computer is thinking...</Modal>
     </Auxiliary>
   }
 }
