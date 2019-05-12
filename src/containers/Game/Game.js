@@ -515,7 +515,10 @@ class Game extends Component {
             clear={this.returnPlacedLettersToRackHandler}
             swap={this.startSwapLettersHandler}
             play={this.playTurnHandler}
-            pass={this.passHandler} />
+            pass={() => {
+              this.returnPlacedLettersToRackHandler();
+              this.passHandler();
+            }} />
         </div>
         
         <div>
