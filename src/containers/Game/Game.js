@@ -13,6 +13,7 @@ import getDirection from '../../utils/validateMove/getDirection';
 import Score from '../../components/Info/Score/Score';
 import getWordsWithScore from '../../utils/score/getWordsWithScore';
 import Log from '../../components/Info/Log/Log';
+import ToggleButton from '../../components/UI/ToggleButton/ToggleButton';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -114,7 +115,8 @@ class Game extends Component {
       lastMove: new Set([]),
       playerScore: 0,
       computerScore: 0,
-      gameEvents: []
+      gameEvents: [],
+      computerRackIsVisible: false
     };
   }
 
@@ -448,6 +450,14 @@ class Game extends Component {
     });
   }
 
+  toggleComputerRackHandler = () => {
+    this.setState(prevState => {
+      return {
+        computerRackIsVisible: !prevState.computerRackIsVisible
+      }
+    });
+  }
+
   render() {
     let swapLetters = null;
     if (this.state.showSwapLetters === true) {
@@ -486,6 +496,13 @@ class Game extends Component {
       computerPlayer = <ComputerPlayer componentDidMountHandler={this.playComputerMove} />
     }
 
+    let computerRack = null;
+    if (this.state.computerRackIsVisible === true) {
+      computerRack = <Rack 
+        letters={this.state.computerRack} 
+        rackSelectable={false} />;
+    }
+
     return(
       <div>
         {moveIsInvalidMessage}
@@ -494,9 +511,13 @@ class Game extends Component {
         {swapLetters}
 
         <div>
-          <Rack 
-            letters={this.state.computerRack} 
-            rackSelectable={false} />
+          <ToggleButton 
+            handler={this.toggleComputerRackHandler}
+            isToggleOn={false}
+            captionOn={'Hide computer\'s rack'}
+            captionOff={'Show computer\'s rack'}
+            />
+          {computerRack}
 
           <Board 
             squareClick={this.placeLetterOnBoardHandler} 
