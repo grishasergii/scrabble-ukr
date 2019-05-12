@@ -24,7 +24,7 @@ const getMoveBoardRackIndices = (tiles, boardSize, rack, dictionary) => {
         placedTilesIndices.push(boardRackIndex.boardIndex);
       }
       const direction = getDirection(updatedTiles, placedTilesIndices, boardSize);
-      const {isValid, errorMessage} = validator.validate({
+      const {isValid} = validator.validate({
         tiles: updatedTiles, 
         boardSize: boardSize, 
         placedTilesIndices: placedTilesIndices, 

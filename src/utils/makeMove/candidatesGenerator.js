@@ -48,9 +48,11 @@ function* candidatesGenerator(tiles, rack, anchorIndex, boardSize, step) {
   for (let combinationLength=maxCombinationLength; combinationLength > 1; combinationLength--) {
     const combinations = Combinatorics.combination(lettersWithRackIndices, combinationLength);
     let combination;
+    // eslint-disable-next-line no-cond-assign
     while (combination = combinations.next()) {  
       const permutations = Combinatorics.permutation(combination);
       let permuation;
+      // eslint-disable-next-line no-cond-assign
       while (permuation = permutations.next()) {
         const lettersCombination = permuation.map(x => x.letter);
         if (seenCombinations.has(lettersCombination)) {
