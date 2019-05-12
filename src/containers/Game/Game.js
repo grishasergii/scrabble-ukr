@@ -486,39 +486,42 @@ class Game extends Component {
 
         {swapLetters}
 
-        <Rack 
-          letters={this.state.computerRack} 
-          rackSelectable={false} />
+        <div>
+          <Rack 
+            letters={this.state.computerRack} 
+            rackSelectable={false} />
 
-        <Board 
-          squareClick={this.placeLetterOnBoardHandler} 
-          letterClick={this.selectLetterHandler} 
-          squares={this.state.squares}
-          lastMove={this.state.lastMove} />
+          <Board 
+            squareClick={this.placeLetterOnBoardHandler} 
+            letterClick={this.selectLetterHandler} 
+            squares={this.state.squares}
+            lastMove={this.state.lastMove} />
 
-        <Rack 
-          letterClick={this.selectLetterHandler} 
-          selectedFrom='playerRack' 
-          letters={this.state.playerRack}
-          rackSelectable={true} />
+          <Rack 
+            letterClick={this.selectLetterHandler} 
+            selectedFrom='playerRack' 
+            letters={this.state.playerRack}
+            rackSelectable={true} />
+          
+          <GameControls
+            enabled={this.state.whoseTurn === 'player'}
+            clear={this.returnPlacedLettersToRackHandler}
+            swap={this.startSwapLettersHandler}
+            play={this.playTurnHandler}
+            pass={this.passHandler} />
+        </div>
         
-        <GameControls
-          enabled={this.state.whoseTurn === 'player'}
-          clear={this.returnPlacedLettersToRackHandler}
-          swap={this.startSwapLettersHandler}
-          play={this.playTurnHandler}
-          pass={this.passHandler} />
-        
-        <Score
-          playerScore={this.state.playerScore}
-          computerScore={this.state.computerScore} />
+        <div>
+          <Score
+            playerScore={this.state.playerScore}
+            computerScore={this.state.computerScore} />
 
-        <TilesLeft
-          tilesCount={this.state.bagOfLetters.length} />
-        
-        <Log 
-          events={this.state.gameEvents}
-        />
+          <TilesLeft
+            tilesCount={this.state.bagOfLetters.length} />
+          
+          <Log 
+            events={this.state.gameEvents} />
+        </div>
 
         {computerPlayer}
       </div>
