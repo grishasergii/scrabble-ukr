@@ -14,6 +14,7 @@ import Score from '../../components/Info/Score/Score';
 import getWordsWithScore from '../../utils/score/getWordsWithScore';
 import Log from '../../components/Info/Log/Log';
 import ToggleButton from '../../components/UI/ToggleButton/ToggleButton';
+import ButtonWithConfirm from '../ButtonWithConfirm/ButtonWithConfirm';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -521,7 +522,11 @@ class Game extends Component {
         {swapLetters}
 
         <div>
-          <button onClick={this.restartHandler}>Restart</button>
+          <ButtonWithConfirm 
+            caption='Restart'
+            question='Do you really want to restart?'
+            action={this.restartHandler}
+          />
 
           <ToggleButton 
             handler={this.toggleComputerRackHandler}
