@@ -279,6 +279,13 @@ class Game extends Component {
 
   swapLettersHandler = (indices) => {
     this.setState((prevState) => {
+      const numNewLetters = Math.min(indices.size, prevState.bagOfLetters.length);
+
+      if (numNewLetters === 0) {
+        return {
+          showSwapLetters: false
+        };
+      }
 
       const updatedPlayerRack = prevState.playerRack.map(x => {
         if (x === null) {
@@ -286,8 +293,7 @@ class Game extends Component {
         }
         return {...x};
       });
-
-      const numNewLetters = Math.min(indices.size, prevState.bagOfLetters.length);
+      
       const shuffledBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}).sort(() => 0.5 - Math.random());
       const selectedLetters = shuffledBagOfLetters.slice(0, numNewLetters);
       const updatedBagOfLetters = shuffledBagOfLetters.slice(numNewLetters, shuffledBagOfLetters.length);
