@@ -31,6 +31,12 @@ class Game extends Component {
 
     this.playerMoveValidator = new PlayerMoveValidation();
 
+    this.state = {
+      computerRackIsVisible: false,
+      ...this.getInitialGameState()};
+  }
+
+  getInitialGameState = () => {
     // https://en.wikipedia.org/wiki/Scrabble_letter_distributions#Ukrainian
     const bagOfLetters = [
       ...Array(10).fill({letter: 'О', value: 1}),
@@ -101,7 +107,7 @@ class Game extends Component {
       }
     }
 
-    this.state =  {
+    return {
       boardSize: 15,
       bagOfLetters: bagOfLetters,
       squares: squares,
@@ -116,7 +122,7 @@ class Game extends Component {
       playerScore: 0,
       computerScore: 0,
       gameEvents: [],
-      computerRackIsVisible: false
+      
     };
   }
 
@@ -458,6 +464,10 @@ class Game extends Component {
     });
   }
 
+  restartHandler = () => {
+    this.setState(this.getInitialGameState());
+  }
+
   render() {
     let swapLetters = null;
     if (this.state.showSwapLetters === true) {
@@ -511,6 +521,8 @@ class Game extends Component {
         {swapLetters}
 
         <div>
+          <button onClick={this.restartHandler}>Restart</button>
+
           <ToggleButton 
             handler={this.toggleComputerRackHandler}
             isToggleOn={false}
