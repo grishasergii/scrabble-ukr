@@ -1,7 +1,7 @@
 .Rack {
   margin: 5px;
   display: grid;
-  grid-gap: 1px;
+  grid-gap: 3px;
   grid-auto-flow: column;
   justify-content: center;
   background-color: #303030;
