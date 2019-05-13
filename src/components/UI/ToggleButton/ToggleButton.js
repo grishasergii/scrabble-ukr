@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Button from '../Button/Button';
 
 class ToggleButton extends Component {
   constructor (props) {
@@ -29,7 +30,10 @@ class ToggleButton extends Component {
       this.handleClick();
     }
     return (
-      <button onClick={handler}>{caption}</button>
+      <Button 
+        clickHandler={handler}
+        caption={caption}
+      />
     );
   }
 }

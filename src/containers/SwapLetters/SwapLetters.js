@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import Rack from '../../components/Board/Rack/Rack';
+import Button from '../../components/UI/Button/Button';
 
 class SwapLetters extends Component {
 
@@ -42,7 +43,11 @@ class SwapLetters extends Component {
           selectedFrom='swapLetters' 
           letters={this.state.rackLetters}
           rackSelectable={true} />
-        <button onClick={() => this.props.swapLettersHandler(this.state.selectedIndices)}>Ok</button>
+        
+        <Button 
+          clickHandler={() => this.props.swapLettersHandler(this.state.selectedIndices)}
+          caption='Ok'
+        />
       </Auxiliary>
     );
   }

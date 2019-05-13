@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from '../Modal/Modal';
+import Button from '../Button/Button';
 
 const errorMessage = (props) => {
   return (
@@ -8,7 +9,10 @@ const errorMessage = (props) => {
         {props.children}
       </p>
       <p>
-        <button onClick={props.closeMessageHandler}>ok</button>
+        <Button 
+          clickHandler={props.closeMessageHandler}
+          caption='Ok'
+        />
       </p>
     </Modal>
   );

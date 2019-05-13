@@ -1,5 +1,6 @@
 import React from 'react';
 import Modal from '../Modal/Modal';
+import Button from '../Button/Button';
 
 const confirm = (props) => {
   let question = 'Are you sure?';
@@ -9,8 +10,14 @@ const confirm = (props) => {
   return (
     <Modal>
       <p>{question}</p>
-      <button onClick={props.yesClickHandler}>Yes</button>
-      <button onClick={props.noClickHandler}>No</button>
+      <Button 
+        clickHandler={props.yesClickHandler}
+        caption='Yes'
+      />
+      <Button 
+        clickHandler={props.noClickHandler}
+        caption='No'
+      />
     </Modal>
   );
 }

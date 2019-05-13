@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Confirm from '../../components/UI/Confirm/Confirm';
 import Auxuliary from '../../hoc/Auxiliary/Auxiliary';
+import Button from '../../components/UI/Button/Button';
 
 class ButtonWithConfirm extends Component {
 
@@ -39,7 +40,10 @@ class ButtonWithConfirm extends Component {
     return (
       <Auxuliary>
         {confirmationDialog}
-        <button onClick={this.buttonClickHandler}>{this.props.caption}</button>
+        <Button 
+          clickHandler={this.buttonClickHandler}
+          caption={this.props.caption}
+        />
       </Auxuliary>
     );
   }
