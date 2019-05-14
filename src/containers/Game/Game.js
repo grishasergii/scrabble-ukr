@@ -123,7 +123,8 @@ class Game extends Component {
       playerScore: 0,
       computerScore: 0,
       gameEvents: [],
-      
+      gameFinished: false,
+      outcomeMessage: ''
     };
   }
 
@@ -475,6 +476,48 @@ class Game extends Component {
     this.setState(this.getInitialGameState());
   }
 
+  checkForGameEnd = () => {
+    this.setState(prevState => {
+      const isDefined = (x) => x !== null && x !== undefined;
+      if (prevState.playerRack.some(isDefined) && prevState.computerRack.some(isDefined)) {
+        return;
+      }
+
+      let playerScorePenalty = 0;
+      let computerScorePenalty = 0;
+      for (let i = 0; i < 7; i++) {
+        if (prevState.playerRack[i] !== null && prevState.playerRack[i] !== undefined) {
+          playerScorePenalty += prevState.playerRack[i].value;
+        }
+        if (prevState.computerRack[i] !== null && prevState.computerRack[i] !== undefined) {
+          computerScorePenalty += prevState.computerRack[i].value;
+        }
+      }
+
+      const updatedPlayerScore = prevState.playerScore - playerScorePenalty;
+      const updatedComputerScore = prevState.computerScore - computerScorePenalty;
+
+      let outcomeMessage = computerScorePenalty === 0 ? 'Computer has run out of tiles, game will end now.' : 'You have run out of tiles, game will end now.';
+      outcomeMessage += ` Your final score is ${updatedPlayerScore}, computer final score is ${updatedComputerScore}.`;
+
+
+      if (updatedComputerScore > updatedPlayerScore) {
+        outcomeMessage += ' Computer won :(';
+      } else if (updatedPlayerScore > updatedComputerScore) {
+        outcomeMessage += ' You won!';
+      } else {
+        outcomeMessage += ' It\'s a tie!';
+      }
+
+      return {
+        playerScore: updatedPlayerScore,
+        computerScore: updatedComputerScore,
+        gameFinished: true,
+        outcomeMessage: outcomeMessage
+      }
+    });
+  }
+
   render() {
     let swapLetters = null;
     if (this.state.showSwapLetters === true) {
@@ -509,8 +552,11 @@ class Game extends Component {
     }
 
     let computerPlayer = null;
-    if (this.state.whoseTurn === 'computer') {
-      computerPlayer = <ComputerPlayer componentDidMountHandler={this.playComputerMove} />
+    if (this.state.whoseTurn === 'computer' && this.state.gameFinished === false) {
+      computerPlayer = <ComputerPlayer componentDidMountHandler={() => {
+        this.playComputerMove();
+        this.checkForGameEnd();
+      }} />
     }
 
     let computerRack = null;
@@ -520,11 +566,19 @@ class Game extends Component {
         rackSelectable={false} />;
     }
 
+    let gameFinished = null;
+    if (this.state.gameFinished === true) {
+      gameFinished = <ErrorMessage 
+        closeMessageHandler={this.restartHandler}>
+        {this.state.outcomeMessage}
+      </ErrorMessage>;
+    }
+
     return(
       <div>
         {moveIsInvalidMessage}
         {invalidWordsMessage}
-
+        {gameFinished}
         {swapLetters}
 
         <div>
@@ -558,7 +612,10 @@ class Game extends Component {
             enabled={this.state.whoseTurn === 'player'}
             clear={this.returnPlacedLettersToRackHandler}
             swap={this.startSwapLettersHandler}
-            play={this.playTurnHandler}
+            play={() => {
+              this.playTurnHandler();
+              this.checkForGameEnd();
+            }}
             pass={() => {
               this.returnPlacedLettersToRackHandler();
               this.passHandler();
