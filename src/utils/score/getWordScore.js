@@ -28,13 +28,15 @@ const getWordScore = (wordIndices, tiles) => {
     wordValue = wordValue * m;
   }
 
-  const numberOfTilesPlaced = wordIndices.reduce((accumulator, i) => {
-    if (tiles[i].letter.alreadyPlayed === false) {
-      return accumulator + 1;
+  let numberOfTilesPlaced = 0;
+  const wordIndicesLength = wordIndices.length;
+  for (let i = 0; i < wordIndicesLength; i++) {
+    const index = wordIndices[i];
+    if (tiles[index].letter.alreadyPlayed === true) {
+      continue;
     }
-
-    return accumulator;
-  });
+    numberOfTilesPlaced = numberOfTilesPlaced + 1;
+  }
 
   if (numberOfTilesPlaced === 7) {
     wordValue = wordValue + 50;

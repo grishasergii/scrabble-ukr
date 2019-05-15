@@ -20,7 +20,7 @@ const getWordsWithScore = (tiles, placedTilesIndices, boardSize, direction) => {
   })
 
   for (const i of placedTilesIndices) {
-    const secondaryWordIndices = getWordIndicesFromAnchor(tiles, i, stepSecondary);
+    const secondaryWordIndices = getWordIndicesFromAnchor(tiles, i, stepSecondary, boardSize);
     if (secondaryWordIndices.length === 0) {
       continue;
     }

@@ -189,7 +189,7 @@ describe('PlacedLetterSequenceIsAValidWord.isSatisfied', () => {
     });
   });
 
-    describe('when multiple letters are placed', () => {
+  describe('when multiple letters are placed', () => {
     describe('when direction is horizontal', () => {
       describe('when two valid words are concatenated into an invalid word', () => {
         it('returns false and error message is not null', () => {
@@ -212,6 +212,33 @@ describe('PlacedLetterSequenceIsAValidWord.isSatisfied', () => {
           
           expect(actual).toEqual(false);
           expect(rule.errorMessage !== null).toEqual(true);   
+        });
+      });
+      describe('when new word touches the edge', () => {
+        it('correctly identifies the word and returns true', () => {
+          const rule = new PlacedLetterSequenceIsAValidWord();
+          const tiles = [
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null}, 
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: {letter: 'd'}},
+            {letter: {letter: 'a'}}, {letter: {letter: 'b'}}, {letter: {letter: 'c'}}, {letter: null}, {letter: null},
+            {letter: null}, {letter: null}, {letter: null}, {letter: null}, {letter: null},
+          ];
+          const boardSize = 5;
+          const direction = 'horizontal';
+          const placedTilesIndices = [15, 17];
+          const dictionary = new Set(['abc']);
+
+          const actual = rule.isSatisfied({
+            tiles: tiles, 
+            boardSize: boardSize, 
+            dictionary: dictionary, 
+            placedTilesIndices: placedTilesIndices, 
+            direction: direction
+          });
+
+          expect(actual).toEqual(true);
+          expect(rule.errorMessage).toBeNull();
         });
       });
     });

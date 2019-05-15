@@ -15,6 +15,7 @@ const getMoveBoardRackIndices = (tiles, boardSize, rack, dictionary) => {
 
   for (const anchorIndex of anchorIndices) {
     const step = getWordBuildStepFromAnchor(tiles, boardSize, anchorIndex);
+    const direction = step === 1 ? 'horizontal' : 'vertical';
     for (const candidateBoardRackIndices of candidatesGenerator(
       tiles, rack, anchorIndex, boardSize, step)) {
   
@@ -23,7 +24,7 @@ const getMoveBoardRackIndices = (tiles, boardSize, rack, dictionary) => {
         updatedTiles[boardRackIndex.boardIndex].letter = {...rack[boardRackIndex.rackIndex]};
         placedTilesIndices.push(boardRackIndex.boardIndex);
       }
-      const direction = getDirection(updatedTiles, placedTilesIndices, boardSize);
+
       const {isValid} = validator.validate({
         tiles: updatedTiles, 
         boardSize: boardSize, 
