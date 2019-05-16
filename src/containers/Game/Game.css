@@ -1,0 +1,20 @@
+.Row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.Column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  border: 1px aqua solid;
+  margin: 0.5em;
+}
+
+@media (min-width: 1000px) {
+  .Column {
+    flex: 1;
+  }
+}

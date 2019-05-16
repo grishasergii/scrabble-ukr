@@ -15,6 +15,7 @@ import getWordsWithScore from '../../utils/score/getWordsWithScore';
 import Log from '../../components/Info/Log/Log';
 import ToggleButton from '../../components/UI/ToggleButton/ToggleButton';
 import ButtonWithConfirm from '../ButtonWithConfirm/ButtonWithConfirm';
+import styles from './Game.css';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -575,13 +576,13 @@ class Game extends Component {
     }
 
     return(
-      <div>
+      <div className={styles.Row}>
         {moveIsInvalidMessage}
         {invalidWordsMessage}
         {gameFinished}
         {swapLetters}
 
-        <div>
+        <div className={styles.Column}>
           <ButtonWithConfirm 
             caption='Restart'
             question='Do you really want to restart?'
@@ -622,7 +623,7 @@ class Game extends Component {
             }} />
         </div>
         
-        <div>
+        <div className={styles.Column}>
           <Score
             playerScore={this.state.playerScore}
             computerScore={this.state.computerScore} />

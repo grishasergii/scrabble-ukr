@@ -2,7 +2,6 @@
   padding: 10px;
   margin: 5px;
   background-color: #303030;
-  max-width: 350px;
   max-height: 500px;
   overflow: scroll;
 }
