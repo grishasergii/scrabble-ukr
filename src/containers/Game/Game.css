@@ -1,3 +1,7 @@
+.Container {
+  justify-content: center;
+}
+
 .Row {
   display: flex;
   flex-direction: row;
@@ -13,8 +17,16 @@
   margin: 0.5em;
 }
 
+.Left {
+
+}
+
 @media (min-width: 1000px) {
   .Column {
     flex: 1;
+    max-width: 500px;
+  }
+  .Left {
+
   }
 }

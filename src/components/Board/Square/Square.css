@@ -1,8 +1,7 @@
 .Square {
   background-color: #404040;
   box-sizing: border-box;
-  width: 30px;
-  height: 30px;
+
   padding: 2px;
   font-size: 12px;
   text-align: center;

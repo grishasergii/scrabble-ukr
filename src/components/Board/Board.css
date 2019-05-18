@@ -1,7 +1,9 @@
 .Board {
   margin: 5px;
   display: grid;
-  grid-template-columns: repeat(15, auto);
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  height: 500px;
   justify-content: left;
 
   grid-gap: 3px;

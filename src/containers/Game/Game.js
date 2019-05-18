@@ -576,66 +576,68 @@ class Game extends Component {
     }
 
     return(
-      <div className={styles.Row}>
-        {moveIsInvalidMessage}
-        {invalidWordsMessage}
-        {gameFinished}
-        {swapLetters}
+      <div className={styles.Container}>
+        <div className={styles.Row}>
+          {moveIsInvalidMessage}
+          {invalidWordsMessage}
+          {gameFinished}
+          {swapLetters}
 
-        <div className={styles.Column}>
-          <ButtonWithConfirm 
-            caption='Restart'
-            question='Do you really want to restart?'
-            action={this.restartHandler}
-          />
-
-          <ToggleButton 
-            handler={this.toggleComputerRackHandler}
-            isToggleOn={false}
-            captionOn={'Hide computer\'s rack'}
-            captionOff={'Show computer\'s rack'}
+          <div className={[styles.Column, styles.Left].join(' ')}>
+            <ButtonWithConfirm 
+              caption='Restart'
+              question='Do you really want to restart?'
+              action={this.restartHandler}
             />
-          {computerRack}
 
-          <Board 
-            squareClick={this.placeLetterOnBoardHandler} 
-            letterClick={this.selectLetterHandler} 
-            squares={this.state.squares}
-            lastMove={this.state.lastMove} />
+            <ToggleButton 
+              handler={this.toggleComputerRackHandler}
+              isToggleOn={false}
+              captionOn={'Hide computer\'s rack'}
+              captionOff={'Show computer\'s rack'}
+              />
+            {computerRack}
 
-          <Rack 
-            letterClick={this.selectLetterHandler} 
-            selectedFrom='playerRack' 
-            letters={this.state.playerRack}
-            rackSelectable={true} />
+            <Board 
+              squareClick={this.placeLetterOnBoardHandler} 
+              letterClick={this.selectLetterHandler} 
+              squares={this.state.squares}
+              lastMove={this.state.lastMove} />
+
+            <Rack 
+              letterClick={this.selectLetterHandler} 
+              selectedFrom='playerRack' 
+              letters={this.state.playerRack}
+              rackSelectable={true} />
+            
+            <GameControls
+              enabled={this.state.whoseTurn === 'player'}
+              clear={this.returnPlacedLettersToRackHandler}
+              swap={this.startSwapLettersHandler}
+              play={() => {
+                this.playTurnHandler();
+                this.checkForGameEnd();
+              }}
+              pass={() => {
+                this.returnPlacedLettersToRackHandler();
+                this.passHandler();
+              }} />
+          </div>
           
-          <GameControls
-            enabled={this.state.whoseTurn === 'player'}
-            clear={this.returnPlacedLettersToRackHandler}
-            swap={this.startSwapLettersHandler}
-            play={() => {
-              this.playTurnHandler();
-              this.checkForGameEnd();
-            }}
-            pass={() => {
-              this.returnPlacedLettersToRackHandler();
-              this.passHandler();
-            }} />
-        </div>
-        
-        <div className={styles.Column}>
-          <Score
-            playerScore={this.state.playerScore}
-            computerScore={this.state.computerScore} />
+          <div className={styles.Column}>
+            <Score
+              playerScore={this.state.playerScore}
+              computerScore={this.state.computerScore} />
 
-          <TilesLeft
-            tilesCount={this.state.bagOfLetters.length} />
-          
-          <Log 
-            events={this.state.gameEvents} />
-        </div>
+            <TilesLeft
+              tilesCount={this.state.bagOfLetters.length} />
+            
+            <Log 
+              events={this.state.gameEvents} />
+          </div>
 
-        {computerPlayer}
+          {computerPlayer}
+        </div>
       </div>
     );
   }
