@@ -1,10 +1,10 @@
 import React from 'react';
 import Button from '../UI/Button/Button';
-import styles from './GameControls.css';
+import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 
 const gameControls = (props) => {
   return (
-    <div className={styles.Container}>
+    <Auxiliary>
       <Button 
         clickHandler={props.play}
         disabled={!props.enabled}
@@ -25,7 +25,7 @@ const gameControls = (props) => {
         disabled={!props.enabled}
         caption='Swap'
       />
-    </div>
+    </Auxiliary>
   );
 }
 

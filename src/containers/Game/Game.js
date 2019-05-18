@@ -16,6 +16,7 @@ import Log from '../../components/Info/Log/Log';
 import ToggleButton from '../../components/UI/ToggleButton/ToggleButton';
 import ButtonWithConfirm from '../ButtonWithConfirm/ButtonWithConfirm';
 import styles from './Game.css';
+import FlexRow from '../FlexRow/FlexRow';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -584,18 +585,20 @@ class Game extends Component {
           {swapLetters}
 
           <div className={[styles.Column, styles.Left].join(' ')}>
-            <ButtonWithConfirm 
-              caption='Restart'
-              question='Do you really want to restart?'
-              action={this.restartHandler}
-            />
-
-            <ToggleButton 
-              handler={this.toggleComputerRackHandler}
-              isToggleOn={false}
-              captionOn={'Hide computer\'s rack'}
-              captionOff={'Show computer\'s rack'}
+            <FlexRow justifyContent={'letft'}>
+              <ButtonWithConfirm 
+                caption='Restart'
+                question='Do you really want to restart?'
+                action={this.restartHandler}
               />
+              <ToggleButton 
+                handler={this.toggleComputerRackHandler}
+                isToggleOn={false}
+                captionOn={'Hide computer\'s rack'}
+                captionOff={'Show computer\'s rack'}
+              />
+            </FlexRow>
+            
             {computerRack}
 
             <Board 
@@ -610,18 +613,20 @@ class Game extends Component {
               letters={this.state.playerRack}
               rackSelectable={true} />
             
-            <GameControls
-              enabled={this.state.whoseTurn === 'player'}
-              clear={this.returnPlacedLettersToRackHandler}
-              swap={this.startSwapLettersHandler}
-              play={() => {
-                this.playTurnHandler();
-                this.checkForGameEnd();
-              }}
-              pass={() => {
-                this.returnPlacedLettersToRackHandler();
-                this.passHandler();
-              }} />
+            <FlexRow>
+              <GameControls
+                enabled={this.state.whoseTurn === 'player'}
+                clear={this.returnPlacedLettersToRackHandler}
+                swap={this.startSwapLettersHandler}
+                play={() => {
+                  this.playTurnHandler();
+                  this.checkForGameEnd();
+                }}
+                pass={() => {
+                  this.returnPlacedLettersToRackHandler();
+                  this.passHandler();
+                }} />
+              </FlexRow>
           </div>
           
           <div className={styles.Column}>
