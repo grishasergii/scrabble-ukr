@@ -16,7 +16,7 @@ import ListOfWords from '../../components/Info/ListOfWords/ListOfWords';
 import ToggleButton from '../../components/UI/ToggleButton/ToggleButton';
 import ButtonWithConfirm from '../ButtonWithConfirm/ButtonWithConfirm';
 import styles from './Game.css';
-import FlexRow from '../FlexRow/FlexRow';
+import FlexRow from '../../components/UI/FlexRow/FlexRow';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
