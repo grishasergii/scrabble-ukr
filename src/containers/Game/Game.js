@@ -629,7 +629,7 @@ class Game extends Component {
               </FlexRow>
           </div>
           
-          <div className={styles.Column}>
+          <div className={[styles.Column, styles.Right].join(' ')}>
             <Score
               playerScore={this.state.playerScore}
               computerScore={this.state.computerScore} />
