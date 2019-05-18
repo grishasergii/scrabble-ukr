@@ -1,5 +1,9 @@
-.Score {
+.Card {
   padding: 10px;
   margin: 5px;
   background-color: #303030;
+}
+
+.Card h1 {
+  margin: 0 0 5px 0;
 }

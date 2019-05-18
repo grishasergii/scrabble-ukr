@@ -1,13 +1,15 @@
 import React from 'react';
 import styles from './Log.css';
+import Card from '../../UI/Card/Card';
 
 const Log = (props) => {
   const events = props.events.map(x => <p>{x}</p>);
   return (
-    <div className={styles.Log}>
-      <h1>Game events:</h1>
-      {events}
-    </div>
+    <Card heading={'Words played'}>
+      <div className={styles.Log}>
+        {events}
+      </div>
+    </Card>
   );
 }
 

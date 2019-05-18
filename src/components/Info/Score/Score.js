@@ -1,13 +1,12 @@
 import React from 'react';
-import styles from './Score.css';
+import Card from '../../UI/Card/Card';
 
 const score = (props) => {
   return (
-    <div className={styles.Score}>
-      <h1>Score</h1>
+    <Card heading={'Score'}>
       <p>You: {props.playerScore}</p>
       <p>Computer: {props.computerScore}</p>
-    </div>
+    </Card>
   );
 }
 

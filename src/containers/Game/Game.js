@@ -362,7 +362,7 @@ class Game extends Component {
       // update game events log
       const updatedGameEvents = [...prevState.gameEvents];
       for (const wordWithScore of wordsWithScore) {
-        updatedGameEvents.push(`Player played ${wordWithScore.word} with score ${wordWithScore.score}`);
+        updatedGameEvents.unshift(`Player played ${wordWithScore.word} with score ${wordWithScore.score}`);
       }
 
       return {
@@ -389,7 +389,7 @@ class Game extends Component {
       const updatedGameEvents = [...prevState.gameEvents];
 
       if (moveBoardRackIndices === null) {
-        updatedGameEvents.push('Computer passed');
+        updatedGameEvents.unshift('Computer passed');
         return {
           whoseTurn: 'player',
           gameEvents: updatedGameEvents
@@ -428,7 +428,7 @@ class Game extends Component {
       // update game events log
       
       for (const wordWithScore of wordsWithScore) {
-        updatedGameEvents.push(`Computer played ${wordWithScore.word} with score ${wordWithScore.score}`);
+        updatedGameEvents.unshift(`Computer played ${wordWithScore.word} with score ${wordWithScore.score}`);
       }
 
       return {
@@ -458,7 +458,7 @@ class Game extends Component {
   passHandler = () => {
     this.setState(prevState => {
       const updatedGameEvents = [...prevState.gameEvents];
-      updatedGameEvents.push('You passed');
+      updatedGameEvents.unshift('You passed');
       return {
         whoseTurn: 'computer',
         gameEvents: updatedGameEvents
