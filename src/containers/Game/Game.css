@@ -1,0 +1,33 @@
+.Container {
+  justify-content: center;
+}
+
+.Row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.Column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  margin: 0;
+}
+
+
+
+@media (min-width: 800px) {
+  .Container {
+    max-width: 1000px;
+  }
+
+  .Left {
+    flex: 2;
+  }
+  
+  .Right {
+    flex: 1;
+  }
+}

@@ -4,23 +4,25 @@
   left: 0;
   bottom: 0;
   right: 0;
-  z-index: 100;
+  z-index: 50;
   overflow: hidden;
 
-  margin: 2px;
-
-  background-color: white;
+  border-radius: 2px;
   text-align: center;
-  padding: 2px;
-  border: 2px solid;
-  border-radius: 5px;
+  vertical-align: middle;
 
+  background-color: rgba(255, 255, 255);
   text-align: center;
 
 
   color: black;
   font-weight: bold;
+}
 
+@media (min-width: 600px) {
+  .Letter {
+    border-radius: 3px;
+  }
 }
 
 .Selectable {
@@ -31,10 +33,6 @@
   background-color: yellowgreen;
 }
 
-.AlreadyPlayed {
-  border-style: dotted;
-}
-
 .Highlighted {
-  background-color: #f0c546;
+  color: brown;
 }

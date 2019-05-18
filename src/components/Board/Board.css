@@ -1,8 +1,39 @@
 .Board {
-  margin: 5px;
+  margin: 0;
   display: grid;
-  grid-template-columns: repeat(15, auto);
+  grid-template-columns: repeat(15, 1fr);
+  grid-template-rows: repeat(15, 23px);
   justify-content: left;
-
-  grid-gap: 3px;
+  grid-gap: 1px;
 }
+
+.Board div {
+  line-height: 23px;
+  font-size: 12px;
+}
+
+@media (min-width: 400px) {
+  .Board {
+    grid-template-rows: repeat(15, 26px);
+  }
+
+  .Board div {
+    line-height: 26px;
+  }
+}
+
+@media (min-width: 600px) {
+  .Board {
+    grid-template-rows: repeat(15, 35px);
+    grid-gap: 3px;
+    margin: 5px;
+  }
+
+  .Board div {
+    line-height: 35px;
+    font-size: 16px;
+  }
+}
+
+
+

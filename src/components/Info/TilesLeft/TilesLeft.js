@@ -1,11 +1,11 @@
 import React from 'react';
-import styles from './TilesLeft.css'
+import Card from '../../UI/Card/Card';
 
 const tilesLeft = (props) => {
   return (
-    <div className={styles.TilesLeft}>
+    <Card>
       Tiles left: {props.tilesCount}
-    </div>
+    </Card>
   );
 }
 

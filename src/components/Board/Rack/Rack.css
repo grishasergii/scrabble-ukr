@@ -2,10 +2,14 @@
   margin: 5px;
   display: grid;
   grid-gap: 3px;
-  grid-auto-flow: column;
+  grid-template-columns: repeat(7, 40px);
+  grid-template-rows: 40px;
   justify-content: center;
   background-color: #303030;
-  width: 60%;
-  max-width: 250px;
   padding: 10px;
+}
+
+.Rack div {
+  line-height: 40px;
+  font-size: 18px;
 }

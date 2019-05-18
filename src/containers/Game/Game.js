@@ -12,9 +12,11 @@ import PlayerMoveValidation from '../../utils/validateMove/PlayerMoveValidation'
 import getDirection from '../../utils/validateMove/getDirection';
 import Score from '../../components/Info/Score/Score';
 import getWordsWithScore from '../../utils/score/getWordsWithScore';
-import Log from '../../components/Info/Log/Log';
+import ListOfWords from '../../components/Info/ListOfWords/ListOfWords';
 import ToggleButton from '../../components/UI/ToggleButton/ToggleButton';
 import ButtonWithConfirm from '../ButtonWithConfirm/ButtonWithConfirm';
+import styles from './Game.css';
+import FlexRow from '../FlexRow/FlexRow';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -116,13 +118,14 @@ class Game extends Component {
       squaresWithPlacedLettersIndices: new Set([]),
       playerRack: playerRack,
       computerRack: computerRack,
-      moveIsInvalidMessage: null,
+      modalMessage: null,
       invalidWords: null,
       whoseTurn: 'player',
       lastMove: new Set([]),
       playerScore: 0,
       computerScore: 0,
-      gameEvents: [],
+      playerWords: [],
+      computerWords: [],
       gameFinished: false,
       outcomeMessage: ''
     };
@@ -338,7 +341,7 @@ class Game extends Component {
 
       if (isValid === false) {
         return {
-          moveIsInvalidMessage: errorMessage
+          modalMessage: `Sorry, your move is invalid: ${errorMessage}`
         };
       }
 
@@ -358,9 +361,9 @@ class Game extends Component {
       const updated = this.refillRack(prevState.playerRack, prevState.bagOfLetters, this.playerColor);
 
       // update game events log
-      const updatedGameEvents = [...prevState.gameEvents];
+      const updatedPlayerWords = [...prevState.playerWords];
       for (const wordWithScore of wordsWithScore) {
-        updatedGameEvents.push(`Player played ${wordWithScore.word} with score ${wordWithScore.score}`);
+        updatedPlayerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`);
       }
 
       return {
@@ -371,7 +374,7 @@ class Game extends Component {
         whoseTurn: 'computer',
         lastMove: new Set(placedIndices),
         playerScore: prevState.playerScore + totalScore,
-        gameEvents: updatedGameEvents
+        playerWords: updatedPlayerWords
       };
     });
   }
@@ -384,13 +387,10 @@ class Game extends Component {
         prevState.computerRack, 
         this.dictionary);
       
-      const updatedGameEvents = [...prevState.gameEvents];
-
       if (moveBoardRackIndices === null) {
-        updatedGameEvents.push('Computer passed');
         return {
           whoseTurn: 'player',
-          gameEvents: updatedGameEvents
+          modalMessage: 'Computer passed'
         };
       }
 
@@ -424,9 +424,9 @@ class Game extends Component {
       const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters, this.computerColor);
 
       // update game events log
-      
+      const updatedComputerWords = [...prevState.computerWords];
       for (const wordWithScore of wordsWithScore) {
-        updatedGameEvents.push(`Computer played ${wordWithScore.word} with score ${wordWithScore.score}`);
+        updatedComputerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`); 
       }
 
       return {
@@ -436,14 +436,14 @@ class Game extends Component {
         whoseTurn: 'player',
         lastMove: new Set(moveBoardRackIndices.map(x => x.boardIndex)),
         computerScore: prevState.computerScore + totalScore,
-        gameEvents: updatedGameEvents
+        computerWords: updatedComputerWords
       };
     });
   }
 
-  closeMoveIsInvalidMessageHandler = () => {
+  closeModalMessageHandler = () => {
     this.setState({
-      moveIsInvalidMessage: null
+      modalMessage: null
     });
   }
 
@@ -455,11 +455,8 @@ class Game extends Component {
 
   passHandler = () => {
     this.setState(prevState => {
-      const updatedGameEvents = [...prevState.gameEvents];
-      updatedGameEvents.push('You passed');
       return {
         whoseTurn: 'computer',
-        gameEvents: updatedGameEvents
       };
     });
   }
@@ -531,12 +528,12 @@ class Game extends Component {
       );
     }
 
-    let moveIsInvalidMessage = null;
-    if (this.state.moveIsInvalidMessage !== null) {
-      moveIsInvalidMessage = (
+    let modalMessage = null;
+    if (this.state.modalMessage !== null) {
+      modalMessage = (
         <ErrorMessage
-          closeMessageHandler={this.closeMoveIsInvalidMessageHandler}>
-          Sorry, your move is invalid: {this.state.moveIsInvalidMessage}
+          closeMessageHandler={this.closeModalMessageHandler}>
+          {this.state.modalMessage}
         </ErrorMessage>
       );
     }
@@ -575,66 +572,77 @@ class Game extends Component {
     }
 
     return(
-      <div>
-        {moveIsInvalidMessage}
-        {invalidWordsMessage}
-        {gameFinished}
-        {swapLetters}
+      <div className={styles.Container}>
+        <div className={styles.Row}>
+          {modalMessage}
+          {invalidWordsMessage}
+          {gameFinished}
+          {swapLetters}
 
-        <div>
-          <ButtonWithConfirm 
-            caption='Restart'
-            question='Do you really want to restart?'
-            action={this.restartHandler}
-          />
+          <div className={[styles.Column, styles.Left].join(' ')}>
+            <FlexRow justifyContent={'letft'}>
+              <ButtonWithConfirm 
+                caption='Restart'
+                question='Do you really want to restart?'
+                action={this.restartHandler}
+              />
+              <ToggleButton 
+                handler={this.toggleComputerRackHandler}
+                isToggleOn={false}
+                captionOn={'Hide computer\'s rack'}
+                captionOff={'Show computer\'s rack'}
+              />
+            </FlexRow>
+            
+            {computerRack}
 
-          <ToggleButton 
-            handler={this.toggleComputerRackHandler}
-            isToggleOn={false}
-            captionOn={'Hide computer\'s rack'}
-            captionOff={'Show computer\'s rack'}
-            />
-          {computerRack}
+            <Board 
+              squareClick={this.placeLetterOnBoardHandler} 
+              letterClick={this.selectLetterHandler} 
+              squares={this.state.squares}
+              lastMove={this.state.lastMove} />
 
-          <Board 
-            squareClick={this.placeLetterOnBoardHandler} 
-            letterClick={this.selectLetterHandler} 
-            squares={this.state.squares}
-            lastMove={this.state.lastMove} />
-
-          <Rack 
-            letterClick={this.selectLetterHandler} 
-            selectedFrom='playerRack' 
-            letters={this.state.playerRack}
-            rackSelectable={true} />
+            <Rack 
+              letterClick={this.selectLetterHandler} 
+              selectedFrom='playerRack' 
+              letters={this.state.playerRack}
+              rackSelectable={true} />
+            
+            <FlexRow>
+              <GameControls
+                enabled={this.state.whoseTurn === 'player'}
+                clear={this.returnPlacedLettersToRackHandler}
+                swap={this.startSwapLettersHandler}
+                play={() => {
+                  this.playTurnHandler();
+                  this.checkForGameEnd();
+                }}
+                pass={() => {
+                  this.returnPlacedLettersToRackHandler();
+                  this.passHandler();
+                }} />
+              </FlexRow>
+          </div>
           
-          <GameControls
-            enabled={this.state.whoseTurn === 'player'}
-            clear={this.returnPlacedLettersToRackHandler}
-            swap={this.startSwapLettersHandler}
-            play={() => {
-              this.playTurnHandler();
-              this.checkForGameEnd();
-            }}
-            pass={() => {
-              this.returnPlacedLettersToRackHandler();
-              this.passHandler();
-            }} />
-        </div>
-        
-        <div>
-          <Score
-            playerScore={this.state.playerScore}
-            computerScore={this.state.computerScore} />
+          <div className={[styles.Column, styles.Right].join(' ')}>
+            <Score
+              playerScore={this.state.playerScore}
+              computerScore={this.state.computerScore} />
 
-          <TilesLeft
-            tilesCount={this.state.bagOfLetters.length} />
-          
-          <Log 
-            events={this.state.gameEvents} />
-        </div>
+            <TilesLeft
+              tilesCount={this.state.bagOfLetters.length} />
+            
+            <ListOfWords 
+              heading={'Computer words'}
+              words={this.state.computerWords} />
 
-        {computerPlayer}
+            <ListOfWords 
+              heading={'Your words'}
+              words={this.state.playerWords} />
+          </div>
+
+          {computerPlayer}
+        </div>
       </div>
     );
   }
