@@ -1,9 +1,10 @@
 import React from 'react';
 import Button from '../UI/Button/Button';
+import styles from './GameControls.css';
 
 const gameControls = (props) => {
   return (
-    <div>
+    <div className={styles.Container}>
       <Button 
         clickHandler={props.play}
         disabled={!props.enabled}

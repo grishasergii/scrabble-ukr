@@ -1,0 +1,11 @@
+.Container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+@media (min-width: 600px) {
+  .Container {
+    justify-content: left;
+  }
+}

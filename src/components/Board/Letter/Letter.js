@@ -15,10 +15,6 @@ const letter = (props) => {
     classes.push(styles.Selectable);
   }
 
-  if (alreadyPlayed === true) {
-    classes.push(styles.AlreadyPlayed);
-  }
-
   if (props.selected === true) {
     classes.push(styles.Selected);
   }
@@ -27,13 +23,9 @@ const letter = (props) => {
     classes.push(styles.Highlighted);
   }
 
-  const spanStyle = {
-    borderColor: props.color
-  };
-
   return (
-    <div onClick={onClick} className={classes.join(' ')} style={spanStyle}>
-      {props.letter}<sup>{props.value}</sup>
+    <div onClick={onClick} className={classes.join(' ')}>
+      {props.letter}<sub>{props.value}</sub>
     </div>
   );
 }

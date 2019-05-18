@@ -14,19 +14,12 @@
   flex-direction: column;
   flex-basis: 100%;
   border: 1px aqua solid;
-  margin: 0.5em;
-}
-
-.Left {
-
+  margin: 0;
 }
 
 @media (min-width: 1000px) {
   .Column {
     flex: 1;
     max-width: 500px;
-  }
-  .Left {
-
   }
 }

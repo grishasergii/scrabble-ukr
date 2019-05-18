@@ -6,6 +6,10 @@
   grid-template-rows: 40px;
   justify-content: center;
   background-color: #303030;
-
   padding: 10px;
+}
+
+.Rack div {
+  line-height: 40px;
+  font-size: 18px;
 }
