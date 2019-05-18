@@ -118,7 +118,7 @@ class Game extends Component {
       squaresWithPlacedLettersIndices: new Set([]),
       playerRack: playerRack,
       computerRack: computerRack,
-      moveIsInvalidMessage: null,
+      modalMessage: null,
       invalidWords: null,
       whoseTurn: 'player',
       lastMove: new Set([]),
@@ -341,7 +341,7 @@ class Game extends Component {
 
       if (isValid === false) {
         return {
-          moveIsInvalidMessage: errorMessage
+          modalMessage: `Sorry, your move is invalid: ${errorMessage}`
         };
       }
 
@@ -363,7 +363,7 @@ class Game extends Component {
       // update game events log
       const updatedPlayerWords = [...prevState.playerWords];
       for (const wordWithScore of wordsWithScore) {
-        updatedPlayerWords.unshift(`Y${wordWithScore.word} — ${wordWithScore.score}`);
+        updatedPlayerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`);
       }
 
       return {
@@ -389,7 +389,8 @@ class Game extends Component {
       
       if (moveBoardRackIndices === null) {
         return {
-          whoseTurn: 'player'
+          whoseTurn: 'player',
+          modalMessage: 'Computer passed'
         };
       }
 
@@ -440,9 +441,9 @@ class Game extends Component {
     });
   }
 
-  closeMoveIsInvalidMessageHandler = () => {
+  closeModalMessageHandler = () => {
     this.setState({
-      moveIsInvalidMessage: null
+      modalMessage: null
     });
   }
 
@@ -527,12 +528,12 @@ class Game extends Component {
       );
     }
 
-    let moveIsInvalidMessage = null;
-    if (this.state.moveIsInvalidMessage !== null) {
-      moveIsInvalidMessage = (
+    let modalMessage = null;
+    if (this.state.modalMessage !== null) {
+      modalMessage = (
         <ErrorMessage
-          closeMessageHandler={this.closeMoveIsInvalidMessageHandler}>
-          Sorry, your move is invalid: {this.state.moveIsInvalidMessage}
+          closeMessageHandler={this.closeModalMessageHandler}>
+          {this.state.modalMessage}
         </ErrorMessage>
       );
     }
@@ -573,7 +574,7 @@ class Game extends Component {
     return(
       <div className={styles.Container}>
         <div className={styles.Row}>
-          {moveIsInvalidMessage}
+          {modalMessage}
           {invalidWordsMessage}
           {gameFinished}
           {swapLetters}
