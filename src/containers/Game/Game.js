@@ -18,6 +18,7 @@ import ButtonWithConfirm from '../ButtonWithConfirm/ButtonWithConfirm';
 import styles from './Game.css';
 import FlexRow from '../../components/UI/FlexRow/FlexRow';
 import uuidv4 from 'uuid/v4';
+import axios from '../../axios-actions';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -131,7 +132,8 @@ class Game extends Component {
       playerWords: [],
       computerWords: [],
       gameFinished: false,
-      outcomeMessage: ''
+      outcomeMessage: '',
+      actionOrder: 0
     };
   }
 
@@ -305,20 +307,39 @@ class Game extends Component {
       const shuffledBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}).sort(() => 0.5 - Math.random());
       const selectedLetters = shuffledBagOfLetters.slice(0, numNewLetters);
       const updatedBagOfLetters = shuffledBagOfLetters.slice(numNewLetters, shuffledBagOfLetters.length);
-
+      const discardedLetters = [];
+      const newLetters = [];
       for (let i of Array.from(indices).slice(0, numNewLetters)) {
         updatedBagOfLetters.push({
           ...updatedPlayerRack[i],
           color: null
         });
+        discardedLetters.push(updatedPlayerRack[i]);
         updatedPlayerRack[i] = {...selectedLetters.pop(), color: this.playerColor};
+        newLetters.push(updatedPlayerRack[i]);
       }
+
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        type: 'swap',
+        actionOrder: prevState.actionOrder,
+        payload: {
+          discardedLetters: discardedLetters,
+          newLetters: newLetters
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then(response => console.log(response))
+        .catch(error => {});
 
       return {
         showSwapLetters: false,
         playerRack: updatedPlayerRack,
         bagOfLetters: updatedBagOfLetters,
-        whoseTurn: 'computer'
+        whoseTurn: 'computer',
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -392,9 +413,21 @@ class Game extends Component {
         this.dictionary);
       
       if (moveBoardRackIndices === null) {
+        const action = {
+          gameId: prevState.gameId,
+          agent: 'computer',
+          type: 'pass',
+          actionOrder: prevState.actionOrder
+        };
+        
+        axios.post('/game-actions.json', action)
+          .then(response => console.log(response))
+          .catch(error => {});
+
         return {
           whoseTurn: 'player',
-          modalMessage: 'Computer passed'
+          modalMessage: 'Computer passed',
+          actionOrder: prevState.actionOrder + 1
         };
       }
 
@@ -459,8 +492,20 @@ class Game extends Component {
 
   passHandler = () => {
     this.setState(prevState => {
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        type: 'pass',
+        actionOrder: prevState.actionOrder
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then(response => console.log(response))
+        .catch(error => {});
+
       return {
         whoseTurn: 'computer',
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
