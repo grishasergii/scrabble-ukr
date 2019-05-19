@@ -2,7 +2,6 @@ import getAnchorIndices from './getAnchorIndices';
 import getWordBuildStepFromAnchor from './getWordBuildStepFromAnchor';
 import candidatesGenerator from './candidatesGenerator';
 import ComputerMoveValidation from '../validateMove/ComputerMoveValidation';
-import getDirection from '../validateMove/getDirection';
 
 const getMoveBoardRackIndices = (tiles, boardSize, rack, dictionary) => {
   const anchorIndices = getAnchorIndices(tiles, boardSize).sort(() => Math.random() - 0.5);
