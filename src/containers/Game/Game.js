@@ -17,6 +17,7 @@ import ToggleButton from '../../components/UI/ToggleButton/ToggleButton';
 import ButtonWithConfirm from '../ButtonWithConfirm/ButtonWithConfirm';
 import styles from './Game.css';
 import FlexRow from '../../components/UI/FlexRow/FlexRow';
+import uuidv4 from 'uuid/v4';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -110,7 +111,10 @@ class Game extends Component {
       }
     }
 
+    const gameId = uuidv4();
+
     return {
+      gameId: gameId,
       boardSize: 15,
       bagOfLetters: bagOfLetters,
       squares: squares,
