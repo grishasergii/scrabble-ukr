@@ -253,10 +253,25 @@ class Game extends Component {
         updatedSquares[index].letter = null;
       }
 
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        type: 'clear',
+        actionOrder: prevState.actionOrder,
+        body: {
+          numberOfPlacedLetters: prevState.squaresWithPlacedLettersIndices.size
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
+
       return {
         squares: updatedSquares,
         playerRack: updatedPlayerRack,
-        squaresWithPlacedLettersIndices: new Set([])
+        squaresWithPlacedLettersIndices: new Set([]),
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -365,8 +380,23 @@ class Game extends Component {
       });
 
       if (isValid === false) {
+        const action = {
+          gameId: prevState.gameId,
+          agent: 'player',
+          type: 'invalidMove',
+          actionOrder: prevState.actionOrder,
+          body: {
+            errorMessage: errorMessage
+          }
+        };
+        
+        axios.post('/game-actions.json', action)
+          .then()
+          .catch();
+
         return {
-          modalMessage: `Sorry, your move is invalid: ${errorMessage}`
+          modalMessage: `Sorry, your move is invalid: ${errorMessage}`,
+          actionOrder: prevState.actionOrder + 1
         };
       }
 
@@ -572,6 +602,17 @@ class Game extends Component {
   }
 
   restartHandler = () => {
+    const action = {
+      gameId: prevState.gameId,
+      agent: 'player',
+      type: 'restart',
+      actionOrder: prevState.actionOrder
+    };
+    
+    axios.post('/game-actions.json', action)
+      .then()
+      .catch();
+
     this.setState(this.getInitialGameState());
   }
 
@@ -608,6 +649,20 @@ class Game extends Component {
         outcomeMessage += ' It\'s a tie!';
       }
 
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        type: 'finalScore',
+        actionOrder: prevState.actionOrder,
+        body: {
+          playerScore: updatedPlayerScore,
+          computerSCore: updatedComputerScore
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
       return {
         playerScore: updatedPlayerScore,
         computerScore: updatedComputerScore,
