@@ -324,15 +324,14 @@ class Game extends Component {
         agent: 'player',
         type: 'swap',
         actionOrder: prevState.actionOrder,
-        payload: {
+        body: {
           discardedLetters: discardedLetters,
           newLetters: newLetters
         }
       };
       
       axios.post('/game-actions.json', action)
-        .then(response => console.log(response))
-        .catch(error => {});
+        .catch(_ => null);
 
       return {
         showSwapLetters: false,
@@ -370,6 +369,11 @@ class Game extends Component {
         };
       }
 
+      const placedLetters = [];
+      for (let i of placedIndices) {
+        placedLetters.push({...JSON.parse(JSON.stringify(tiles[i])), boardIndex: i});
+      }
+
       // calculate score
       const wordsWithScore = getWordsWithScore(tiles, placedIndices, boardSize, direction);
       let totalScore = 0;
@@ -387,9 +391,28 @@ class Game extends Component {
 
       // update game events log
       const updatedPlayerWords = [...prevState.playerWords];
+      const playedWordsWithScore = [];
       for (const wordWithScore of wordsWithScore) {
         updatedPlayerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`);
+        playedWordsWithScore.push({
+          word: wordWithScore.word,
+          value: wordWithScore.score
+        });
       }
+
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        type: 'play',
+        actionOrder: prevState.actionOrder,
+        body: {
+          placedLetters: placedLetters,
+          words: playedWordsWithScore
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .catch(_ => null);
 
       return {
         squares: tiles,
@@ -399,7 +422,8 @@ class Game extends Component {
         whoseTurn: 'computer',
         lastMove: new Set(placedIndices),
         playerScore: prevState.playerScore + totalScore,
-        playerWords: updatedPlayerWords
+        playerWords: updatedPlayerWords,
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -421,8 +445,7 @@ class Game extends Component {
         };
         
         axios.post('/game-actions.json', action)
-          .then(response => console.log(response))
-          .catch(error => {});
+          .catch(_ => null);
 
         return {
           whoseTurn: 'player',
@@ -439,8 +462,14 @@ class Game extends Component {
         return {...x};
       });
 
+      const placedLetters = [];
+
       for (let boardRackIndex of moveBoardRackIndices) {
         updatedTiles[boardRackIndex.boardIndex].letter = {...updatedComputerRack[boardRackIndex.rackIndex]};
+        placedLetters.push({
+          ...JSON.parse(JSON.stringify(updatedTiles[boardRackIndex.boardIndex])),
+          boardIndex: boardRackIndex.boardIndex
+        });
         updatedComputerRack[boardRackIndex.rackIndex] = null;
       }
 
@@ -462,9 +491,28 @@ class Game extends Component {
 
       // update game events log
       const updatedComputerWords = [...prevState.computerWords];
+      const playedWordsWithScore = [];
       for (const wordWithScore of wordsWithScore) {
         updatedComputerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`); 
+        playedWordsWithScore.push({
+          word: wordWithScore.word,
+          score: wordWithScore.score
+        });
       }
+
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'computer',
+        type: 'play',
+        actionOrder: prevState.actionOrder,
+        body: {
+          placedLetters: placedLetters,
+          words: playedWordsWithScore
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .catch(error => {});
 
       return {
         squares: updatedTiles,
@@ -473,7 +521,8 @@ class Game extends Component {
         whoseTurn: 'player',
         lastMove: new Set(moveBoardRackIndices.map(x => x.boardIndex)),
         computerScore: prevState.computerScore + totalScore,
-        computerWords: updatedComputerWords
+        computerWords: updatedComputerWords,
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -500,8 +549,7 @@ class Game extends Component {
       };
       
       axios.post('/game-actions.json', action)
-        .then(response => console.log(response))
-        .catch(error => {});
+        .catch(_ => null);
 
       return {
         whoseTurn: 'computer',
