@@ -331,7 +331,8 @@ class Game extends Component {
       };
       
       axios.post('/game-actions.json', action)
-        .catch(_ => null);
+        .then()
+        .catch();
 
       return {
         showSwapLetters: false,
@@ -412,7 +413,8 @@ class Game extends Component {
       };
       
       axios.post('/game-actions.json', action)
-        .catch(_ => null);
+        .then()
+        .catch();
 
       return {
         squares: tiles,
@@ -445,7 +447,8 @@ class Game extends Component {
         };
         
         axios.post('/game-actions.json', action)
-          .catch(_ => null);
+          .then()
+          .catch();
 
         return {
           whoseTurn: 'player',
@@ -512,7 +515,8 @@ class Game extends Component {
       };
       
       axios.post('/game-actions.json', action)
-        .catch(error => {});
+        .then()
+        .catch();
 
       return {
         squares: updatedTiles,
@@ -549,7 +553,8 @@ class Game extends Component {
       };
       
       axios.post('/game-actions.json', action)
-        .catch(_ => null);
+        .then()
+        .catch();
 
       return {
         whoseTurn: 'computer',
