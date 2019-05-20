@@ -21,21 +21,10 @@ import uuidv4 from 'uuid/v4';
 import axios from '../../axios-actions';
 
 class Game extends Component {
-  colors = ['green', 'red', 'blue'];
-  playerColor = '';
-  computerColor = '';
-
   constructor(props) {
     super(props);
-
-    const colorsShuffled = this.colors.sort(() => 0.5 - Math.random());
-    this.playerColor = colorsShuffled.pop();
-    this.computerColor = colorsShuffled.pop();
-
     this.dictionary = new Set(require('../../assets/dict_ukr.json'));
-
     this.playerMoveValidator = new PlayerMoveValidation();
-
     this.state = {
       computerRackIsVisible: false,
       ...this.getInitialGameState()};
@@ -92,8 +81,8 @@ class Game extends Component {
     const computerRack = [];
 
     for (let i = 0; i < 7; i++) {
-      playerRack.push({...bagOfLetters.pop(), color: this.playerColor});
-      computerRack.push({...bagOfLetters.pop(), color: this.computerColor});
+      playerRack.push({...bagOfLetters.pop()});
+      computerRack.push({...bagOfLetters.pop()});
     }
 
     const squares = Array(225).fill({});
@@ -277,7 +266,7 @@ class Game extends Component {
     });
   }
 
-  refillRack = (rack, bagOfLetters, color) => {
+  refillRack = (rack, bagOfLetters) => {
     let updatedRack = rack.map(x => {
       if (x === null || x === undefined) {
         return null;
@@ -292,7 +281,7 @@ class Game extends Component {
         return l;
       }
       if (l === null) {
-        return {...updatedBagOfLetters.pop(), color: color};
+        return {...updatedBagOfLetters.pop()};
       }
       return l;
     });
@@ -328,10 +317,9 @@ class Game extends Component {
       for (let i of Array.from(indices).slice(0, numNewLetters)) {
         updatedBagOfLetters.push({
           ...updatedPlayerRack[i],
-          color: null
         });
         discardedLetters.push(updatedPlayerRack[i]);
-        updatedPlayerRack[i] = {...selectedLetters.pop(), color: this.playerColor};
+        updatedPlayerRack[i] = {...selectedLetters.pop()};
         newLetters.push(updatedPlayerRack[i]);
       }
 
@@ -421,7 +409,7 @@ class Game extends Component {
       });
 
       // refill players rack
-      const updated = this.refillRack(prevState.playerRack, prevState.bagOfLetters, this.playerColor);
+      const updated = this.refillRack(prevState.playerRack, prevState.bagOfLetters);
 
       // update game events log
       const updatedPlayerWords = [...prevState.playerWords];
@@ -525,7 +513,7 @@ class Game extends Component {
       }
 
       // refill computer rack
-      const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters, this.computerColor);
+      const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters);
 
       // update game events log
       const updatedComputerWords = [...prevState.computerWords];
