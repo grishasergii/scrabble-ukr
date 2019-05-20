@@ -415,7 +415,7 @@ class Game extends Component {
       const updatedPlayerWords = [...prevState.playerWords];
       const playedWordsWithScore = [];
       for (const wordWithScore of wordsWithScore) {
-        updatedPlayerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`);
+        updatedPlayerWords.unshift(wordWithScore);
         playedWordsWithScore.push({
           word: wordWithScore.word,
           value: wordWithScore.score
@@ -519,7 +519,7 @@ class Game extends Component {
       const updatedComputerWords = [...prevState.computerWords];
       const playedWordsWithScore = [];
       for (const wordWithScore of wordsWithScore) {
-        updatedComputerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`); 
+        updatedComputerWords.unshift(wordWithScore); 
         playedWordsWithScore.push({
           word: wordWithScore.word,
           score: wordWithScore.score

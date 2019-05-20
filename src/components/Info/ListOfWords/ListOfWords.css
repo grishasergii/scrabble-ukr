@@ -2,3 +2,7 @@
   max-height: 230px;
   overflow: auto;
 }
+
+.ListOfWords a {
+  color: white;
+}
