@@ -1,4 +1,4 @@
 .ListOfWords {
   max-height: 230px;
-  overflow: scroll;
+  overflow: auto;
 }
