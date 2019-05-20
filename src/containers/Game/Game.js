@@ -256,6 +256,7 @@ class Game extends Component {
       const action = {
         gameId: prevState.gameId,
         agent: 'player',
+        timestamp: + new Date(),
         type: 'clear',
         actionOrder: prevState.actionOrder,
         body: {
@@ -337,6 +338,7 @@ class Game extends Component {
       const action = {
         gameId: prevState.gameId,
         agent: 'player',
+        timestamp: + new Date(),
         type: 'swap',
         actionOrder: prevState.actionOrder,
         body: {
@@ -383,6 +385,7 @@ class Game extends Component {
         const action = {
           gameId: prevState.gameId,
           agent: 'player',
+          timestamp: + new Date(),
           type: 'invalidMove',
           actionOrder: prevState.actionOrder,
           body: {
@@ -434,6 +437,7 @@ class Game extends Component {
       const action = {
         gameId: prevState.gameId,
         agent: 'player',
+        timestamp: + new Date(),
         type: 'play',
         actionOrder: prevState.actionOrder,
         body: {
@@ -472,6 +476,7 @@ class Game extends Component {
         const action = {
           gameId: prevState.gameId,
           agent: 'computer',
+          timestamp: + new Date(),
           type: 'pass',
           actionOrder: prevState.actionOrder
         };
@@ -536,6 +541,7 @@ class Game extends Component {
       const action = {
         gameId: prevState.gameId,
         agent: 'computer',
+        timestamp: + new Date(),
         type: 'play',
         actionOrder: prevState.actionOrder,
         body: {
@@ -578,6 +584,7 @@ class Game extends Component {
       const action = {
         gameId: prevState.gameId,
         agent: 'player',
+        timestamp: + new Date(),
         type: 'pass',
         actionOrder: prevState.actionOrder
       };
@@ -602,18 +609,21 @@ class Game extends Component {
   }
 
   restartHandler = () => {
-    const action = {
-      gameId: prevState.gameId,
-      agent: 'player',
-      type: 'restart',
-      actionOrder: prevState.actionOrder
-    };
-    
-    axios.post('/game-actions.json', action)
-      .then()
-      .catch();
+    this.setState(prevState => {
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        timestamp: + new Date(),
+        type: 'restart',
+        actionOrder: prevState.actionOrder
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
 
-    this.setState(this.getInitialGameState());
+      return this.getInitialGameState();
+    });
   }
 
   checkForGameEnd = () => {
@@ -652,6 +662,7 @@ class Game extends Component {
       const action = {
         gameId: prevState.gameId,
         agent: 'player',
+        timestamp: + new Date(),
         type: 'finalScore',
         actionOrder: prevState.actionOrder,
         body: {
