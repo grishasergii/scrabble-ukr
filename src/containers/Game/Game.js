@@ -17,6 +17,8 @@ import ToggleButton from '../../components/UI/ToggleButton/ToggleButton';
 import ButtonWithConfirm from '../ButtonWithConfirm/ButtonWithConfirm';
 import styles from './Game.css';
 import FlexRow from '../../components/UI/FlexRow/FlexRow';
+import uuidv4 from 'uuid/v4';
+import axios from '../../axios-actions';
 
 class Game extends Component {
   colors = ['green', 'red', 'blue'];
@@ -110,7 +112,10 @@ class Game extends Component {
       }
     }
 
+    const gameId = uuidv4();
+
     return {
+      gameId: gameId,
       boardSize: 15,
       bagOfLetters: bagOfLetters,
       squares: squares,
@@ -127,7 +132,8 @@ class Game extends Component {
       playerWords: [],
       computerWords: [],
       gameFinished: false,
-      outcomeMessage: ''
+      outcomeMessage: '',
+      actionOrder: 0
     };
   }
 
@@ -247,10 +253,26 @@ class Game extends Component {
         updatedSquares[index].letter = null;
       }
 
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        timestamp: + new Date(),
+        type: 'clear',
+        actionOrder: prevState.actionOrder,
+        body: {
+          numberOfPlacedLetters: prevState.squaresWithPlacedLettersIndices.size
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
+
       return {
         squares: updatedSquares,
         playerRack: updatedPlayerRack,
-        squaresWithPlacedLettersIndices: new Set([])
+        squaresWithPlacedLettersIndices: new Set([]),
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -301,20 +323,40 @@ class Game extends Component {
       const shuffledBagOfLetters = prevState.bagOfLetters.map(x => {return {...x};}).sort(() => 0.5 - Math.random());
       const selectedLetters = shuffledBagOfLetters.slice(0, numNewLetters);
       const updatedBagOfLetters = shuffledBagOfLetters.slice(numNewLetters, shuffledBagOfLetters.length);
-
+      const discardedLetters = [];
+      const newLetters = [];
       for (let i of Array.from(indices).slice(0, numNewLetters)) {
         updatedBagOfLetters.push({
           ...updatedPlayerRack[i],
           color: null
         });
+        discardedLetters.push(updatedPlayerRack[i]);
         updatedPlayerRack[i] = {...selectedLetters.pop(), color: this.playerColor};
+        newLetters.push(updatedPlayerRack[i]);
       }
+
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        timestamp: + new Date(),
+        type: 'swap',
+        actionOrder: prevState.actionOrder,
+        body: {
+          discardedLetters: discardedLetters,
+          newLetters: newLetters
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
 
       return {
         showSwapLetters: false,
         playerRack: updatedPlayerRack,
         bagOfLetters: updatedBagOfLetters,
-        whoseTurn: 'computer'
+        whoseTurn: 'computer',
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -340,9 +382,30 @@ class Game extends Component {
       });
 
       if (isValid === false) {
-        return {
-          modalMessage: `Sorry, your move is invalid: ${errorMessage}`
+        const action = {
+          gameId: prevState.gameId,
+          agent: 'player',
+          timestamp: + new Date(),
+          type: 'invalidMove',
+          actionOrder: prevState.actionOrder,
+          body: {
+            errorMessage: errorMessage
+          }
         };
+        
+        axios.post('/game-actions.json', action)
+          .then()
+          .catch();
+
+        return {
+          modalMessage: `Sorry, your move is invalid: ${errorMessage}`,
+          actionOrder: prevState.actionOrder + 1
+        };
+      }
+
+      const placedLetters = [];
+      for (let i of placedIndices) {
+        placedLetters.push({...JSON.parse(JSON.stringify(tiles[i])), boardIndex: i});
       }
 
       // calculate score
@@ -362,9 +425,30 @@ class Game extends Component {
 
       // update game events log
       const updatedPlayerWords = [...prevState.playerWords];
+      const playedWordsWithScore = [];
       for (const wordWithScore of wordsWithScore) {
         updatedPlayerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`);
+        playedWordsWithScore.push({
+          word: wordWithScore.word,
+          value: wordWithScore.score
+        });
       }
+
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        timestamp: + new Date(),
+        type: 'play',
+        actionOrder: prevState.actionOrder,
+        body: {
+          placedLetters: placedLetters,
+          words: playedWordsWithScore
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
 
       return {
         squares: tiles,
@@ -374,7 +458,8 @@ class Game extends Component {
         whoseTurn: 'computer',
         lastMove: new Set(placedIndices),
         playerScore: prevState.playerScore + totalScore,
-        playerWords: updatedPlayerWords
+        playerWords: updatedPlayerWords,
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -388,9 +473,22 @@ class Game extends Component {
         this.dictionary);
       
       if (moveBoardRackIndices === null) {
+        const action = {
+          gameId: prevState.gameId,
+          agent: 'computer',
+          timestamp: + new Date(),
+          type: 'pass',
+          actionOrder: prevState.actionOrder
+        };
+        
+        axios.post('/game-actions.json', action)
+          .then()
+          .catch();
+
         return {
           whoseTurn: 'player',
-          modalMessage: 'Computer passed'
+          modalMessage: 'Computer passed',
+          actionOrder: prevState.actionOrder + 1
         };
       }
 
@@ -402,8 +500,14 @@ class Game extends Component {
         return {...x};
       });
 
+      const placedLetters = [];
+
       for (let boardRackIndex of moveBoardRackIndices) {
         updatedTiles[boardRackIndex.boardIndex].letter = {...updatedComputerRack[boardRackIndex.rackIndex]};
+        placedLetters.push({
+          ...JSON.parse(JSON.stringify(updatedTiles[boardRackIndex.boardIndex])),
+          boardIndex: boardRackIndex.boardIndex
+        });
         updatedComputerRack[boardRackIndex.rackIndex] = null;
       }
 
@@ -425,9 +529,30 @@ class Game extends Component {
 
       // update game events log
       const updatedComputerWords = [...prevState.computerWords];
+      const playedWordsWithScore = [];
       for (const wordWithScore of wordsWithScore) {
         updatedComputerWords.unshift(`${wordWithScore.word} — ${wordWithScore.score}`); 
+        playedWordsWithScore.push({
+          word: wordWithScore.word,
+          score: wordWithScore.score
+        });
       }
+
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'computer',
+        timestamp: + new Date(),
+        type: 'play',
+        actionOrder: prevState.actionOrder,
+        body: {
+          placedLetters: placedLetters,
+          words: playedWordsWithScore
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
 
       return {
         squares: updatedTiles,
@@ -436,7 +561,8 @@ class Game extends Component {
         whoseTurn: 'player',
         lastMove: new Set(moveBoardRackIndices.map(x => x.boardIndex)),
         computerScore: prevState.computerScore + totalScore,
-        computerWords: updatedComputerWords
+        computerWords: updatedComputerWords,
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -455,8 +581,21 @@ class Game extends Component {
 
   passHandler = () => {
     this.setState(prevState => {
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        timestamp: + new Date(),
+        type: 'pass',
+        actionOrder: prevState.actionOrder
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
+
       return {
         whoseTurn: 'computer',
+        actionOrder: prevState.actionOrder + 1
       };
     });
   }
@@ -470,7 +609,21 @@ class Game extends Component {
   }
 
   restartHandler = () => {
-    this.setState(this.getInitialGameState());
+    this.setState(prevState => {
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        timestamp: + new Date(),
+        type: 'restart',
+        actionOrder: prevState.actionOrder
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
+
+      return this.getInitialGameState();
+    });
   }
 
   checkForGameEnd = () => {
@@ -506,6 +659,21 @@ class Game extends Component {
         outcomeMessage += ' It\'s a tie!';
       }
 
+      const action = {
+        gameId: prevState.gameId,
+        agent: 'player',
+        timestamp: + new Date(),
+        type: 'finalScore',
+        actionOrder: prevState.actionOrder,
+        body: {
+          playerScore: updatedPlayerScore,
+          computerSCore: updatedComputerScore
+        }
+      };
+      
+      axios.post('/game-actions.json', action)
+        .then()
+        .catch();
       return {
         playerScore: updatedPlayerScore,
         computerScore: updatedComputerScore,
