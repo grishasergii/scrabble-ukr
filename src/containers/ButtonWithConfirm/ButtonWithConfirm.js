@@ -43,6 +43,7 @@ class ButtonWithConfirm extends Component {
         <Button 
           clickHandler={this.buttonClickHandler}
           caption={this.props.caption}
+          disabled={this.props.disabled}
         />
       </Auxuliary>
     );
