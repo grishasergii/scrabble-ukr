@@ -18,7 +18,7 @@ class FirstMoveInTheCentre extends ValidationRule {
       return true;
     }
 
-    const centreIndex = Math.ceil(boardSize * boardSize / 2.0);
+    const centreIndex = Math.ceil(boardSize * boardSize / 2.0) - 1;
     if (placedTilesIndices.indexOf(centreIndex) === -1) {
       this.errorMessage = 'First move must start in the centre!';
       return false;
