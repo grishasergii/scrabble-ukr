@@ -19,6 +19,7 @@ import styles from './Game.css';
 import FlexRow from '../../components/UI/FlexRow/FlexRow';
 import uuidv4 from 'uuid/v4';
 import axios from '../../axios-actions';
+import { FormattedMessage } from 'react-intl';
 
 class Game extends Component {
   constructor(props) {
@@ -738,15 +739,15 @@ class Game extends Component {
           <div className={[styles.Column, styles.Left].join(' ')}>
             <FlexRow justifyContent={'letft'}>
               <ButtonWithConfirm 
-                caption='Restart'
-                question='Do you really want to restart?'
+                caption={<FormattedMessage id='restart' defaultMessage='Restart' />} 
+                question={<FormattedMessage id='restart-confirm' defaultMessage='Do you really want to restart?' />} 
                 action={this.restartHandler}
               />
               <ToggleButton 
                 handler={this.toggleComputerRackHandler}
                 isToggleOn={false}
-                captionOn={'Hide computer\'s rack'}
-                captionOff={'Show computer\'s rack'}
+                captionOn={<FormattedMessage id='hide-computer-rack' defaultMessage="Hide computer's rack" />}
+                captionOff={<FormattedMessage id='show-computers-rack' defaultMessage="Show computer\'s rack" />}
               />
             </FlexRow>
             
@@ -789,11 +790,11 @@ class Game extends Component {
               tilesCount={this.state.bagOfLetters.length} />
             
             <ListOfWords 
-              heading={'Computer words'}
+              heading={<FormattedMessage id='computer-words' defaultMessage='Computer words' />}
               words={this.state.computerWords} />
 
             <ListOfWords 
-              heading={'Your words'}
+              heading={<FormattedMessage id='your-words' defaultMessage='Your words' />}
               words={this.state.playerWords} />
           </div>
 

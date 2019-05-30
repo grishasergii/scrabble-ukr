@@ -1,9 +1,10 @@
 import React from 'react';
 import Modal from '../Modal/Modal';
 import Button from '../Button/Button';
+import { FormattedMessage } from 'react-intl';
 
 const confirm = (props) => {
-  let question = 'Are you sure?';
+  let question = <FormattedMessage id='are-you-sure' defaultMessage='Are you sure?'/>;
   if (props.question !== null && props.question !== undefined) {
     question = props.question;
   }
@@ -12,11 +13,11 @@ const confirm = (props) => {
       <p>{question}</p>
       <Button 
         clickHandler={props.yesClickHandler}
-        caption='Yes'
+        caption={<FormattedMessage id='yes' defaultMessage='Yes'/>}
       />
       <Button 
         clickHandler={props.noClickHandler}
-        caption='No'
+        caption={<FormattedMessage id='no' defaultMessage='No'/>}
       />
     </Modal>
   );
