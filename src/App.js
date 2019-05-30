@@ -3,7 +3,7 @@ import './App.css';
 import Game from './containers/Game/Game';
 import { IntlProvider } from 'react-intl';
 import messages from './messages';
-import Button from './components/UI/Button/Button';
+import ToggleButton from './components/UI/ToggleButton/ToggleButton';
 
 class App extends Component {
   constructor(props) {
@@ -13,16 +13,13 @@ class App extends Component {
     }
   }
 
-  setEnglishLangHandler = () => {
-    this.setState({
-      'lang': 'en'
-    });
-  }
+  toggleLangHandler = () => {
+    this.setState(prevState => {
+      if (prevState.lang === 'en') {
+        return {lang: 'uk'};
+      }
 
-
-  setUkrainianLangHandler = () => {
-    this.setState({
-      'lang': 'uk'
+      return {'lang': 'en'};
     });
   }
 
@@ -31,15 +28,16 @@ class App extends Component {
     return (
       <IntlProvider locale={lang} messages={messages[lang]}>
         <div className="App">
-          <Button 
-            caption='English'
-            clickHandler={this.setEnglishLangHandler}
+          
+          <Game />     
+        
+          <ToggleButton 
+            handler={this.toggleLangHandler}
+            isToggleOn={true}
+            captionOn='in English'
+            captionOff='Українською'
           />
-          <Button 
-            caption='Українською'
-            clickHandler={this.setUkrainianLangHandler}
-          />
-          <Game />        
+   
         </div>
       </IntlProvider>
     );
