@@ -42,7 +42,4 @@
 	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffab23', endColorstr='#ffec64',GradientType=0);
 	background-color:#ffab23;
 }
-.Button:active {
-	position:relative;
-	top:1px;
-}
+

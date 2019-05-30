@@ -30,7 +30,9 @@ class App extends Component {
         <div className="App">
           
           <Game />     
-        
+
+
+
           <ToggleButton 
             handler={this.toggleLangHandler}
             isToggleOn={true}

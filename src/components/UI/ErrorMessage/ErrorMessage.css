@@ -1,0 +1,27 @@
+.Background {
+  margin: 0;
+  width: 100%;
+  position: fixed;
+}
+
+.ErrorMessage {
+  height: 223px;
+  position: relative;
+
+}
+
+.ErrorText {
+  margin: 6px !important;
+  position: absolute;
+  bottom: 30%;
+  left: 0;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.ErrorMessage button {
+  margin: 6px !important;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
