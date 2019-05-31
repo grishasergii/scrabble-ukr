@@ -3,6 +3,7 @@ import Auxiliary from '../../hoc/Auxiliary/Auxiliary';
 import Modal from '../UI/Modal/Modal';
 import Spinner from '../UI/Spinner/Spinner';
 import { FormattedMessage } from 'react-intl';
+import styles from './ComputerPlayer.css';
 
 class ComputerPlayer extends Component {
 
@@ -12,7 +13,12 @@ class ComputerPlayer extends Component {
 
   render() {
     return <Auxiliary>
-      <Modal><Spinner/>{<FormattedMessage id='computer-is-thinking' defaultMessage='Computer is thinking' />}...</Modal>
+      <Modal>
+        <div className={styles.ComputerPlayer}>
+          <Spinner/>
+          {<FormattedMessage id='computer-is-thinking' defaultMessage='Computer is thinking' />}...
+        </div>
+      </Modal>
     </Auxiliary>
   }
 }
