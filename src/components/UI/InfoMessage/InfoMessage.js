@@ -10,7 +10,7 @@ const infoMessage = (props) => {
         <p>
           {props.children}
         </p>
-        <br></br>
+
         <Button 
           clickHandler={props.closeMessageHandler}
           caption='Ok'

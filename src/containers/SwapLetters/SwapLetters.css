@@ -1,3 +1,7 @@
 .SwapLetters {
   padding: 16px;
 }
+
+.SwapLetters button {
+  margin-top: 20px;
+}

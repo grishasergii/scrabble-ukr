@@ -13,7 +13,7 @@ const confirm = (props) => {
     <Modal>
       <div className={styles.ConfirmMessage}>
         <p>{question}</p>
-        <br></br>
+
         <Button 
           clickHandler={props.yesClickHandler}
           caption={<FormattedMessage id='yes' defaultMessage='Yes'/>}

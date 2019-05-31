@@ -45,8 +45,6 @@ class SwapLetters extends Component {
             selectedFrom='swapLetters' 
             letters={this.state.rackLetters}
             rackSelectable={true} />
-          
-          <br></br>
 
           <Button 
             clickHandler={() => this.props.swapLettersHandler(this.state.selectedIndices)}
