@@ -48,7 +48,7 @@ export default {
     'pass': 'Пас',
     'pass-confirm': 'Точно хочеш пропустити свій хід?',
     'clear': 'Очистити',
-    'swap': 'Мінятися',
+    'swap': 'Обміняти',
     'computer-words': "Слова комп'ютера",
     'your-words': 'Твої слова',
     'score': 'Рахунок',
