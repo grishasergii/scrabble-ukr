@@ -20,9 +20,6 @@ const rack = (props) => {
     }
     return (<Square key={index}> {letter} </Square>);
   })
-  for (let i = 0; i < props.size; i++) {
-    squares.push(<Square />);
-  }
 
   return (
     <div className={styles.Rack}>
