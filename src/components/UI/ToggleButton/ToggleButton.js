@@ -14,7 +14,7 @@ class ToggleButton extends Component {
     this.captionOff = props.captionOff;
   }
 
-  handleClick() {
+  clickHandler = () => {
     this.setState((prevState) => {
       const updatedIsToggleOn = !prevState.isToggleOn;
       return {
@@ -27,7 +27,7 @@ class ToggleButton extends Component {
     const caption = this.state.isToggleOn === true ? this.captionOn : this.captionOff;
     const handler = () => {
       this.handlerFromProps();
-      this.handleClick();
+      this.clickHandler();
     }
     return (
       <Button 
