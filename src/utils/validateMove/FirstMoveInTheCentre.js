@@ -1,4 +1,6 @@
 import ValidationRule from '../validation/ValidationRule';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 class FirstMoveInTheCentre extends ValidationRule {
   isSatisfied({tiles, placedTilesIndices, boardSize}) {
@@ -20,7 +22,7 @@ class FirstMoveInTheCentre extends ValidationRule {
 
     const centreIndex = Math.ceil(boardSize * boardSize / 2.0) - 1;
     if (placedTilesIndices.indexOf(centreIndex) === -1) {
-      this.errorMessage = 'First move must start in the centre!';
+      this.errorMessage = <FormattedMessage id='first-move-in-the-centre' defaultMessage='First move must start in the centre!'/>;
       return false;
     }
 

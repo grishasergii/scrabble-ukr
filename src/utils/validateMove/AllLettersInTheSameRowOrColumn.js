@@ -1,5 +1,7 @@
 import ValidationRule from '../validation/ValidationRule';
 import indexToRowCol from '../board/indexToRowCol';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 class AllLettersInTheSameRowOrColumn extends ValidationRule {
   isSatisfied({placedTilesIndices = [], boardSize = 0} = {}) {
@@ -13,7 +15,7 @@ class AllLettersInTheSameRowOrColumn extends ValidationRule {
     }
   
     if (rows.size > 1 && cols.size > 1) {
-      this.errorMessage = 'All letters must be placed in the same row or column';
+      this.errorMessage = <FormattedMessage id='all-letterslin-the-same-row-or-column' defaultMessage='All letters must be placed in the same row or column!'/>;
       return false;
     }
     

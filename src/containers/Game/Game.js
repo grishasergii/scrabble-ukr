@@ -5,6 +5,7 @@ import GameControls from '../../components/GameControls/GameControls';
 import SwapLetters from '../SwapLetters/SwapLetters';
 import Modal from '../../components/UI/Modal/Modal';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
+import InfoMessage from '../../components/UI/InfoMessage/InfoMessage';
 import getMoveBoardRackIndices from '../../utils/makeMove/getMoveBoardRackIndices';
 import ComputerPlayer from '../../components/ComputerPlayer/ComputerPlayer';
 import TilesLeft from '../../components/Info/TilesLeft/TilesLeft';
@@ -19,6 +20,9 @@ import styles from './Game.css';
 import FlexRow from '../../components/UI/FlexRow/FlexRow';
 import uuidv4 from 'uuid/v4';
 import axios from '../../axios-actions';
+import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
+import GameSettings from '../../components/GameSettings/GameSettings';
 
 class Game extends Component {
   constructor(props) {
@@ -386,7 +390,7 @@ class Game extends Component {
           .catch();
 
         return {
-          modalMessage: `Sorry, your move is invalid: ${errorMessage}`,
+          modalMessage: errorMessage,
           actionOrder: prevState.actionOrder + 1
         };
       }
@@ -634,17 +638,21 @@ class Game extends Component {
 
       const updatedPlayerScore = prevState.playerScore - playerScorePenalty;
       const updatedComputerScore = prevState.computerScore - computerScorePenalty;
-
-      let outcomeMessage = computerScorePenalty === 0 ? 'Computer has run out of tiles, game will end now.' : 'You have run out of tiles, game will end now.';
-      outcomeMessage += ` Your final score is ${updatedPlayerScore}, computer final score is ${updatedComputerScore}.`;
-
+      
+      let outcomeMessage = computerScorePenalty === 0 ? 
+        this.context.intl.formatMessage({id: 'computer-has-run-out-of-tiles-the-end', defaultMessage: 'Computer has run out of tiles, game will end now.'}) :
+        this.context.intl.formatMessage({id: 'you-have-run-out-of-tiles-the-end', defaultMessage: 'You have run out of tiles, game will end now.'});
+      
+      outcomeMessage += ' ';
+      outcomeMessage += this.context.intl.formatMessage({id: 'final-scores-are', defaultMessage: 'Your final score is {playerScore}, computer final score is {computerScore}.'}, {playerScore: updatedPlayerScore, computerScore: updatedComputerScore});
+      outcomeMessage += ' ';
 
       if (updatedComputerScore > updatedPlayerScore) {
-        outcomeMessage += ' Computer won :(';
+        outcomeMessage += this.context.intl.formatMessage({id: 'computer-won', defaultMessage: 'Computer won :('});
       } else if (updatedPlayerScore > updatedComputerScore) {
-        outcomeMessage += ' You won!';
+        outcomeMessage += this.context.intl.formatMessage({id: 'you-won', defaultMessage: 'You won !'});
       } else {
-        outcomeMessage += ' It\'s a tie!';
+        outcomeMessage += this.context.intl.formatMessage({id: 'it-s-a-tie', defaultMessage: 'It\'s a tie!'});
       }
 
       const action = {
@@ -721,10 +729,10 @@ class Game extends Component {
 
     let gameFinished = null;
     if (this.state.gameFinished === true) {
-      gameFinished = <ErrorMessage 
+      gameFinished = <InfoMessage 
         closeMessageHandler={this.restartHandler}>
         {this.state.outcomeMessage}
-      </ErrorMessage>;
+      </InfoMessage>;
     }
 
     return(
@@ -738,15 +746,15 @@ class Game extends Component {
           <div className={[styles.Column, styles.Left].join(' ')}>
             <FlexRow justifyContent={'letft'}>
               <ButtonWithConfirm 
-                caption='Restart'
-                question='Do you really want to restart?'
+                caption={<FormattedMessage id='restart' defaultMessage='Restart' />} 
+                question={<FormattedMessage id='restart-confirm' defaultMessage='Do you really want to restart?' />} 
                 action={this.restartHandler}
               />
               <ToggleButton 
                 handler={this.toggleComputerRackHandler}
                 isToggleOn={false}
-                captionOn={'Hide computer\'s rack'}
-                captionOff={'Show computer\'s rack'}
+                captionOn={<FormattedMessage id='hide-computer-rack' defaultMessage="Hide computer's rack" />}
+                captionOff={<FormattedMessage id='show-computers-rack' defaultMessage="Show computer\'s rack" />}
               />
             </FlexRow>
             
@@ -787,14 +795,17 @@ class Game extends Component {
 
             <TilesLeft
               tilesCount={this.state.bagOfLetters.length} />
-            
+
             <ListOfWords 
-              heading={'Computer words'}
+              heading={<FormattedMessage id='computer-words' defaultMessage='Computer words' />}
               words={this.state.computerWords} />
 
             <ListOfWords 
-              heading={'Your words'}
+              heading={<FormattedMessage id='your-words' defaultMessage='Your words' />}
               words={this.state.playerWords} />
+            
+            <GameSettings 
+              toggleLangHandler={this.props.toggleLangHandler}/> 
           </div>
 
           {computerPlayer}
@@ -802,6 +813,10 @@ class Game extends Component {
       </div>
     );
   }
+}
+
+Game.contextTypes ={
+  intl: PropTypes.object.isRequired
 }
 
 export default Game;

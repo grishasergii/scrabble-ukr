@@ -1,6 +1,8 @@
 .Container {
   display: flex;
   flex-direction: row;
+  flex-flow: wrap;
+  
 }
 
 @media (min-width: 600px) {
