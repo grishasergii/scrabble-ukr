@@ -5,6 +5,7 @@ import GameControls from '../../components/GameControls/GameControls';
 import SwapLetters from '../SwapLetters/SwapLetters';
 import Modal from '../../components/UI/Modal/Modal';
 import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
+import InfoMessage from '../../components/UI/InfoMessage/InfoMessage';
 import getMoveBoardRackIndices from '../../utils/makeMove/getMoveBoardRackIndices';
 import ComputerPlayer from '../../components/ComputerPlayer/ComputerPlayer';
 import TilesLeft from '../../components/Info/TilesLeft/TilesLeft';
@@ -620,7 +621,7 @@ class Game extends Component {
     this.setState(prevState => {
       const isDefined = (x) => x !== null && x !== undefined;
       if (prevState.playerRack.some(isDefined) && prevState.computerRack.some(isDefined)) {
-        // return;
+        return;
       }
 
       let playerScorePenalty = 0;
@@ -727,10 +728,10 @@ class Game extends Component {
 
     let gameFinished = null;
     if (this.state.gameFinished === true) {
-      gameFinished = <ErrorMessage 
+      gameFinished = <InfoMessage 
         closeMessageHandler={this.restartHandler}>
         {this.state.outcomeMessage}
-      </ErrorMessage>;
+      </InfoMessage>;
     }
 
     return(

@@ -1,0 +1,7 @@
+.InfoMessage {
+  padding: 16px;
+}
+
+.InfoMessage button {
+  margin: 0 !important;
+}
