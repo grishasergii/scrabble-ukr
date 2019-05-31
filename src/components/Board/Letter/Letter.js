@@ -1,31 +1,27 @@
 import React from 'react';
 import styles from './Letter.css';
 
-const letter = (props) => {
+const letter = ({alreadyPlayed, selectable, clicked, selected, highlighted, letter, value}) => {
   let onClick = null;
   const classes = [styles.Letter];
+  alreadyPlayed = alreadyPlayed === true ? true : false;
 
-  let alreadyPlayed = false;
-  if (props.alreadyPlayed === true) {
-    alreadyPlayed = true;
-  }
-
-  if (props.selectable === true && alreadyPlayed === false) {
-    onClick = props.clicked;
+  if (selectable === true && alreadyPlayed === false) {
+    onClick = clicked;
     classes.push(styles.Selectable);
   }
 
-  if (props.selected === true) {
+  if (selected === true) {
     classes.push(styles.Selected);
   }
 
-  if (props.highlighted === true) {
+  if (highlighted === true) {
     classes.push(styles.Highlighted);
   }
 
   return (
     <div onClick={onClick} className={classes.join(' ')}>
-      {props.letter}<sub>{props.value}</sub>
+      {letter}<sub>{value}</sub>
     </div>
   );
 }
