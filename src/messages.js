@@ -32,7 +32,8 @@ export default {
     'computer-won': 'Computer won :(',
     'you-won': 'You won!',
     'it-s-a-tie': 'It\'s a tie!',
-    'game-settings': 'Game settings' 
+    'game-settings': 'Game settings',
+    'computer-passed': 'Computer passed...'
   },
 
   'uk': {
@@ -68,6 +69,7 @@ export default {
     'computer-won': "Комп'ютер виграв :(",
     'you-won': 'Перемога!',
     'it-s-a-tie': 'Це нічия!',
-    'game-settings': 'Налаштування' 
+    'game-settings': 'Налаштування',
+    'computer-passed': "Отакої! Комп'ютер пасанув..."
   }
 }

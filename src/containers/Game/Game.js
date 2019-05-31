@@ -117,7 +117,7 @@ class Game extends Component {
       playerRack: playerRack,
       computerRack: computerRack,
       modalMessage: null,
-      invalidWords: null,
+      errorMessage: null,
       whoseTurn: 'player',
       lastMove: new Set([]),
       playerScore: 0,
@@ -390,7 +390,7 @@ class Game extends Component {
           .catch();
 
         return {
-          modalMessage: errorMessage,
+          errorMessage: errorMessage,
           actionOrder: prevState.actionOrder + 1
         };
       }
@@ -479,7 +479,7 @@ class Game extends Component {
 
         return {
           whoseTurn: 'player',
-          modalMessage: 'Computer passed',
+          modalMessage: <FormattedMessage id='computer-passed' default message='Computer passed...'/>,
           actionOrder: prevState.actionOrder + 1
         };
       }
@@ -565,9 +565,9 @@ class Game extends Component {
     });
   }
 
-  closeInvalidWordsMessageHandler = () => {
+  closeErrorMessageHandler = () => {
     this.setState({
-      invalidWords: null
+      errorMessage: null
     });
   }
 
@@ -695,19 +695,19 @@ class Game extends Component {
     let modalMessage = null;
     if (this.state.modalMessage !== null) {
       modalMessage = (
-        <ErrorMessage
+        <InfoMessage
           closeMessageHandler={this.closeModalMessageHandler}>
           {this.state.modalMessage}
-        </ErrorMessage>
+        </InfoMessage>
       );
     }
 
-    let invalidWordsMessage = null;
-    if (this.state.invalidWords !== null) {
-      invalidWordsMessage = (
+    let errorMessage = null;
+    if (this.state.errorMessage !== null) {
+      errorMessage = (
         <ErrorMessage
-          closeMessageHandler={this.closeInvalidWordsMessageHandler}>
-          Ніт! Не знаю таких слів: {this.state.invalidWords}
+          closeMessageHandler={this.closeErrorMessageHandler}>
+          {this.state.errorMessage}
         </ErrorMessage>
       );
     }
@@ -739,7 +739,7 @@ class Game extends Component {
       <div className={styles.Container}>
         <div className={styles.Row}>
           {modalMessage}
-          {invalidWordsMessage}
+          {errorMessage}
           {gameFinished}
           {swapLetters}
 
