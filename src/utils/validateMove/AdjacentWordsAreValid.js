@@ -1,5 +1,7 @@
 import ValidationRule from '../validation/ValidationRule';
 import getWordIndicesFromAnchor from './getWordIndicesFromAnchor';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 class AdjacentWordsAreValid extends ValidationRule {
   isSatisfied({tiles, placedTilesIndices, direction, boardSize, dictionary}) {
@@ -31,12 +33,12 @@ class AdjacentWordsAreValid extends ValidationRule {
     }
     
     if (invalidWords.length === 1) {
-      this.errorMessage = `I do not know such word as "${invalidWords[0]}"`;
+      this.errorMessage = <FormattedMessage id='unknown-word' defaultMessage='Word {unknownWord} is not in my dictionary!' values={{unknownWord: invalidWords[0]}}/>;
       return false;
     }
 
     if (invalidWords.length > 1) {
-      this.errorMessage = `I do not know the following words "${invalidWords.join(', ')}"`;
+      this.errorMessage = <FormattedMessage id='unknown-words' defaultMessage='Words "{unknownWords}" are not in my dictionary!' values={{unknownWord: invalidWords.join(', ')}}/>;
       return false;
     }
 

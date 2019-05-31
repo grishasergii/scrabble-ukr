@@ -19,7 +19,19 @@ export default {
     'computer': 'Computer',
     'tiles-left': 'Tiles left',
     'are-you-sure': 'Are you sure?',
-    'computer-is-thinking': 'Computer is thinking'
+    'computer-is-thinking': 'Computer is thinking',
+    'place-some-tiles': 'Place som tiles!',
+    'all-letterslin-the-same-row-or-column': 'Sorry, word must be horizontal or vertical!',
+    'there-are-gaps': 'Sorry, no spaces!',
+    'first-move-in-the-centre': 'First word must be on the star!',
+    'unknown-word': 'Sorry, the word "{unknownWord}" is not in my dictionary.',
+    'unknown-words': 'Sorry, the following words are not in my dictionary: {unknownWords}.',
+    'computer-has-run-out-of-tiles-the-end': 'Computer has run out of tiles, the game will end now.',
+    'you-have-run-out-of-tiles-the-end': 'You have run out of tiles, the game will end now.',
+    'final-scores-are': 'Your final score is {playerScore}, computer final score is {computerScore}.',
+    'computer-won': 'Computer won :(',
+    'you-won': 'You won!',
+    'it-s-a-tie': 'It\'s a tie!'
   },
 
   'uk': {
@@ -42,6 +54,18 @@ export default {
     'computer': "Комп'ютер",
     'tiles-left': 'Залишилось літер',
     'are-you-sure': 'Точно?',
-    'computer-is-thinking': "Комп'ютер думає"    
+    'computer-is-thinking': "Комп'ютер думає",
+    'place-some-tiles': 'Не так швидко. Для початку постав хоча б одну літеру на дошку!',
+    'all-letterslin-the-same-row-or-column': 'Всі літери мають бути встановлені в одному й тому ж рядку або стовпчику!',
+    'there-are-gaps': 'Не можна залишати пробіли між встановленими літерами. Охрана, отмєна!',
+    'first-move-in-the-centre': 'Ніт! Перше слово має стояти на зірочці!',
+    'unknown-word': 'Слова "{unknownWord}" нема в моєму словнику ¯\_(ツ)_/¯',
+    'unknown-words': 'Слів "{unknownWord}" нема в моєму словнику ¯\_(ツ)_/¯',
+    'computer-has-run-out-of-tiles-the-end': "Комп'ютер вже викорситав всі свої літери, тож гру закінчено.",
+    'you-have-run-out-of-tiles-the-end': 'В тебе закінчились літери, тож гру закінчено.',
+    'final-scores-are': "Твій фінальний рахунок {playerScore}, а комп'ютера — {computerScore}.",
+    'computer-won': "Комп'ютер виграв :(",
+    'youКом-won': 'Перемога!',
+    'it-s-a-tie': 'Це нічия!'    
   }
 }

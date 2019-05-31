@@ -1,5 +1,7 @@
 import ValidationRule from '../validation/ValidationRule';
 import getWordIndicesFromAnchor from './getWordIndicesFromAnchor';
+import React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 class PlacedLetterSequenceIsAValidWord extends ValidationRule {
   isSatisfied({tiles, placedTilesIndices, direction, boardSize, dictionary}) {
@@ -12,7 +14,7 @@ class PlacedLetterSequenceIsAValidWord extends ValidationRule {
     const lettersSequence = lettersIndices.map(i => tiles[i].letter.letter.toLowerCase()).join('');
 
     if (dictionary.has(lettersSequence) === false) {
-      this.errorMessage = `I do not know such word as ${lettersSequence}`;
+      this.errorMessage = <FormattedMessage id='unknown-word' defaultMessage='Word {unknownWord} is not in my dictionary!' values={{unknownWord: lettersSequence}}/>;
       return false;   
     }
     

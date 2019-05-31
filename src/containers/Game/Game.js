@@ -20,6 +20,7 @@ import FlexRow from '../../components/UI/FlexRow/FlexRow';
 import uuidv4 from 'uuid/v4';
 import axios from '../../axios-actions';
 import { FormattedMessage } from 'react-intl';
+import PropTypes from 'prop-types';
 
 class Game extends Component {
   constructor(props) {
@@ -387,7 +388,7 @@ class Game extends Component {
           .catch();
 
         return {
-          modalMessage: `Sorry, your move is invalid: ${errorMessage}`,
+          modalMessage: errorMessage,
           actionOrder: prevState.actionOrder + 1
         };
       }
@@ -619,7 +620,7 @@ class Game extends Component {
     this.setState(prevState => {
       const isDefined = (x) => x !== null && x !== undefined;
       if (prevState.playerRack.some(isDefined) && prevState.computerRack.some(isDefined)) {
-        return;
+        // return;
       }
 
       let playerScorePenalty = 0;
@@ -635,17 +636,21 @@ class Game extends Component {
 
       const updatedPlayerScore = prevState.playerScore - playerScorePenalty;
       const updatedComputerScore = prevState.computerScore - computerScorePenalty;
-
-      let outcomeMessage = computerScorePenalty === 0 ? 'Computer has run out of tiles, game will end now.' : 'You have run out of tiles, game will end now.';
-      outcomeMessage += ` Your final score is ${updatedPlayerScore}, computer final score is ${updatedComputerScore}.`;
-
+      
+      let outcomeMessage = computerScorePenalty === 0 ? 
+        this.context.intl.formatMessage({id: 'computer-has-run-out-of-tiles-the-end', defaultMessage: 'Computer has run out of tiles, game will end now.'}) :
+        this.context.intl.formatMessage({id: 'you-have-run-out-of-tiles-the-end', defaultMessage: 'You have run out of tiles, game will end now.'});
+      
+      outcomeMessage += ' ';
+      outcomeMessage += this.context.intl.formatMessage({id: 'final-scores-are', defaultMessage: 'Your final score is {playerScore}, computer final score is {computerScore}.'}, {playerScore: updatedPlayerScore, computerScore: updatedComputerScore});
+      outcomeMessage += ' ';
 
       if (updatedComputerScore > updatedPlayerScore) {
-        outcomeMessage += ' Computer won :(';
+        outcomeMessage += this.context.intl.formatMessage({id: 'computer-won', defaultMessage: 'Computer won :('});
       } else if (updatedPlayerScore > updatedComputerScore) {
-        outcomeMessage += ' You won!';
+        outcomeMessage += this.context.intl.formatMessage({id: 'you-won', defaultMessage: 'You won !'});
       } else {
-        outcomeMessage += ' It\'s a tie!';
+        outcomeMessage += this.context.intl.formatMessage({id: 'it-s-a-tie', defaultMessage: 'It\'s a tie!'});
       }
 
       const action = {
@@ -803,6 +808,10 @@ class Game extends Component {
       </div>
     );
   }
+}
+
+Game.contextTypes ={
+  intl: PropTypes.object.isRequired
 }
 
 export default Game;
