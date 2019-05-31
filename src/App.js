@@ -3,7 +3,6 @@ import './App.css';
 import Game from './containers/Game/Game';
 import { IntlProvider } from 'react-intl';
 import messages from './messages';
-import ToggleButton from './components/UI/ToggleButton/ToggleButton';
 
 class App extends Component {
   constructor(props) {
@@ -28,18 +27,7 @@ class App extends Component {
     return (
       <IntlProvider locale={lang} messages={messages[lang]}>
         <div className="App">
-          
-          <Game />     
-
-
-
-          <ToggleButton 
-            handler={this.toggleLangHandler}
-            isToggleOn={true}
-            captionOn='in English'
-            captionOff='Українською'
-          />
-   
+          <Game toggleLangHandler={this.toggleLangHandler}/>     
         </div>
       </IntlProvider>
     );

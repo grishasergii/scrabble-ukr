@@ -22,6 +22,7 @@ import uuidv4 from 'uuid/v4';
 import axios from '../../axios-actions';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
+import GameSettings from '../../components/GameSettings/GameSettings';
 
 class Game extends Component {
   constructor(props) {
@@ -794,7 +795,7 @@ class Game extends Component {
 
             <TilesLeft
               tilesCount={this.state.bagOfLetters.length} />
-            
+
             <ListOfWords 
               heading={<FormattedMessage id='computer-words' defaultMessage='Computer words' />}
               words={this.state.computerWords} />
@@ -802,6 +803,9 @@ class Game extends Component {
             <ListOfWords 
               heading={<FormattedMessage id='your-words' defaultMessage='Your words' />}
               words={this.state.playerWords} />
+            
+            <GameSettings 
+              toggleLangHandler={this.props.toggleLangHandler}/> 
           </div>
 
           {computerPlayer}

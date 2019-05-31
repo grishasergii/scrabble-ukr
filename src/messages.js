@@ -31,7 +31,8 @@ export default {
     'final-scores-are': 'Your final score is {playerScore}, computer final score is {computerScore}.',
     'computer-won': 'Computer won :(',
     'you-won': 'You won!',
-    'it-s-a-tie': 'It\'s a tie!'
+    'it-s-a-tie': 'It\'s a tie!',
+    'game-settings': 'Game settings' 
   },
 
   'uk': {
@@ -65,7 +66,8 @@ export default {
     'you-have-run-out-of-tiles-the-end': 'В тебе закінчились літери, тож гру закінчено.',
     'final-scores-are': "Твій фінальний рахунок {playerScore}, а комп'ютера — {computerScore}.",
     'computer-won': "Комп'ютер виграв :(",
-    'youКом-won': 'Перемога!',
-    'it-s-a-tie': 'Це нічия!'    
+    'you-won': 'Перемога!',
+    'it-s-a-tie': 'Це нічия!',
+    'game-settings': 'Налаштування' 
   }
 }
