@@ -46,13 +46,13 @@ export default {
     'hide-computer-rack': 'Сховати', 
     'play': 'Зіграти',
     'pass': 'Пас',
-    'pass-confirm': 'Точно хочеш пасанути?',
+    'pass-confirm': 'Точно хочеш пропустити свій хід?',
     'clear': 'Очистити',
     'swap': 'Мінятися',
     'computer-words': "Слова комп'ютера",
     'your-words': 'Твої слова',
     'score': 'Рахунок',
-    'you': 'Ти',
+    'you': 'Гравець',
     'computer': "Комп'ютер",
     'tiles-left': 'Залишилось літер',
     'are-you-sure': 'Точно?',
@@ -70,6 +70,6 @@ export default {
     'you-won': 'Перемога!',
     'it-s-a-tie': 'Це нічия!',
     'game-settings': 'Налаштування',
-    'computer-passed': "Отакої! Комп'ютер пасанув..."
+    'computer-passed': "Отакої! Комп'ютер пропустив свій хід..."
   }
 }
