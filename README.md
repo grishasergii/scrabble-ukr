@@ -4,6 +4,10 @@ This is a Scrabble clone with Ukrainian dictionary.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+[https://sergii.se/scrabble/](https://sergii.se/scrabble/)
+
+![alt text](https://sergii.se/wp-content/uploads/2019/05/Screen-Shot-2019-05-31-at-19.56.39.png "")
+
 ## Available Scripts
 
 In the project directory, you can run:
