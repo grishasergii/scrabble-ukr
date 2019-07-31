@@ -23,6 +23,7 @@ import axios from '../../axios-actions';
 import { FormattedMessage } from 'react-intl';
 import PropTypes from 'prop-types';
 import GameSettings from '../../components/GameSettings/GameSettings';
+import BlankTileSelectWindow from '../../components/Board/BlankTileSelectWindow/BlankTileSelectWindow';
 
 class Game extends Component {
   constructor(props) {
@@ -79,14 +80,32 @@ class Game extends Component {
 
       ...Array(1).fill({letter: 'Ґ', value: 10}),
       ...Array(1).fill({letter: '\'', value: 10}),
+
+      ...Array(2).fill({letter: '*', value: null})
     ].sort(() => 0.5 - Math.random());
+
+    const alphabet = [
+      'А', 'Б', 'В', 'Г', 'Ґ', 'Д', 'Є', 'Ж', 'З', 'И', 'І', 'Ї',
+      'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х',
+      'Ц', 'Ч', 'Ш', 'Щ', 'Ь', 'Ю', 'Я', '\''];
 
     const playerRack = [];
     const computerRack = [];
 
     for (let i = 0; i < 7; i++) {
-      playerRack.push({...bagOfLetters.pop()});
-      computerRack.push({...bagOfLetters.pop()});
+      playerRack.push({...bagOfLetters.shift()});
+    }
+
+    let pushedLetters = 0;
+    let i = 0;
+    while (pushedLetters < 7) {
+      if (bagOfLetters[i].letter === '*') {
+        i += 1;
+        continue;
+      }
+      computerRack.push({...bagOfLetters[i]});
+      bagOfLetters.splice(i, 1);
+      pushedLetters += 1;
     }
 
     const squares = Array(225).fill({});
@@ -111,6 +130,7 @@ class Game extends Component {
       gameId: gameId,
       boardSize: 15,
       bagOfLetters: bagOfLetters,
+      alphabet: alphabet,
       squares: squares,
       selectedLetter: null,
       squaresWithPlacedLettersIndices: new Set([]),
@@ -126,7 +146,9 @@ class Game extends Component {
       computerWords: [],
       gameFinished: false,
       outcomeMessage: '',
-      actionOrder: 0
+      actionOrder: 0,
+      showBlankTileWindow: false,
+      placeLetterOnBoardIndex: null
     };
   }
 
@@ -135,7 +157,7 @@ class Game extends Component {
     this.setState((prevState) => {
       const updatedPlayerRack = prevState.playerRack.map(
         l => {
-          if (l === null || l===undefined) {
+          if (l === null || l === undefined) {
             return null;
           }
           return {
@@ -172,12 +194,12 @@ class Game extends Component {
       }
 
       return {
-      playerRack: updatedPlayerRack,
-      squares: updatedSquares,
-      selectedLetter: {
-        letter: letter,
-        index: index,
-        selectedFrom: selectedFrom
+        playerRack: updatedPlayerRack,
+        squares: updatedSquares,
+        selectedLetter: {
+          letter: letter,
+          index: index,
+          selectedFrom: selectedFrom
       }};
     });
   }
@@ -186,6 +208,13 @@ class Game extends Component {
     this.setState((prevState) => {
       if (prevState.selectedLetter === null) {
         return;
+      }
+
+      if (prevState.selectedLetter.letter.letter === '*') {
+        return {
+          showBlankTileWindow: true,
+          placeLetterOnBoardIndex: squareIndex
+        };
       }
 
       const updatedSquares = prevState.squares.map(x => { return {...x}; });
@@ -217,14 +246,45 @@ class Game extends Component {
         squares: updatedSquares,
         selectedLetter: null,
         playerRack: updatedPlayerRack,
-        squaresWithPlacedLettersIndices: updatedSquaresWithPlacedLettersIndices
+        squaresWithPlacedLettersIndices: updatedSquaresWithPlacedLettersIndices,
+        placeLetterOnBoardIndex: null
       };
     });
   }
 
+  selectBlankTileLetterHandler = (selectedLetterIndex) => {
+    this.setState(prevState => {
+      if (selectedLetterIndex === null || selectedLetterIndex === undefined) {
+        return {
+          showBlankTileWindow: false,
+          errorMessage: 'Please select a letter',
+        };
+      }
+
+      const updatedSelectedLetter = {
+        ...prevState.selectedLetter,
+        letter: {
+          letter: prevState.alphabet[selectedLetterIndex],
+          value: 0
+        },
+        value: 0
+      };
+
+      return {
+        selectedLetter: updatedSelectedLetter,
+        showBlankTileWindow: false
+      };
+    });
+
+    if (selectedLetterIndex !== null && selectedLetterIndex !== undefined) 
+      this.placeLetterOnBoardHandler(this.state.placeLetterOnBoardIndex);
+  }
+
   returnPlacedLettersToRackHandler = () => {
     this.setState((prevState) => {
-      const updatedSquares = prevState.squares.map(x => { return {...x}; });;
+      const updatedSquares = prevState.squares.map(x => { 
+        return {...x}; 
+      });
       const updatedPlayerRack = prevState.playerRack.map(x => {
         if (x === null) {
           return null;
@@ -239,8 +299,20 @@ class Game extends Component {
         while (updatedPlayerRack[playerRackLetterIndex] !== null && playerRackLetterIndex < playerRackLength) {
           playerRackLetterIndex = playerRackLetterIndex + 1;
         }
-        updatedPlayerRack[playerRackLetterIndex] = {
+        let updatedLetter = {
           ...updatedSquares[index].letter, 
+          selected: false          
+        }
+
+        // if value is 0 then it means that it is a blank tile,
+        // so restore it to its original state
+        if (updatedLetter.value === 0) {
+          updatedLetter.value = null;
+          updatedLetter.letter = '*';
+        }
+
+        updatedPlayerRack[playerRackLetterIndex] = {
+          ...updatedLetter, 
           selected: false
         };
         updatedSquares[index].letter = null;
@@ -270,7 +342,7 @@ class Game extends Component {
     });
   }
 
-  refillRack = (rack, bagOfLetters) => {
+  refillRack = (rack, bagOfLetters, allowBlanks) => {
     let updatedRack = rack.map(x => {
       if (x === null || x === undefined) {
         return null;
@@ -285,7 +357,23 @@ class Game extends Component {
         return l;
       }
       if (l === null) {
-        return {...updatedBagOfLetters.pop()};
+        if (allowBlanks === true) {
+          return {...updatedBagOfLetters.shift()};
+        } else {
+          let i = 0;
+          while (true) {
+            if (i >= updatedBagOfLetters.length) {
+              return l;
+            }
+            if (updatedBagOfLetters[i].letter === '*') {
+              i += 1;
+              continue;
+            }
+            const l_ = {...updatedBagOfLetters[i]};
+            updatedBagOfLetters.splice(i, 1);
+            return l_;
+          }
+        }
       }
       return l;
     });
@@ -413,7 +501,7 @@ class Game extends Component {
       });
 
       // refill players rack
-      const updated = this.refillRack(prevState.playerRack, prevState.bagOfLetters);
+      const updated = this.refillRack(prevState.playerRack, prevState.bagOfLetters, true);
 
       // update game events log
       const updatedPlayerWords = [...prevState.playerWords];
@@ -517,7 +605,7 @@ class Game extends Component {
       }
 
       // refill computer rack
-      const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters);
+      const updated = this.refillRack(updatedComputerRack, prevState.bagOfLetters, false);
 
       // update game events log
       const updatedComputerWords = [...prevState.computerWords];
@@ -735,6 +823,18 @@ class Game extends Component {
       </InfoMessage>;
     }
 
+    let selectBlankTileLetter = null;
+    if (this.state.showBlankTileWindow) {
+      selectBlankTileLetter = (
+        <Modal>
+          <BlankTileSelectWindow
+            alphabet={this.state.alphabet}
+            selectBlankTileLetterHandler={this.selectBlankTileLetterHandler}
+          />
+        </Modal>
+      );
+    }
+
     return(
       <div className={styles.Container}>
         <div className={styles.Row}>
@@ -742,6 +842,7 @@ class Game extends Component {
           {errorMessage}
           {gameFinished}
           {swapLetters}
+          {selectBlankTileLetter}
 
           <div className={[styles.Column, styles.Left].join(' ')}>
             <FlexRow justifyContent={'letft'}>
