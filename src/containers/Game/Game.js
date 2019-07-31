@@ -81,7 +81,7 @@ class Game extends Component {
       ...Array(1).fill({letter: 'Ґ', value: 10}),
       ...Array(1).fill({letter: '\'', value: 10}),
 
-      ...Array(2).fill({letter: '*', value: null})
+      ...Array(200).fill({letter: '*', value: null})
     ].sort(() => 0.5 - Math.random());
 
     const alphabet = [
@@ -444,6 +444,46 @@ class Game extends Component {
   startSwapLettersHandler = () => {
     this.setState({
       showSwapLetters: true
+    });
+  }
+
+  returnTileToRackHandler = (rackIndex) => {
+    this.setState(prevState => {
+      if (prevState.selectedLetter.selectedFrom !== 'board') {
+        return;
+      }
+    
+      const tileToPutBack = {
+        ...prevState.selectedLetter.letter,
+        selected: false
+      }
+
+      if (tileToPutBack.value === 0) {
+        tileToPutBack.letter = '*';
+        tileToPutBack.value = null;
+      }
+
+      const updatedPlayerRack = prevState.playerRack.map(x => {
+        if (x === null) {
+          return null;
+        }
+        return {...x};
+      });
+
+      updatedPlayerRack[rackIndex] = tileToPutBack;
+
+      const updatedSquares = prevState.squares.map(x => { return {...x}; });
+      updatedSquares[prevState.selectedLetter.index].letter = null;
+
+      const updatedSquaresWithPlacedLettersIndices = new Set(prevState.squaresWithPlacedLettersIndices);
+      updatedSquaresWithPlacedLettersIndices.delete(prevState.selectedLetter.index);
+
+      return {
+        selectedLetter: null,
+        playerRack: updatedPlayerRack,
+        squares: updatedSquares,
+        squaresWithPlacedLettersIndices: updatedSquaresWithPlacedLettersIndices
+      }
     });
   }
 
@@ -871,7 +911,8 @@ class Game extends Component {
               letterClick={this.selectLetterHandler} 
               selectedFrom='playerRack' 
               letters={this.state.playerRack}
-              rackSelectable={true} />
+              rackSelectable={true}
+              squareClickHandler={this.returnTileToRackHandler} />
             
             <FlexRow>
               <GameControls

@@ -4,7 +4,10 @@ import Square from '../Square/Square';
 import Letter from '../Letter/Letter';
 
 
-const rack = ({letters, rackSelectable, letterClick, selectedFrom}) => {
+const rack = ({letters, rackSelectable, letterClick, selectedFrom, squareClickHandler}) => {
+  if (squareClickHandler === null || squareClickHandler === undefined) {
+    squareClickHandler = () => {};
+  }
   const squares = letters.map((l, index) => {
     let letter = null;
     if (l !== null && l !== undefined) {
@@ -18,7 +21,7 @@ const rack = ({letters, rackSelectable, letterClick, selectedFrom}) => {
           color={l.color} />
       );
     }
-    return (<Square key={index}> {letter} </Square>);
+    return (<Square key={index} click={() => squareClickHandler(index)}> {letter} </Square>);
   })
 
   return (
