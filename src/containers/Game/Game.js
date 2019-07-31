@@ -81,7 +81,7 @@ class Game extends Component {
       ...Array(1).fill({letter: 'Ґ', value: 10}),
       ...Array(1).fill({letter: '\'', value: 10}),
 
-      ...Array(200).fill({letter: '*', value: null})
+      ...Array(2).fill({letter: '*', value: null})
     ].sort(() => 0.5 - Math.random());
 
     const alphabet = [
