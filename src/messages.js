@@ -33,7 +33,8 @@ export default {
     'you-won': 'You won!',
     'it-s-a-tie': 'It\'s a tie!',
     'game-settings': 'Game settings',
-    'computer-passed': 'Computer passed...'
+    'computer-passed': 'Computer passed...',
+    'select-a-letter': 'Select a letter'
   },
 
   'uk': {
@@ -70,6 +71,7 @@ export default {
     'you-won': 'Перемога!',
     'it-s-a-tie': 'Це нічия!',
     'game-settings': 'Налаштування',
-    'computer-passed': "Отакої! Комп'ютер пропустив свій хід..."
+    'computer-passed': "Отакої! Комп'ютер пропустив свій хід...",
+    'select-a-letter': 'Оберіть літеру'
   }
 }

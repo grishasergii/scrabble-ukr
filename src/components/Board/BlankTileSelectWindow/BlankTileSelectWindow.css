@@ -1,0 +1,19 @@
+.BlankTileSelectWindowRack {
+  margin: 5px;
+  display: grid;
+  grid-gap: 3px;
+  grid-template-columns: repeat(7, 40px);
+  grid-template-rows: repeat(5, 40px);
+  justify-content: center;
+  background-color: #303030;
+  padding: 10px;
+}
+
+.BlankTileSelectWindowRack div {
+  line-height: 40px;
+  font-size: 18px;
+}
+
+.BlankTileSelectWindow h2 {
+  margin: 5px;
+}
