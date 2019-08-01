@@ -918,7 +918,10 @@ class Game extends Component {
               <GameControls
                 enabled={this.state.whoseTurn === 'player'}
                 clear={this.returnPlacedLettersToRackHandler}
-                swap={this.startSwapLettersHandler}
+                swap={() => {
+                  this.returnPlacedLettersToRackHandler();
+                  this.startSwapLettersHandler();
+                }}
                 play={() => {
                   this.playTurnHandler();
                   this.checkForGameEnd();
