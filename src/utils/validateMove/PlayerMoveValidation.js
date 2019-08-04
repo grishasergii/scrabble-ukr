@@ -8,10 +8,10 @@ import Validation from '../validation/Validation';
 import FirstMoveInTheCentre from './FirstMoveInTheCentre';
 
 class PlayerMoveValidation extends Validation {
-  constructor() {
+  constructor(firstMoveBoardIndex) {
     super();
     this.addRule(new AnyPlacedTiles())
-        .addRule(new FirstMoveInTheCentre())
+        .addRule(new FirstMoveInTheCentre(firstMoveBoardIndex))
         .addRule(new AllLettersInTheSameRowOrColumn())
         .addRule(new ContiniousSequence())
         .addRule(new WordConnected())

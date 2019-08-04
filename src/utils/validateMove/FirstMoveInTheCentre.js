@@ -3,6 +3,11 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 class FirstMoveInTheCentre extends ValidationRule {
+  constructor(boardIndex) {
+    super();
+    this.boardIndex = boardIndex;
+  }
+
   isSatisfied({tiles, placedTilesIndices, boardSize}) {
     let isFirstMove = true;
     for (const tile of tiles) {
@@ -20,8 +25,7 @@ class FirstMoveInTheCentre extends ValidationRule {
       return true;
     }
 
-    const centreIndex = Math.ceil(boardSize * boardSize / 2.0) - 1;
-    if (placedTilesIndices.indexOf(centreIndex) === -1) {
+    if (placedTilesIndices.indexOf(this.boardIndex) === -1) {
       this.errorMessage = <FormattedMessage id='first-move-in-the-centre' defaultMessage='First move must start in the centre!'/>;
       return false;
     }
