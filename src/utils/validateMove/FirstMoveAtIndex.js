@@ -2,13 +2,13 @@ import ValidationRule from '../validation/ValidationRule';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-class FirstMoveInTheCentre extends ValidationRule {
+class FirstMoveAtIndex extends ValidationRule {
   constructor(boardIndex) {
     super();
     this.boardIndex = boardIndex;
   }
 
-  isSatisfied({tiles, placedTilesIndices, boardSize}) {
+  isSatisfied({tiles, placedTilesIndices}) {
     let isFirstMove = true;
     for (const tile of tiles) {
       if (tile.letter === null || tile.letter === undefined) {
@@ -34,4 +34,4 @@ class FirstMoveInTheCentre extends ValidationRule {
   }
 }
 
-export default FirstMoveInTheCentre;
+export default FirstMoveAtIndex;
