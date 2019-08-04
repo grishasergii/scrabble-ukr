@@ -29,10 +29,16 @@ class Game extends Component {
   constructor(props) {
     super(props);
     this.dictionary = new Set(require('../../assets/dict_ukr.json'));
-    this.playerMoveValidator = new PlayerMoveValidation();
+    
     this.state = {
+      boardType: 'standard',
       computerRackIsVisible: false,
+    }
+    this.state = {
+      ...this.state,
       ...this.getInitialGameState()};
+
+    this.playerMoveValidator = new PlayerMoveValidation(this.state.firstMoveIndex);
   }
 
   getInitialGameState = () => {
@@ -109,13 +115,45 @@ class Game extends Component {
     }
 
     const squares = Array(225).fill({});
+    const randomizedBoardIndices = [...Array(225).keys()].sort(() => 0.5 - Math.random());
+    const getBonusIndices = (standardIndices) => {
+      if (this.state.boardType === 'random') {
+        return randomizedBoardIndices.splice(0, standardIndices.length);
+      }
 
+      return standardIndices;
+    }
     const bonuses = [
-      {type: '3xWS', wordMultiplier: 3, letterMultiplier: 1, indices: [0, 7, 14, 105, 119, 210, 217, 224]},
-      {type: '2xWS', wordMultiplier: 2, letterMultiplier: 1, indices: [16, 32, 48, 64, 28, 42, 56, 70, 196, 182, 168, 154, 208, 192, 176, 160]},
-      {type: '3xLS', wordMultiplier: 1, letterMultiplier: 3, indices: [20, 24, 76, 136, 88, 148, 200, 204, 80, 84, 140, 144]},
-      {type: '2xLS', wordMultiplier: 1, letterMultiplier: 2, indices: [36, 52, 38, 92, 108, 122, 102, 116, 132, 186, 172, 188, 96, 126, 98, 128, 3, 11, 45, 165, 213, 221, 59, 179]},
-      {type: 'start', wordMultiplier: 2, letterMultiplier: 1, indices: [112]}
+      {
+        type: '3xWS', 
+        wordMultiplier: 3, 
+        letterMultiplier: 1, 
+        indices: getBonusIndices([0, 7, 14, 105, 119, 210, 217, 224])
+      },
+      {
+        type: '2xWS', 
+        wordMultiplier: 2, 
+        letterMultiplier: 1, 
+        indices: getBonusIndices([16, 32, 48, 64, 28, 42, 56, 70, 196, 182, 168, 154, 208, 192, 176, 160])
+      },
+      {
+        type: '3xLS', 
+        wordMultiplier: 1, 
+        letterMultiplier: 3, 
+        indices: getBonusIndices([20, 24, 76, 136, 88, 148, 200, 204, 80, 84, 140, 144])
+      },
+      {
+        type: '2xLS', 
+        wordMultiplier: 1, 
+        letterMultiplier: 2, 
+        indices: getBonusIndices([36, 52, 38, 92, 108, 122, 102, 116, 132, 186, 172, 188, 96, 126, 98, 128, 3, 11, 45, 165, 213, 221, 59, 179])
+      },
+      {
+        type: 'start', 
+        wordMultiplier: 2, 
+        letterMultiplier: 1, 
+        indices: getBonusIndices([112])
+      }
     ];
 
     for (const bonus of bonuses) {
@@ -148,7 +186,8 @@ class Game extends Component {
       outcomeMessage: '',
       actionOrder: 0,
       showBlankTileWindow: false,
-      placeLetterOnBoardIndex: null
+      placeLetterOnBoardIndex: null,
+      firstMoveIndex: bonuses.slice(-1)[0].indices[0]
     };
   }
 
@@ -728,6 +767,16 @@ class Game extends Component {
     });
   }
 
+  toggleBoardTypeHandler = () => {
+    this.setState(prevState => {
+      if (prevState.boardType === 'standard') {
+        return { boardType: 'random' };
+      }
+
+      return { boardType: 'standard' };
+    });
+  }
+
   restartHandler = () => {
     this.setState(prevState => {
       const action = {
@@ -742,7 +791,9 @@ class Game extends Component {
         .then()
         .catch();
 
-      return this.getInitialGameState();
+      const initialGameState = this.getInitialGameState();
+      this.playerMoveValidator = new PlayerMoveValidation(initialGameState.firstMoveIndex)
+      return { ...initialGameState };
     });
   }
 
@@ -950,7 +1001,8 @@ class Game extends Component {
               words={this.state.playerWords} />
             
             <GameSettings 
-              toggleLangHandler={this.props.toggleLangHandler}/> 
+              toggleLangHandler={this.props.toggleLangHandler}
+              toggleBoardTypeHandler={this.toggleBoardTypeHandler}/> 
           </div>
 
           {computerPlayer}

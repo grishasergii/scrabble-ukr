@@ -2,8 +2,13 @@ import ValidationRule from '../validation/ValidationRule';
 import React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-class FirstMoveInTheCentre extends ValidationRule {
-  isSatisfied({tiles, placedTilesIndices, boardSize}) {
+class FirstMoveAtIndex extends ValidationRule {
+  constructor(boardIndex) {
+    super();
+    this.boardIndex = boardIndex;
+  }
+
+  isSatisfied({tiles, placedTilesIndices}) {
     let isFirstMove = true;
     for (const tile of tiles) {
       if (tile.letter === null || tile.letter === undefined) {
@@ -20,8 +25,7 @@ class FirstMoveInTheCentre extends ValidationRule {
       return true;
     }
 
-    const centreIndex = Math.ceil(boardSize * boardSize / 2.0) - 1;
-    if (placedTilesIndices.indexOf(centreIndex) === -1) {
+    if (placedTilesIndices.indexOf(this.boardIndex) === -1) {
       this.errorMessage = <FormattedMessage id='first-move-in-the-centre' defaultMessage='First move must start in the centre!'/>;
       return false;
     }
@@ -30,4 +34,4 @@ class FirstMoveInTheCentre extends ValidationRule {
   }
 }
 
-export default FirstMoveInTheCentre;
+export default FirstMoveAtIndex;

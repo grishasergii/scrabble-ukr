@@ -8,6 +8,15 @@ const gameSettings = (props) => {
   return (
     <Card heading={<FormattedMessage id='game-settings' defaultMessage='Game settings'/>}>
       <div className={styles.GameSettings}>
+        <span>
+        {<FormattedMessage id='set-board-to' defaultMessage='Set board to'/>}: &nbsp;
+        <ToggleButton 
+            handler={props.toggleBoardTypeHandler}
+            isToggleOn={true}
+            captionOn={<FormattedMessage id='random' defaultMessage='Random'/>}
+            captionOff={<FormattedMessage id='standard' defaultMessage='Standard'/>}
+          />
+          </span>
         <ToggleButton 
           handler={props.toggleLangHandler}
           isToggleOn={true}
