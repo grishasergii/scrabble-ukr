@@ -791,7 +791,9 @@ class Game extends Component {
         .then()
         .catch();
 
-      return this.getInitialGameState();
+      const initialGameState = this.getInitialGameState();
+      this.playerMoveValidator = new PlayerMoveValidation(initialGameState.firstMoveIndex)
+      return { ...initialGameState };
     });
   }
 
