@@ -31,7 +31,7 @@ class Game extends Component {
     this.dictionary = new Set(require('../../assets/dict_ukr.json'));
     
     this.state = {
-      boardType: 'random',
+      boardType: 'standard',
       computerRackIsVisible: false,
     }
     this.state = {
@@ -767,6 +767,16 @@ class Game extends Component {
     });
   }
 
+  toggleBoardTypeHandler = () => {
+    this.setState(prevState => {
+      if (prevState.boardType === 'standard') {
+        return { boardType: 'random' };
+      }
+
+      return { boardType: 'standard' };
+    });
+  }
+
   restartHandler = () => {
     this.setState(prevState => {
       const action = {
@@ -989,7 +999,8 @@ class Game extends Component {
               words={this.state.playerWords} />
             
             <GameSettings 
-              toggleLangHandler={this.props.toggleLangHandler}/> 
+              toggleLangHandler={this.props.toggleLangHandler}
+              toggleBoardTypeHandler={this.toggleBoardTypeHandler}/> 
           </div>
 
           {computerPlayer}

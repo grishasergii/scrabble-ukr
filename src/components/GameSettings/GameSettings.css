@@ -1,7 +1,9 @@
 .GameSettings {
   padding-top: 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .GameSettings button {
-  margin: 0 !important;
+  margin: 10px 0 0 0 !important;
 }

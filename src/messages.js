@@ -34,7 +34,10 @@ export default {
     'it-s-a-tie': 'It\'s a tie!',
     'game-settings': 'Game settings',
     'computer-passed': 'Computer passed...',
-    'select-a-letter': 'Select a letter'
+    'select-a-letter': 'Select a letter',
+    'set-board-to': 'Set board to',
+    'random': 'Random',
+    'standard': 'Standard'
   },
 
   'uk': {
@@ -72,6 +75,9 @@ export default {
     'it-s-a-tie': 'Це нічия!',
     'game-settings': 'Налаштування',
     'computer-passed': "Отакої! Комп'ютер пропустив свій хід...",
-    'select-a-letter': 'Оберіть літеру'
+    'select-a-letter': 'Оберіть літеру',
+    'set-board-to': 'Розташування бонусів',
+    'random': 'Випадкове',
+    'standard': 'Стандартне'
   }
 }
